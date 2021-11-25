@@ -9,10 +9,10 @@ const Footer = () => {
             <div className='col-lg-4 col-sm-6 col-md-6'>
               <div className='single-footer-widget'>
                 <a href='index.html' className='d-inline-block logo'>
-                  <img src='/images/logo.png' alt='logo' />
+                  <img src='/images/logo-eventozz.png' alt='logo' />
                 </a>
                 <div className='newsletter-form'>
-                  <p>SUBSCRIBE TO OUR NEWSLETTER</p>
+                  {/* <p>SUBSCRIBE TO OUR NEWSLETTER</p>
                   <form data-toggle='validator'>
                     <input
                       type='email'
@@ -26,7 +26,7 @@ const Footer = () => {
                       Subscribe Now <i className='bx bx-paper-plane'></i>
                     </button>
                     <div id='validator-newsletter' className='form-result'></div>
-                  </form>
+                  </form> */}
                 </div>
                 <ul className='social-links'>
                   <li>
@@ -54,61 +54,46 @@ const Footer = () => {
             </div>
             <div className='col-lg-2 col-sm-6 col-md-6'>
               <div className='single-footer-widget'>
-                <h3>Cryptocurrency</h3>
+                <h3>Serviços</h3>
                 <ul className='services-links'>
                   <li>
-                    <Link href='/buy'>Buy Bitcoin</Link>
+                    <Link href='/buy'>Participar de Eventos</Link>
                   </li>
                   <li>
-                    <Link href='/buy'>Buy BNB</Link>
-                  </li>
-                  <li>
-                    <Link href='/buy'>Buy Ethereum</Link>
-                  </li>
-                  <li>
-                    <Link href='/buy'>Buy Ripple</Link>
-                  </li>
-                  <li>
-                    <Link href='/buy'>Buy Litecoin</Link>
+                    <Link href='/buy'>Organizar Eventos</Link>
                   </li>
                 </ul>
               </div>
             </div>
             <div className='col-lg-3 col-sm-6 col-md-6'>
               <div className='single-footer-widget pl-5'>
-                <h3>Resources</h3>
+                <h3>Links</h3>
                 <ul className='quick-links'>
                   <li>
-                    <Link href='/trade'>Trade</Link>
+                    <Link href='/trade'>Home</Link>
                   </li>
                   <li>
-                    <Link href='/guides'>Guides</Link>
+                    <Link href='/guides'>Eventos</Link>
                   </li>
                   <li>
-                    <Link href='/wallet'>Wallets</Link>
+                    <Link href='/wallet'>Noticias</Link>
                   </li>
                   <li>
-                    <Link href='/faq'>FAQ</Link>
-                  </li>
-                  <li>
-                    <Link href='/contact'>Contact</Link>
+                    <Link href='/faq'>Sobre Nós</Link>
                   </li>
                 </ul>
               </div>
             </div>
             <div className='col-lg-3 col-sm-6 col-md-6'>
               <div className='single-footer-widget'>
-                <h3>Contact Info</h3>
+                <h3>Contato</h3>
                 <ul className='footer-contact-info'>
-                  <li>Address: 2750, Quadra Street Victoria, Canada</li>
+                  <li>Endereço: Rua Araguia - 705 C, Novo Horizonte. Marabá - PA</li>
                   <li>
-                    Email: <a href='mailto:hello@Novis.com'>hello@novis.com</a>
+                    E-mail: <a href='mailto:contato@eventozz.com'>contato@eventozz.com</a>
                   </li>
                   <li>
-                    Phone: <a href='tel:+44587154756'>+1416-555-0896</a>
-                  </li>
-                  <li>
-                    Fax: <a href='tel:+44587154756'>+1416-555-0477</a>
+                    Whatsapp: <a href='https://wa.me//5594993040161'>(94) 9 9304-0161</a>
                   </li>
                 </ul>
               </div>
@@ -118,9 +103,9 @@ const Footer = () => {
         <div className='copyright-area'>
           <div className='container'>
             <p>
-              Copyright 2021 <strong>Novis</strong>. All Rights Reserved by{' '}
-              <Link href='https://envytheme.com/' target='_blank'>
-                EnvyTheme
+              Copyright 2021. Desenvolvido por{' '}
+              <Link href='https://portalctech.com.br/' target='_blank'>
+                CTECH
               </Link>
             </p>
           </div>

@@ -5,11 +5,9 @@ const FeedBack = () => {
       <div className='fedback-area pt-100 pb-70'>
         <div className='container'>
           <div className='section-title'>
-            <h2>Trusted by Thousands of Users</h2>
+            <h2>Depoimentos</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco.
+              Ouça a opnião das pessoas sobre nossa plataforma
             </p>
           </div>
           <div className='row justify-content-center'>

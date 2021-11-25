@@ -40,6 +40,44 @@ const options = {
 const Platform = () => {
   const [display, setDisplay] = useState(false);
   const [isMounted, setisMounted] = useState(false);
+  const Eventozz = [
+    {
+      id: 1,
+      nome: "Evento Teste 1",
+      foto: "/images/cryptocurrency-platform/cryptocurrency-platform-1.jpg",
+      descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
+    },
+    {
+      id: 2,
+      nome: "Evento Teste 3",
+      foto: "/images/cryptocurrency-platform/cryptocurrency-platform-2.jpg",
+      descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
+    },
+    {
+      id: 3,
+      nome: "Evento Teste 2",
+      foto: "/images/cryptocurrency-platform/cryptocurrency-platform-3.jpg",
+      descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
+    },
+    {
+      id: 4,
+      nome: "Evento Teste 4",
+      foto: "/images/cryptocurrency-platform/cryptocurrency-platform-3.jpg",
+      descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
+    },
+    {
+      id: 5,
+      nome: "Evento Teste 5",
+      foto: "/images/cryptocurrency-platform/cryptocurrency-platform-3.jpg",
+      descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
+    },
+    {
+      id: 6,
+      nome: "Evento Teste 6",
+      foto: "https://eventozz.com/assets/img/rufino.jpeg",
+      descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
+    },
+  ];
 
   useEffect(() => {
     setisMounted(true);
@@ -49,136 +87,52 @@ const Platform = () => {
 
   return (
     <>
-      <div className='cryptocurrency-platform-area'>
-        <div className='container-fluid'>
-          <div className='section-title'>
-            <h2>The Most Trusted Cryptocurrency Platform</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco.
-            </p>
-          </div>
-          <div className='cryptocurrency-platform-slides'>
-            {display ? (
+      {display && (
+        <div className='cryptocurrency-platform-area'>
+          <div className='container-fluid'>
+            <div className='section-title'>
+              <h2>Eventozz para você participar</h2>
+            </div>
+            <div className='cryptocurrency-platform-slides'>
+
               <OwlCarousel {...options}>
-                <div className='single-cryptocurrency-platform-box'>
-                  <img
-                    src='/images/cryptocurrency-platform/cryptocurrency-platform-1.jpg'
-                    alt='image'
-                  />
-                  <div className='content'>
-                    <div className='icon'>
-                      <img src='/images/icon/icon4.png' alt='image' />
-                    </div>
-                    <h3>
-                      <a href='cryptocurrency-details.html'>
-                        Protected by Insurance
-                      </a>
-                    </h3>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco.
-                    </p>
-                    <Link href='/cryptocurrency-details' className='link-btn'>
-                      <a className='link-btn'>
-                        {' '}
-                        View More <i className='bx bx-chevron-right'></i>
-                      </a>
-                    </Link>
-                  </div>
-                </div>
-                <div className='single-cryptocurrency-platform-box'>
-                  <img
-                    src='/images/cryptocurrency-platform/cryptocurrency-platform-3.jpg'
-                    alt='image'
-                  />
-                  <div className='content'>
-                    <div className='icon'>
-                      <img src='/images/icon/icon5.png' alt='image' />
-                    </div>
-                    <h3>
-                      <a href='cryptocurrency-details.html'>
-                        Build Your Reputation
-                      </a>
-                    </h3>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco.
-                    </p>
-                    <Link href='/cryptocurrency-details' className='link-btn'>
-                      <a className='link-btn'>
-                        {' '}
-                        View More <i className='bx bx-chevron-right'></i>
-                      </a>
-                    </Link>
-                  </div>
-                </div>
-                <div className='single-cryptocurrency-platform-box'>
-                  <img
-                    src='/images/cryptocurrency-platform/cryptocurrency-platform-4.jpg'
-                    alt='image'
-                  />
-                  <div className='content'>
-                    <div className='icon'>
-                      <img src='/images/icon/icon6.png' alt='image' />
-                    </div>
-                    <h3>
-                      <a href='cryptocurrency-details.html'>
-                        Earn Extra Income
-                      </a>
-                    </h3>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco.
-                    </p>
-                    <Link href='/cryptocurrency-details' className='link-btn'>
-                      <a className='link-btn'>
-                        {' '}
-                        View More <i className='bx bx-chevron-right'></i>
-                      </a>
-                    </Link>
-                  </div>
-                </div>
-                <div className='single-cryptocurrency-platform-box'>
-                  <img
-                    src='/images/cryptocurrency-platform/cryptocurrency-platform-2.jpg'
-                    alt='image'
-                  />
-                  <div className='content'>
-                    <div className='icon'>
-                      <img src='/images/icon/icon7.png' alt='image' />
-                    </div>
-                    <h3>
-                      <a href='cryptocurrency-details.html'>Secure Storage</a>
-                    </h3>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco.
-                    </p>
-                    <Link href='/cryptocurrency-details' className='link-btn'>
-                      <a className='link-btn'>
-                        {' '}
-                        View More <i className='bx bx-chevron-right'></i>
-                      </a>
-                    </Link>
-                  </div>
-                </div>
+
+                {Eventozz.map((item, index) => {
+                  if (index <= 10) {
+                    return (
+                      <div className='single-cryptocurrency-platform-box'>
+                        <img
+                          className="img-eventozz"
+                          src={item.foto}
+                          alt='image'
+                        />
+                        <div className='content'>
+                          <div className='icon'>
+                            <img src='/images/icon/icon6.png' alt='image' />
+                          </div>
+                          <h3>
+                            <a href='cryptocurrency-details.html'>
+                              {item.nome}
+                            </a>
+                          </h3>
+                          <p>
+                            {item.descricao}
+                          </p>
+                        </div>
+                      </div>
+
+                    )
+
+                  }
+                })}
+
               </OwlCarousel>
-            ) : (
-              ''
-            )}
+
+            </div>
+
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

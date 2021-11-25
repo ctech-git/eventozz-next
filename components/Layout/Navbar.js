@@ -36,7 +36,7 @@ const Navbar = () => {
               <div className='logo'>
                 <Link href='/'>
                   <a>
-                    <img src='/images/logo.png' alt='logo' />
+                    <img src='/images/logo-eventozz.png' alt='logo' />
                   </a>
                 </Link>
               </div>
@@ -51,7 +51,7 @@ const Navbar = () => {
                     </Link>
                   </div>
 
-                  <div className='option-item'>
+                  {/* <div className='option-item'>
                     <select className='form-select'>
                       <option value='0'>English</option>
                       <option value='1'>Türkçe</option>
@@ -60,7 +60,7 @@ const Navbar = () => {
                       <option value='4'>Italiano</option>
                       <option value='5'>Polski</option>
                     </select>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -76,16 +76,17 @@ const Navbar = () => {
           <div className='container'>
             <Link href='/'>
               <a className='navbar-brand'>
-                <img src='/images/logo.png' alt='logo' />
+                <img src='/images/logo-eventozz.png' alt='logo' />
               </a>
             </Link>
             <div className='collapse navbar-collapse mean-menu'>
               <ul className='navbar-nav'>
                 <li className='nav-item'>
+
                   <Link href='/' activeClassName='active'>
-                    <a className='dropdown-toggle nav-link'>Home</a>
+                    <a className='nav-link'>Home</a>
                   </Link>
-                  <ul className='dropdown-menu'>
+                  {/* <ul className='dropdown-menu'>
                     <li className='nav-item'>
                       <Link
                         href='/'
@@ -135,13 +136,13 @@ const Navbar = () => {
                         </li>
                       </ul>
                     </li>
-                  </ul>
+                  </ul> */}
                 </li>
                 <li className='nav-item megamenu'>
-                <Link href='/buy' activeClassName='active'>
-                    <a className='dropdown-toggle nav-link'>Buy</a>
+                  <Link href='/buy' activeClassName='active'>
+                    <a className='nav-link'>Eventos</a>
                   </Link>
-                  <ul className='dropdown-menu'>
+                  {/* <ul className='dropdown-menu'>
                     <li className='nav-item'>
                       <Link href='/buy'>
                         <a className='nav-link'>
@@ -194,10 +195,10 @@ const Navbar = () => {
                         </a>
                       </Link>
                     </li>
-                  </ul>
+                  </ul> */}
                 </li>
-                <li className='nav-item megamenu'>
-                <Link href='/sell' activeClassName='active'>
+                {/* <li className='nav-item megamenu'>
+                  <Link href='/sell' activeClassName='active'>
                     <a className='dropdown-toggle nav-link'>Sell</a>
                   </Link>
                   <ul className='dropdown-menu'>
@@ -256,13 +257,8 @@ const Navbar = () => {
                       </Link>
                     </li>
                   </ul>
-                </li>
-                <li className='nav-item'>
-                  <Link href='/prices' activeClassName='active'>
-                    <a className='nav-link listing'>Listings</a>
-                  </Link>
-                </li>
-                <li className='nav-item megamenu support'>
+                </li> */}
+                {/* <li className='nav-item megamenu support'>
                   <Link href='/faq' activeClassName='active'>
                     <a className='dropdown-toggle nav-link'>Support</a>
                   </Link>
@@ -316,10 +312,15 @@ const Navbar = () => {
                       </Link>
                     </li>
                   </ul>
-                </li>
+                </li> */}
                 <li className='nav-item'>
                   <Link href='/blog' activeClassName='active'>
-                    <a className='nav-link'>Blog</a>
+                    <a className='nav-link'>Noticias</a>
+                  </Link>
+                </li>
+                <li className='nav-item'>
+                  <Link href='/prices' activeClassName='active'>
+                    <a className='nav-link listing'>Sobre Nós</a>
                   </Link>
                 </li>
               </ul>
@@ -328,18 +329,18 @@ const Navbar = () => {
                   <div className='option-item'>
                     <Link href='/authentication' activeClassName='active'>
                       <a className='login-btn'>
-                        <i className='bx bx-log-in'></i> Login
+                        <i className='bx bx-log-in'></i> Entrar
                       </a>
                     </Link>
                   </div>
                   <div className='option-item'>
                     <Link href='/contact' activeClassName='active'>
                       <a className='default-btn'>
-                      <i className='bx bxs-contact' ></i> Contact Us
+                        <i className='bx bxs-chat' ></i> Fale Conosco
                       </a>
                     </Link>
                   </div>
-                  <div className='option-item'>
+                  {/* <div className='option-item'>
                     <select className='form-select'>
                       <option value='0'>English</option>
                       <option value='1'>Türkçe</option>
@@ -348,7 +349,7 @@ const Navbar = () => {
                       <option value='4'>Italiano</option>
                       <option value='5'>Polski</option>
                     </select>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

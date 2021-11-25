@@ -12,14 +12,14 @@ import NavbarTwo from './NavbarTwo';
 import Footer from './Footer';
 
 const Layout = ({ children }) => {
-  
+
   const router = useRouter();
   const { pathname } = router;
 
   return (
     <>
       <Head>
-        <title>Novis - React/Next Cryptocurrency Template</title>
+        <title>Eventozz</title>
         <meta
           name='viewport'
           content='width=device-width, initial-scale=1, shrink-to-fit=no'
@@ -40,8 +40,9 @@ const Layout = ({ children }) => {
         <link rel='canonical' href='https://novis-react.envytheme.com'></link>
       </Head>
 
-      {pathname === '/' ? <TopHeader /> :''}
-      {pathname === '/index-2' ? <NavbarTwo /> : <Navbar />}
+      {/* {pathname === '/' ? <TopHeader /> : ''} */}
+      {/* {pathname === '/index-2' ? <NavbarTwo /> : <Navbar />} */}
+      <Navbar />
 
       {children}
 

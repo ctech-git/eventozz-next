@@ -12,19 +12,19 @@ import AppDownload from '../components/Common/AppDownload';
 import RegisterAreaTwo from '../components/Common/RegisterAreaTwo';
 
 const Index = () => {
-  
+
   return (
     <>
       <Banner />
       <Funfact pt100='pt-100' />
       <BuySell pt70='pt-70' />
-      <AccountCreate title='Get Started in a Few Minutes' />
       <Platform />
-      <FeedBack />
-      <Portfolio bgColor='bg-f9f9f9' />
-      <OurFeature title='Our Features' />
+      {/* <AccountCreate title='Get Started in a Few Minutes' /> */}
+      {/* <Portfolio bgColor='bg-f9f9f9' /> */}
+      {/* <OurFeature title='Our Features' /> */}
       <AppDownload />
-      <RegisterAreaTwo title='Start Trading on Novis' />
+      {/* <FeedBack /> */}
+      {/* <RegisterAreaTwo title='Start Trading on Novis' /> */}
     </>
   );
 };

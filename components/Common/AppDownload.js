@@ -2,23 +2,23 @@
 const AppDownload = () => {
   return (
     <>
-      <div className='app-download-area bg-f9f9f9'>
+      <div className='app-download-area'>
         <div className='container'>
           <div className='row align-items-center m-0'>
             <div className='col-lg-6 col-md-12 p-0'>
               <div className='app-download-image'>
-                <img src='/images/app.png' alt='image' />
+                <img src='/images/app2.png' alt='image' />
               </div>
             </div>
             <div className='col-lg-6 col-md-12 p-0'>
               <div className='app-download-content'>
-                <h2>Trade On The Mobile App</h2>
+                <h2>Praticidade na palma de suas mãos</h2>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+                  Compre os seus ingressos de forma rapida e desfrute dos melhores eventos da região.
+                  Você irá receber o QR Code em seu email e em seu Whatsapp em até 72h úteis após a confirmação do pagamento
+
                 </p>
-                <div className='btn-box'>
+                {/* <div className='btn-box'>
                   <a href='#' className='playstore-btn' target='_blank'>
                     <img src='/images/play-store.png' alt='image' />
                     Get It On
@@ -29,7 +29,7 @@ const AppDownload = () => {
                     Download on the
                     <span>Apple Store</span>
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

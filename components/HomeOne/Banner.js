@@ -63,7 +63,9 @@ const Banner = () => {
     <>
       <div className='main-banner-area'>
         <div className='container'>
+          {/*
           <div className='main-banner-box'>
+            
             <div className='currency-selection'>
               <label>YOU PAY</label>
               <input
@@ -116,6 +118,7 @@ const Banner = () => {
                 </ul>
               </div>
             </div>
+            
             <ul className='features-list'>
               <li>
                 <div className='d-flex align-items-center'>
@@ -136,7 +139,7 @@ const Banner = () => {
                 </div>
               </li>
             </ul>
-            <div className='currency-selection'>
+             <div className='currency-selection'>
               <label>YOU RECEIVE</label>
               <input
                 type='text'
@@ -153,7 +156,7 @@ const Banner = () => {
                   <img src={imageTwo} alt='image' /> {nameTwo}
                 </button>
               </div>
-            </div>
+            </div> 
             <a
               href={`https://www.coinbase.com/accounts?quantity=${cryptoQuantity}`}
               target='_blank'
@@ -162,22 +165,20 @@ const Banner = () => {
               <i className='bx bxs-hand-right'></i> Buy With Visa
             </a>
           </div>
+          */}
           <div className='row align-items-center m-0'>
             <div className='col-xl-6 col-lg-6 col-md-12 p-0'>
               <div className='main-banner-content'>
-                <h1>Buy & Sell Cryptocurrency Easy, Fast and Secure!</h1>
+                <h1>Participe & Organize eventos de forma facil, rapida e segura!</h1>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
+                  Somos uma empresa de tecnologia especializada em inovação. Uma iniciativa 100% paraense focada em promover a melhor experiencia para você que participa de eventos e para você que organiza.
                 </p>
                 <Link
                   href='https://www.coinbase.com/signup'
                   className='default-btn'
                 >
                   <a className='default-btn'>
-                    <i className='bx bxs-user'></i> Register Now
+                    <i className='bx bxs-user'></i> Cadastre-se
                   </a>
                 </Link>
               </div>

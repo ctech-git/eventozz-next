@@ -16,7 +16,7 @@ const Funfact = ({ pt100 }) => {
                     alt='image'
                   />
                 </div>
-                <h3>Secured by Escrow</h3>
+                <h3>Compra Segura</h3>
               </div>
             </div>
             <div className='col-lg-3 col-md-3 col-sm-6 col-6'>
@@ -29,7 +29,7 @@ const Funfact = ({ pt100 }) => {
                     alt='image'
                   />
                 </div>
-                <h3>2.7 Million Happy Users</h3>
+                <h3>Evite filas</h3>
               </div>
             </div>
             <div className='col-lg-3 col-md-3 col-sm-6 col-6'>
@@ -42,7 +42,7 @@ const Funfact = ({ pt100 }) => {
                     alt='image'
                   />
                 </div>
-                <h3>Thousands of Trusted Offers</h3>
+                <h3>Pague via PIX</h3>
               </div>
             </div>
             <div className='col-lg-3 col-md-3 col-sm-6 col-6'>
@@ -55,7 +55,7 @@ const Funfact = ({ pt100 }) => {
                     alt='image'
                   />
                 </div>
-                <h3>Billions in Global Volume</h3>
+                <h3>Conecte-se</h3>
               </div>
             </div>
           </div>
