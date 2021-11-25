@@ -1,0 +1,26 @@
+{
+  "../components/Common/Portfolio.js -> react-owl-carousel3": {
+    "id": "./node_modules/react-owl-carousel3/lib/OwlCarousel.js",
+    "files": [
+      "static/chunks/1.js"
+    ]
+  },
+  "../components/HomeOne/Platform.js -> react-owl-carousel3": {
+    "id": "./node_modules/react-owl-carousel3/lib/OwlCarousel.js",
+    "files": [
+      "static/chunks/1.js"
+    ]
+  },
+  "../components/Layout/TopHeader.js -> react-owl-carousel3": {
+    "id": "./node_modules/react-owl-carousel3/lib/OwlCarousel.js",
+    "files": [
+      "static/chunks/1.js"
+    ]
+  },
+  "../node_modules/next/dist/client/next-dev.js -> ./dev/noop": {
+    "id": "./node_modules/next/dist/client/dev/noop.js",
+    "files": [
+      "static/chunks/0.js"
+    ]
+  }
+}
