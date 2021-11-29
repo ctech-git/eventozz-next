@@ -8,15 +8,13 @@ const RegisterArea = ({ bgGradient, blackText, ctaImage }) => {
           <div className='row align-items-center justify-content-center'>
             <div className='col-lg-6 col-md-12'>
               <div className={`cta-content ${blackText}`}>
-                <h2>Start Trading on Novis</h2>
+                <h2>Mantenha os seus dados atualizados</h2>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco.
+                  Dessa forma podemos garantir a melhor experiencia possivel, desde a organização de todo o seu historico até sugestões de eventos no seu perfil em regiões proximas a você.
                 </p>
-                <Link href='https://www.coinbase.com/signup'>
+                <Link href='/buy'>
                   <a className='default-btn global-cursor'>
-                    <i className='bx bxs-user'></i> Register Now
+                    <i className='bx bxs-user'></i> Eventos
                   </a>
                 </Link>
               </div>

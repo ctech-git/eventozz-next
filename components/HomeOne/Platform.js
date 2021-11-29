@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-const OwlCarousel = dynamic(import('react-owl-carousel3'));
+import ServicesEventozz from '../../services/events';
+import { Container, Row, Col } from 'react-bootstrap';
 
+
+const OwlCarousel = dynamic(import('react-owl-carousel3'));
 const options = {
   nav: true,
   loop: true,
@@ -40,50 +43,26 @@ const options = {
 const Platform = () => {
   const [display, setDisplay] = useState(false);
   const [isMounted, setisMounted] = useState(false);
-  const Eventozz = [
-    {
-      id: 1,
-      nome: "Evento Teste 1",
-      foto: "/images/cryptocurrency-platform/cryptocurrency-platform-1.jpg",
-      descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
-    },
-    {
-      id: 2,
-      nome: "Evento Teste 3",
-      foto: "/images/cryptocurrency-platform/cryptocurrency-platform-2.jpg",
-      descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
-    },
-    {
-      id: 3,
-      nome: "Evento Teste 2",
-      foto: "/images/cryptocurrency-platform/cryptocurrency-platform-3.jpg",
-      descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
-    },
-    {
-      id: 4,
-      nome: "Evento Teste 4",
-      foto: "/images/cryptocurrency-platform/cryptocurrency-platform-3.jpg",
-      descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
-    },
-    {
-      id: 5,
-      nome: "Evento Teste 5",
-      foto: "/images/cryptocurrency-platform/cryptocurrency-platform-3.jpg",
-      descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
-    },
-    {
-      id: 6,
-      nome: "Evento Teste 6",
-      foto: "https://eventozz.com/assets/img/rufino.jpeg",
-      descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"
-    },
-  ];
+  const [Eventozz, setEventozz] = useState([]);
 
   useEffect(() => {
+    //const token = window.localStorage.getItem("AcessToken");
     setisMounted(true);
     setDisplay(true);
     setisMounted(false);
+    getEventos();
   }, []);
+
+  async function getEventos() {
+
+    const result = await ServicesEventozz.getEventos();
+    if (result.status == 200) {
+      setEventozz(result?.data?.data)
+    }
+    console.log("===============")
+    console.log(result)
+
+  }
 
   return (
     <>
@@ -93,8 +72,32 @@ const Platform = () => {
             <div className='section-title'>
               <h2>Eventozz para você participar</h2>
             </div>
-            <div className='cryptocurrency-platform-slides'>
+            <Row className="box-events">
+              {Eventozz.map((item, index) => {
+                return (
+                  <div className="card-events-home">
+                    <img
+                      className="img-eventozz"
+                      src={"https://eventozz.com/" + item.foto}
+                      alt='image'
+                    />
+                    <div>
+                      <label>{item.data_inicio}</label>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                          d="M15.494 12.6a.85.85 0 01-.253.51l-5.246 5.14a.89.89 0 01-.847.22.868.868 0 01-.619-.61.847.847 0 01.23-.828l4.624-4.532L8.76 7.968a.847.847 0 01-.23-.829.868.868 0 01.619-.61.89.89 0 01.847.221l5.246 5.14a.847.847 0 01.253.71z">
+                        </path>
+                      </svg>
+                      <label>{item.data_inicio}</label>
+                    </div>
+                    <span>{item.nome_evento}</span>
+                    <span className="legend-events">{item.local_evento}</span>
 
+                  </div>
+                )
+              })}
+              {/* 
               <OwlCarousel {...options}>
 
                 {Eventozz.map((item, index) => {
@@ -103,7 +106,7 @@ const Platform = () => {
                       <div className='single-cryptocurrency-platform-box'>
                         <img
                           className="img-eventozz"
-                          src={item.foto}
+                          src={"https://eventozz.com/" + item.foto}
                           alt='image'
                         />
                         <div className='content'>
@@ -112,7 +115,7 @@ const Platform = () => {
                           </div>
                           <h3>
                             <a href='cryptocurrency-details.html'>
-                              {item.nome}
+                              {item.nome_evento}
                             </a>
                           </h3>
                           <p>
@@ -126,9 +129,9 @@ const Platform = () => {
                   }
                 })}
 
-              </OwlCarousel>
+              </OwlCarousel> */}
 
-            </div>
+            </Row>
 
           </div>
         </div>

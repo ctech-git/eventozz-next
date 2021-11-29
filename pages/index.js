@@ -17,7 +17,7 @@ const Index = () => {
     <>
       <Banner />
       <Funfact pt100='pt-100' />
-      <BuySell pt70='pt-70' />
+      {/* <BuySell pt70='pt-70' /> */}
       <Platform />
       {/* <AccountCreate title='Get Started in a Few Minutes' /> */}
       {/* <Portfolio bgColor='bg-f9f9f9' /> */}

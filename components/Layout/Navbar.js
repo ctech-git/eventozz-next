@@ -3,11 +3,16 @@ import Link from '../../utils/ActiveLink';
 
 const Navbar = () => {
   const [showMenu, setshowMenu] = useState(false);
+  const [token, setToken] = useState(false);
 
   const toggleMenu = () => {
     setshowMenu(!showMenu);
   };
 
+  useEffect(() => {
+    let AcessToken = window.localStorage.getItem("AcessToken");
+    setToken(AcessToken ? (AcessToken) : (false));
+  }, []);
   useEffect(() => {
     let elementId = document.getElementById('navbar');
     document.addEventListener('scroll', () => {
@@ -44,11 +49,21 @@ const Navbar = () => {
               <div className='responsive-others-option'>
                 <div className='d-flex align-items-center'>
                   <div className='option-item'>
-                    <Link href='/authentication' activeClassName='active'>
-                      <a className='login-btn'>
-                        <i className='bx bx-log-in'></i>
-                      </a>
-                    </Link>
+                    {
+                      token ? (
+                        <Link href='/wallet' activeClassName='active'>
+                          <a className='login-btn'>
+                            <i className='bx bx-user'></i>
+                          </a>
+                        </Link>
+                      ) : (
+                        <Link href='/authentication' activeClassName='active'>
+                          <a className='login-btn'>
+                            <i className='bx bx-log-in'></i>
+                          </a>
+                        </Link>
+                      )
+                    }
                   </div>
 
                   {/* <div className='option-item'>
@@ -327,11 +342,22 @@ const Navbar = () => {
               <div className='others-option'>
                 <div className='d-flex align-items-center'>
                   <div className='option-item'>
-                    <Link href='/authentication' activeClassName='active'>
-                      <a className='login-btn'>
-                        <i className='bx bx-log-in'></i> Entrar
-                      </a>
-                    </Link>
+                    {
+                      token ? (
+                        <Link href='/wallet' activeClassName='active'>
+                          <a className='login-btn'>
+                            <i className='bx bx-user'></i> Perfil
+                          </a>
+                        </Link>
+                      ) : (
+                        <Link href='/authentication' activeClassName='active'>
+                          <a className='login-btn'>
+                            <i className='bx bx-log-in'></i> Entrar
+                          </a>
+                        </Link>
+                      )
+                    }
+
                   </div>
                   <div className='option-item'>
                     <Link href='/contact' activeClassName='active'>

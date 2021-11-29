@@ -3,6 +3,7 @@ import { useStore } from '../store';
 
 import '../public/css/animate.min.css';
 import '../public/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 import '../public/css/boxicons.min.css';
@@ -25,7 +26,7 @@ export default function App({ Component, pageProps }) {
         <Component {...pageProps} />
 
         {/* Go Top Button */}
-        <GoTop/>
+        <GoTop />
       </Layout>
     </Provider>
   );

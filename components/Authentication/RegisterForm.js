@@ -1,77 +1,323 @@
-import React from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
+import { isValidCpf, cpfMask, phoneMaskForList, onlyUnsignedNumbers } from '../../utils/strings';
+import Services from '../../services/login';
+import ServicesExternal from '../../services/externalRequest';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import GoogleLogin from 'react-google-login';
+
+
 
 const RegisterForm = () => {
+
+  const [etapa, setEtapa] = useState(1);
+
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [nascimento, setNascimento] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [password, setpassword] = useState("");
+  const [password2, setpassword2] = useState("");
+  const [cep, setCEP] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [district, setDistrict] = useState("");
+  const [street, setStreet] = useState("");
+  const [number, setNumber] = useState("");
+
+  const [googleId, setGoogleId] = useState(false);
+
+
+
+  async function responseGoogle(response) {
+    setEmail(response?.profileObj?.email);
+    setFullName(response?.profileObj?.name);
+    setGoogleId(response?.googleId);
+  }
+
+
+  async function loginNative(type) {
+    if (etapa == 1) {
+      let isError = false;
+      let Error = '';
+      let cpfOnlyNumber = onlyUnsignedNumbers(cpf);
+      let verificaCPF = isValidCpf(cpfOnlyNumber);
+      console.log(password)
+      console.log(password2)
+      if (!verificaCPF) { isError = true; Error = "CPF Invalido"; }
+      if (fullName == "" && fullName == null && fullName == undefined) { isError = true; Error = "Campo 'Nome' é Obrigatorio"; }
+      if (email == "" && email == null && email == undefined) { isError = true; Error = "Campo 'E-mail' é Obrigatorio"; }
+      if (nascimento == "" && nascimento == null && nascimento == undefined) { isError = true; Error = "Campo 'Nascimento' é Obrigatorio"; }
+      if (telefone == "" && telefone == null && telefone == undefined) { isError = true; Error = "Campo 'Telefone' é Obrigatorio"; }
+      if (password == "" && password == null && password == undefined) { isError = true; Error = "Campo 'Senha' é Obrigatorio"; }
+      if (password2 == "" && password2 == null && password2 == undefined) { isError = true; Error = "Campo 'Senha' é Obrigatorio"; }
+      if (password != password2) { isError = true; Error = "Senha diferente"; }
+
+      if (!isError) {
+        setEtapa(2)
+      } else {
+        toast.error(Error, {
+          position: "bottom-left",
+          autoClose: 2000
+        })
+      }
+
+    } else if (etapa == 2) {
+      let isError = false;
+      let Error = '';
+
+      if (cep == "" && cep == null && cep == undefined) { isError = true; Error = "Campo 'Cep' é Obrigatorio"; }
+      if (state == "" && state == null && state == undefined) { isError = true; Error = "Campo 'Estado' é Obrigatorio"; }
+      if (city == "" && city == null && city == undefined) { isError = true; Error = "Campo 'Cidade' é Obrigatorio"; }
+      if (district == "" && district == null && district == undefined) { isError = true; Error = "Campo 'Bairro' é Obrigatorio"; }
+      if (street == "" && street == null && street == undefined) { isError = true; Error = "Campo 'Logradouro' é Obrigatorio"; }
+      if (number == "" && number == null && number == undefined) { isError = true; Error = "Campo 'Number' é Obrigatorio"; }
+
+      if (!isError) {
+        console.log(googleId)
+        if (googleId) {
+          var response = await Services.CreateLoginGoogle(
+            email, cpf, fullName, telefone, password, cep,
+            state, city, district, street, number, nascimento, googleId
+          );
+        } else {
+          var response = await Services.CreateLoginNative(
+            email, cpf, fullName, telefone, password, cep,
+            state, city, district, street, number, nascimento
+          );
+        }
+
+
+        console.log(response)
+        if (response.status == 200) {
+          if (response?.data?.token) {
+            window.localStorage.setItem("AcessToken", response?.data?.token);
+            window.location.href = "/";
+          } else {
+            toast.error("Falhar no Login", {
+              position: "bottom-left",
+              autoClose: 2000
+            })
+          }
+        } else {
+          toast.error(response.response.data.msg, {
+            position: "bottom-left",
+            autoClose: 2000
+          })
+        }
+      } else {
+        toast.error(Error, {
+          position: "bottom-left",
+          autoClose: 2000
+        })
+      }
+
+    }
+
+  }
+  const handlerCpf = (e) => {
+    let value = e.target.value;
+    value = cpfMask(e.target.value);
+    setCpf(value)
+  }
+  const handlerTelefone = (e) => {
+    let value = e.target.value;
+    value = phoneMaskForList(e.target.value);
+    setTelefone(value)
+  }
+
+  const handlerNascimento = (e) => {
+    let value = e.target.value;
+    setNascimento(value)
+  }
+
+  async function handlerCep(e) {
+    let value = onlyUnsignedNumbers(e.target.value);
+    setCEP(value)
+    console.log(value)
+    if (value.length < 8) {
+      return;
+    }
+
+    const result = await ServicesExternal.getCep(value);
+
+    if (result.status == 200) {
+      setState(result?.data?.uf);
+      setCity(result?.data?.localidade);
+      setDistrict(result?.data?.bairro);
+      setStreet(result?.data?.logradouro);
+
+    } else {
+      toast.error("Cep invalido", {
+        position: "bottom-left",
+        autoClose: 2000
+      })
+    }
+
+  }
+
   return (
     <>
       <div className='col-lg-6 col-md-12'>
         <div className='register-form'>
-          <h2>Register</h2>
+          <h2>Quero criar uma conta</h2>
           <form>
-            <div className='form-group'>
-              <input
-                type='text'
-                className='form-control'
-                placeholder='Full Name'
-              />
-            </div>
-            <div className='form-group'>
-              <input
-                type='email'
-                className='form-control'
-                placeholder='Email Address'
-              />
-            </div>
-            <div className='form-group'>
-              <input
-                type='password'
-                className='form-control'
-                placeholder='Password'
-              />
-            </div>
-            <div className='form-group'>
-              <input
-                type='password'
-                className='form-control'
-                placeholder='Confirm Password'
-              />
-            </div>
-            <Link href='https://www.coinbase.com/signup'>
-              <button type='submit'>Register</button>
-            </Link>
+            {etapa == 1 && (
+              <>
+                <div className='form-group'>
+                  <input
+                    type='text'
+                    className='form-control'
+                    placeholder='Nome Completo'
+                    value={fullName}
+                    onChange={e => setFullName(e.target.value)}
+                  />
+                </div>
+                <div className='form-group'>
+                  <input
+                    type='email'
+                    value={email}
+                    className='form-control'
+                    placeholder='Email'
+                    onChange={e => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className='form-group'>
+                  <input
+                    type='text'
+                    className='form-control'
+                    placeholder='CPF'
+                    onChange={e => handlerCpf(e)}
+                    value={cpf}
+                    maxLength={14}
+                  />
+                </div>
+                <div className='form-group'>
+                  <input
+                    type='tel'
+                    className='form-control'
+                    placeholder='Telefone'
+                    value={telefone}
+                    onChange={e => handlerTelefone(e)}
+                    maxLength={15}
+                  />
+                </div>
+                <div className='form-group'>
+                  <input
+                    type='date'
+                    className='form-control'
+                    placeholder='Nascimento'
+                    value={nascimento}
+                    onChange={e => handlerNascimento(e)}
+                    maxLength={15}
+                  />
+                </div>
+
+                <div className='form-group'>
+                  <input
+                    type='password'
+                    className='form-control'
+                    placeholder='Senha'
+                    value={password}
+                    onChange={e => setpassword(e.target.value)}
+                  />
+                </div>
+                <div className='form-group'>
+                  <input
+                    type='password'
+                    value={password2}
+                    className='form-control'
+                    placeholder='Confirme a Senha'
+                    onChange={e => setpassword2(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+            {etapa == 2 && (
+              <>
+                <div className='form-group'>
+                  <input
+                    type='text'
+                    className='form-control'
+                    placeholder='CEP'
+                    value={cep}
+                    onChange={e => handlerCep(e)}
+                  />
+                </div>
+                <div className='form-group'>
+                  <input
+                    type='text'
+                    className='form-control'
+                    placeholder='Estado'
+                    value={state}
+                    onChange={e => setState(e.target.value)}
+                  />
+                </div>
+                <div className='form-group'>
+                  <input
+                    type='text'
+                    className='form-control'
+                    placeholder='Cidade'
+                    value={city}
+                    onChange={e => setCity(e.target.value)}
+                  />
+                </div>
+                <div className='form-group'>
+                  <input
+                    type='text'
+                    className='form-control'
+                    placeholder='bairro'
+                    value={district}
+                    onChange={e => setDistrict(e.target.value)}
+                  />
+                </div>
+                <div className='form-group'>
+                  <input
+                    type='text'
+                    className='form-control'
+                    placeholder='Logradouro'
+                    value={street}
+                    onChange={e => setStreet(e.target.value)}
+                  />
+                </div>
+                <div className='form-group'>
+                  <input
+                    type='text'
+                    className='form-control'
+                    placeholder='Numero'
+                    value={number}
+                    onChange={e => setNumber(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
+
+
+
+            {etapa == 1 && (
+              <button type='button' onClick={() => loginNative()}
+              >Proximo</button>
+            )}
+            {etapa == 2 && (
+              <div className="box-button">
+                <button className="create-account" type='button' onClick={() => setEtapa(1)}
+                >Voltar</button>
+                <button className="create-account" type='button' onClick={() => loginNative()}
+                >Cadastre-se</button>
+              </div>
+            )}
           </form>
-          <div className='register-with-button'>
-            <button type='button'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='18'
-                height='18'
-                viewBox='0 0 18 18'
-                aria-hidden='true'
-              >
-                <title>Google</title>
-                <g fill='none' fillRule='evenodd'>
-                  <path
-                    fill='#4285F4'
-                    d='M17.64 9.2045c0-.6381-.0573-1.2518-.1636-1.8409H9v3.4814h4.8436c-.2086 1.125-.8427 2.0782-1.7959 2.7164v2.2581h2.9087c1.7018-1.5668 2.6836-3.874 2.6836-6.615z'
-                  ></path>
-                  <path
-                    fill='#34A853'
-                    d='M9 18c2.43 0 4.4673-.806 5.9564-2.1805l-2.9087-2.2581c-.8059.54-1.8368.859-3.0477.859-2.344 0-4.3282-1.5831-5.036-3.7104H.9574v2.3318C2.4382 15.9832 5.4818 18 9 18z'
-                  ></path>
-                  <path
-                    fill='#FBBC05'
-                    d='M3.964 10.71c-.18-.54-.2822-1.1168-.2822-1.71s.1023-1.17.2823-1.71V4.9582H.9573A8.9965 8.9965 0 0 0 0 9c0 1.4523.3477 2.8268.9573 4.0418L3.964 10.71z'
-                  ></path>
-                  <path
-                    fill='#EA4335'
-                    d='M9 3.5795c1.3214 0 2.5077.4541 3.4405 1.346l2.5813-2.5814C13.4632.8918 11.426 0 9 0 5.4818 0 2.4382 2.0168.9573 4.9582L3.964 7.29C4.6718 5.1627 6.6559 3.5795 9 3.5795z'
-                  ></path>
-                </g>
-              </svg>
-              Register with Google
-            </button>
-          </div>
+          {etapa == 1 && (
+            <GoogleLogin
+              clientId="1061997614720-m694ntnbcs1q0f1595lggt8hgjt968bm.apps.googleusercontent.com"
+              buttonText="Entrar com Google"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              className="login-with-google"
+              cookiePolicy={'single_host_origin'}
+            />
+          )}
         </div>
       </div>
     </>

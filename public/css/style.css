@@ -112,10 +112,7 @@ img {
   max-width: 100%;
   height: auto;
 }
-.img-eventozz{
-  max-width: 800px;
-  height: 500px !important;
-}
+
 
 p {
   color: var(--paragraphColor);
@@ -641,8 +638,8 @@ Navbar Area CSS
 
 @media only screen and (max-width: 991px) {
   .navbar-area {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
   .navbar-area.is-sticky {
     top: 0;
@@ -1949,6 +1946,62 @@ Account Create Process Area CSS
 }
 
 /*================================================
+box eventos listagem lista events
+=================================================*/
+.box-events{
+  max-width: 90%;
+  margin-left: 5%;
+  margin-bottom: 100px;
+}
+.card-events-home{
+  cursor: pointer;
+  width: 23% !important;
+  min-width: 23% !important;
+  margin-left: 1%;
+  margin-right: 1%;
+  margin-bottom: 50px;
+  
+}
+.card-events-home:hover{
+  
+}
+.card-events-home span{
+  padding-left: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: rgb(25, 31, 40);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+}
+.card-events-home div{
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  padding-left: 10px;
+}
+.card-events-home label{
+  font-size: 13px;
+  letter-spacing: 0.18px;
+  line-height: 1.33;
+  text-transform: uppercase;
+  color: rgb(255, 41, 72);
+}
+.legend-events{
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  margin-top: -5px !important;
+}
+.img-eventozz{
+  height: 250px !important;
+  width: 100%;
+  border-radius: 20px;
+}
+
+/*================================================
 Cryptocurrency Platform Area CSS
 =================================================*/
 .cryptocurrency-platform-area .container-fluid {
@@ -1957,7 +2010,6 @@ Cryptocurrency Platform Area CSS
   margin-top: 100px;
   margin-bottom: 100px;
 }
-
 .single-cryptocurrency-platform-box {
   margin-bottom: 30px;
   position: relative;
@@ -3944,7 +3996,7 @@ Wallet Area CSS
 }
 
 .wallet-tabs {
-  max-width: 1000px;
+  max-width: 1500px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -4724,8 +4776,8 @@ Page Title Area CSS
   background: linear-gradient(0deg, #0062ff, #081587);
   position: relative;
   z-index: 1;
-  padding-top: 120px;
-  padding-bottom: 120px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 }
 
 .page-title-content {
@@ -5899,6 +5951,23 @@ Profile Authentication Area CSS
   margin-top: 2px;
 }
 
+.login-with-google{
+    width: 100%;
+    margin-top: 20px !important;
+    justify-content: center !important;
+    display: block;
+    color: #248BD2 !important;
+    border-radius: 5px !important;
+    border: 1px solid #D2D2D2 !important;
+    background-color: transparent !important;
+    -webkit-transition: var(--transition) !important;
+    transition: var(--transition) !important;
+    padding-top: 5px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    padding-bottom: 5px !important;
+}
+
 .login-form .login-with-button button:hover {
   color: var(--blackColor);
   background-color: #E9E9E9;
@@ -5918,6 +5987,12 @@ Profile Authentication Area CSS
 
 .register-form form .form-group {
   margin-bottom: 20px;
+}
+
+.create-account{
+  width: 48% !important;
+  margin-left: 1% !important;
+  margin-right: 1% !important;
 }
 
 .register-form form button {
@@ -7421,7 +7496,9 @@ Go Top CSS
       -ms-flex-pack: justify;
           justify-content: space-between;
 }
-
+.box-button{
+  display: flex;
+}
 .price-select {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -7430,7 +7507,9 @@ Go Top CSS
       -ms-flex-align: center;
           align-items: center;
 }
-
+.box-ticket{
+  margin-bottom: 25px;
+}
 .dropdown-menu .coin-wrapper {
   width: 30%;
   display: -webkit-box;
@@ -7440,6 +7519,17 @@ Go Top CSS
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+.bx-check-double{
+  color: #198754 !important;  
+}
+.bx-message-square-x{
+  color: red !important;
+}
+
+
+.bx-loader-circle{
+  color: #ffc107 !important;
 }
 
 .single-value-trade-box {
