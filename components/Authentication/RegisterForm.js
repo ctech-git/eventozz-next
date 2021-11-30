@@ -31,6 +31,8 @@ const RegisterForm = () => {
 
 
   async function responseGoogle(response) {
+    console.log("========");
+    console.log(response);
     setEmail(response?.profileObj?.email);
     setFullName(response?.profileObj?.name);
     setGoogleId(response?.googleId);

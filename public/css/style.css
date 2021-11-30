@@ -5966,6 +5966,7 @@ Profile Authentication Area CSS
     padding-left: 30px !important;
     padding-right: 30px !important;
     padding-bottom: 5px !important;
+    cursor: pointer;
 }
 
 .login-form .login-with-button button:hover {

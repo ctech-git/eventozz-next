@@ -12,6 +12,9 @@ const LoginForm = () => {
 
 
   async function responseGoogle(response) {
+    console.log("========");
+    console.log(response);
+
     let isError = false;
     let Error = '';
 
