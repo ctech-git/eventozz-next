@@ -816,6 +816,45 @@ width: 70% !important;
 /*================================================
 Main Banner Area CSS
 =================================================*/
+.main-banner-image-landing img{
+  max-height: 500px;
+}
+.main-banner-content-landing h1 {
+  margin-bottom: 20px;
+  line-height: 1.4;
+  font-size: 32px;
+}
+.main-banner-content-landing {
+  position: relative;
+  margin-left: 40px;
+}
+.main-banner-area-landing {
+  background-color: #f9f9f9;
+  position: relative;
+  z-index: 1;
+  max-height: 500px;
+}
+
+.main-banner-area-landing .shape1 {
+  left: 10%;
+  top: 7%;
+}
+
+.main-banner-area-landing .container {
+  max-width: 1400px;
+  position: relative;
+  max-height: 500px;
+}
+
+.main-banner-area-landing .shape9 {
+  right: 12%;
+}
+
+.main-banner-area-landing .shape3 {
+  top: 7%;
+  right: 15%;
+  width: 100px;
+}
 .main-banner-area {
   background-color: #f9f9f9;
   position: relative;
@@ -2007,13 +2046,17 @@ box eventos listagem lista events
   font-weight: 400 !important;
   margin-top: -5px !important;
 }
+.img-eventozz-buy-page-banner{
+  height: 600px !important;
+  width: 100% !important;
+}
 .img-eventozz-buy-page{
   height: 500px !important;
   max-width: 600px !important;
   border-radius: 20px;
 }
 .img-eventozz{
-  height: 320px !important;
+  height: 260px !important;
   width: 100%;
   border-radius: 20px;
 }
@@ -3131,12 +3174,20 @@ Feedback Area CSS
 .feedback-slides .owl-dots .owl-dot:last-child {
   margin-right: 0;
 }
-
+.event-finish{
+  text-align: center;
+  margin-bottom: 100px;
+  font-size: 40px;
+  font-weight: 800;
+}
 /*================================================
 Tokens Area CSS
 =================================================*/
 .tokens-image {
   padding-right: 15px;
+}
+.tokens-image img{
+  border-radius: 40px;
 }
 
 .tokens-content {
@@ -4759,7 +4810,7 @@ Earn Money Area CSS
   position: relative;
   margin-bottom: 45px;
   color: var(--paragraphColor);
-  font-size: 17px;
+  font-size: 14px;
   padding-left: 65px;
 }
 
@@ -4769,7 +4820,7 @@ Earn Money Area CSS
   position: absolute;
   left: 0;
   text-align: center;
-  font-size: 30px;
+  font-size: 26px;
   -webkit-box-shadow: rgba(218, 225, 233, 0.4) 0px 8px 16px;
           box-shadow: rgba(218, 225, 233, 0.4) 0px 8px 16px;
   top: 50%;
@@ -5579,6 +5630,7 @@ Trade Cryptocurrency Area CSS
   margin-left: 15px;
   border-radius: 10px;
   background-color: var(--whiteColor);
+  min-height: 400px;
 }
 
 .trade-cryptocurrency-box .currency-selection {

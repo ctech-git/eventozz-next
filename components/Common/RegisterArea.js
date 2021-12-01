@@ -1,9 +1,11 @@
 import Link from 'next/link';
 
-const RegisterArea = ({ bgGradient, blackText, ctaImage }) => {
+const RegisterArea = ({ bgGradient, blackText, ctaImage, item = {} }) => {
   return (
     <>
-      <div className={`cta-area pt-100 ${bgGradient}`}>
+      <div className='cta-area pt-100'
+        style={{ backgroundColor: item?.cor_principal && (item?.cor_principal) }}
+      >
         <div className='container'>
           <div className='row align-items-center justify-content-center'>
             <div className='col-lg-6 col-md-12'>
@@ -13,7 +15,9 @@ const RegisterArea = ({ bgGradient, blackText, ctaImage }) => {
                   Dessa forma podemos garantir a melhor experiencia possivel, desde a organização de todo o seu historico até sugestões de eventos no seu perfil em regiões proximas a você.
                 </p>
                 <Link href='/buy'>
-                  <a className='default-btn global-cursor'>
+                  <a className='default-btn global-cursor'
+                    style={{ backgroundColor: item?.cor_secundaria && (item?.cor_secundaria) }}
+                  >
                     <i className='bx bxs-user'></i> Eventos
                   </a>
                 </Link>

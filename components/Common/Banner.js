@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import ServicesEventozz from '../../services/events';
+import { dateLastAccess } from '../../utils/strings';
 
 const Banner = (item) => {
   const dados = item.item;
@@ -73,15 +74,69 @@ const Banner = (item) => {
 
   return (
     <>
-      <div className='trade-cryptocurrency-area ptb-50'>
+      <div className='trade-cryptocurrency-area ptb-100'
+        style={{ background: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
+      >
         <div className='container'>
           <div className='row align-items-center'>
             <div className='col-lg-6 col-md-12'>
-              <img
-                className="img-eventozz-buy-page"
-                src={dados.foto}
-                alt='image'
-              />
+              <div className='trade-cryptocurrency-box'>
+
+                <div className='section-title'>
+                  <h2>Detalhes do Evento</h2>
+                </div>
+                <div className='row'>
+                  <div className='col-lg-6 col-md-12'>
+                    <div className='earn-money-list'>
+                      <ul>
+                        <li>
+                          <i className='fa fa-map'
+                            style={{ color: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
+                          ></i>
+                          {dados.local_evento}
+                        </li>
+                        <li>
+                          <i className='bx bx-cog'
+                            style={{ color: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
+                          ></i>
+                          {dados.organizador}
+                        </li>
+                        <li>
+                          <i className='bx bxs-badge-check'
+                            style={{ color: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
+                          ></i>
+                          Apresentar Qr Code na Entrada
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className='col-lg-6 col-md-12'>
+                    <div className='earn-money-list'>
+                      <ul>
+                        <li>
+                          <i className='bx bxs-badge-check'
+                            style={{ color: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
+                          ></i>
+                          {dados.categoria_evento}
+                        </li>
+                        <li>
+                          <i className='bx bx-calendar'
+                            style={{ color: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
+                          ></i>
+                          Inicio: {dateLastAccess(dados.data_inicio)} - Fim: {dateLastAccess(dados.data_fim)}
+                        </li>
+                        <li>
+                          <i className="fa fa-clock" aria-hidden="true"
+                            style={{ color: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
+                          ></i>
+                          De {dados.hora_inicio} até {dados.hora_fim}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </div>
             <div className='col-lg-6 col-md-12'>
               <div className='trade-cryptocurrency-box'>
@@ -110,7 +165,9 @@ const Banner = (item) => {
                   <li>
                     <div className='d-flex align-items-center'>
                       <span className='first-span'>
-                        <i className='fas fa-minus'></i>
+                        <i className='fas fa-minus'
+                          style={{ color: dados?.cor_secundaria ? (dados?.cor_secundaria) : ('#00a79d') }}
+                        ></i>
                         2.00 USD
                       </span>
                       <span className='second-span'>TOTAL CARD FEES</span>
@@ -119,7 +176,9 @@ const Banner = (item) => {
                   <li>
                     <div className='d-flex align-items-center'>
                       <span className='first-span'>
-                        <i className='fas fa-divide'></i>
+                        <i className='fas fa-divide'
+                          style={{ color: dados?.cor_secundaria ? (dados?.cor_secundaria) : ('#00a79d') }}
+                        ></i>
                         47202
                       </span>
                       <span className='second-span'>CONVERSION RATE</span>
@@ -127,10 +186,14 @@ const Banner = (item) => {
                   </li>
                 </ul>
 
-                <button type='button'>
+                <button type='button'
+                  style={{ backgroundColor: dados?.cor_secundaria ? (dados?.cor_secundaria) : ('#00a79d') }}
+                >
                   <i className='fa fa-plus'></i> Adicionar
                 </button>
-                <button type='button'>
+                <button type='button'
+                  style={{ backgroundColor: dados?.cor_secundaria ? (dados?.cor_secundaria) : ('#00a79d') }}
+                >
                   <i className='bx bxs-hand-right'></i> Comprar
                 </button>
 
