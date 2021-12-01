@@ -3,7 +3,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import ServicesEventozz from '../../services/events';
 import { Container, Row, Col } from 'react-bootstrap';
-
+import { dateLastAccess } from '../../utils/strings';
 
 const OwlCarousel = dynamic(import('react-owl-carousel3'));
 const options = {
@@ -61,7 +61,11 @@ const Platform = () => {
     }
     console.log("===============")
     console.log(result)
-
+  }
+  async function goToEvents(nome, id) {
+    console.log(id)
+    let link = nome.replaceAll(" ", "-");
+    window.location.href = `/${link}/${id}`;
   }
 
   return (
@@ -75,21 +79,21 @@ const Platform = () => {
             <Row className="box-events">
               {Eventozz.map((item, index) => {
                 return (
-                  <div className="card-events-home">
+                  <div className="card-events-home" onClick={() => goToEvents(item.nome_evento, item.id)}>
                     <img
                       className="img-eventozz"
-                      src={"https://eventozz.com/" + item.foto}
+                      src={item.foto}
                       alt='image'
                     />
                     <div>
-                      <label>{item.data_inicio}</label>
+                      <label>{dateLastAccess(item.data_inicio)}</label>
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                         viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
                           d="M15.494 12.6a.85.85 0 01-.253.51l-5.246 5.14a.89.89 0 01-.847.22.868.868 0 01-.619-.61.847.847 0 01.23-.828l4.624-4.532L8.76 7.968a.847.847 0 01-.23-.829.868.868 0 01.619-.61.89.89 0 01.847.221l5.246 5.14a.847.847 0 01.253.71z">
                         </path>
                       </svg>
-                      <label>{item.data_inicio}</label>
+                      <label>{dateLastAccess(item.data_fim)}</label>
                     </div>
                     <span>{item.nome_evento}</span>
                     <span className="legend-events">{item.local_evento}</span>

@@ -66,6 +66,7 @@ const Navbar = () => {
                     }
                   </div>
 
+
                   {/* <div className='option-item'>
                     <select className='form-select'>
                       <option value='0'>English</option>
@@ -358,6 +359,15 @@ const Navbar = () => {
                       )
                     }
 
+                  </div>
+                  <div className='option-item'>
+                    {token && (
+                      <Link href='/price-details/' activeClassName='active'>
+                        <a className='login-btn'>
+                          <i className='bx bx-shopping-bag'></i>Compras
+                        </a>
+                      </Link>
+                    )}
                   </div>
                   <div className='option-item'>
                     <Link href='/contact' activeClassName='active'>

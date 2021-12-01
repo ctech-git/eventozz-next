@@ -125,6 +125,11 @@ p:last-child {
   margin-bottom: 0;
 }
 
+.ptb-50 {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
 .ptb-100 {
   padding-top: 100px;
   padding-bottom: 100px;
@@ -133,6 +138,10 @@ p:last-child {
 .pt-100 {
   padding-top: 100px;
 }
+.pt-50 {
+  padding-top: 50px;
+}
+
 
 .pb-100 {
   padding-bottom: 100px;
@@ -166,7 +175,7 @@ p:last-child {
 /*section-title*/
 .section-title {
   text-align: center;
-  max-width: 730px;
+  max-width: 930px;
   margin-top: -6px;
   margin-left: auto;
   margin-right: auto;
@@ -545,6 +554,9 @@ Navbar Area CSS
 
 .navbar-area .navbar .others-option .option-item {
   margin-left: 30px;
+}
+.width-select{
+width: 70% !important;
 }
 
 .navbar-area .navbar .others-option .option-item .login-btn {
@@ -1995,8 +2007,13 @@ box eventos listagem lista events
   font-weight: 400 !important;
   margin-top: -5px !important;
 }
+.img-eventozz-buy-page{
+  height: 500px !important;
+  max-width: 600px !important;
+  border-radius: 20px;
+}
 .img-eventozz{
-  height: 250px !important;
+  height: 320px !important;
   width: 100%;
   border-radius: 20px;
 }

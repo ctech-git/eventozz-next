@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import ServicesEventozz from '../../services/events';
 
-const Banner = () => {
+const Banner = (item) => {
+  const dados = item.item;
   const [name, setName] = useState('Bitcoin');
   const [nameTwo, setNameTwo] = useState('USD');
 
@@ -14,12 +16,8 @@ const Banner = () => {
   const [coinSymbol, setcoinSymbol] = useState('BTC');
   const [cryptoQuantity, setcryptoQuantity] = useState(1);
 
-  const [image, setImage] = useState(
-    '/images/cryptocurrency/cryptocurrency2.png'
-  );
-  const [imageTwo, setImageTwo] = useState(
-    '/images/cryptocurrency/cryptocurrency1.png'
-  );
+  const [image, setImage] = useState('/images/voucher.png');
+  const [imageTwo, setImageTwo] = useState('/images/cryptocurrency/cryptocurrency1.png');
 
   const [clicked, setClicked] = useState(false);
   const [toggleState, setToggleState] = useState(false);
@@ -53,14 +51,14 @@ const Banner = () => {
   };
 
   useEffect(() => {
-    const getCoins = async () => {
-      const { data } = await axios.get(
-        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false'
-      );
-      setnewData(data);
-    };
-    getCoins();
+    getTickets();
   }, []);
+
+  async function getTickets() {
+    const result = await ServicesEventozz.getTickets(dados.id);
+    console.log("======INGRESSOS=====")
+    console.log(result)
+  }
 
   useEffect(() => {
     const getData = async () => {
@@ -75,37 +73,26 @@ const Banner = () => {
 
   return (
     <>
-      <div className='trade-cryptocurrency-area ptb-100'>
+      <div className='trade-cryptocurrency-area ptb-50'>
         <div className='container'>
           <div className='row align-items-center'>
             <div className='col-lg-6 col-md-12'>
-              <div className='trade-cryptocurrency-content'>
-                <h1>
-                  <span>Buy Bitcoin</span>
-                  <span>BTC ($55,531.70)</span>
-                </h1>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis egnostrud exercitation ullamco.
-                </p>
-                <a href='#' className='link-btn'>
-                  <i className='fas fa-caret-right'></i> Read More About Bitcoin
-                </a>
-              </div>
+              <img
+                className="img-eventozz-buy-page"
+                src={dados.foto}
+                alt='image'
+              />
             </div>
             <div className='col-lg-6 col-md-12'>
               <div className='trade-cryptocurrency-box'>
                 <div className='currency-selection'>
-                  <label>From</label>
+                  <label>Quantidade</label>
                   <input
-                    type='text'
-                    value={cryptoQuantity}
+                    type='text' value={cryptoQuantity}
                     onChange={(e) => setcryptoQuantity(e.target.value)}
                   />
-
                   <div
-                    className={toggleState ? 'dropdown show' : 'dropdown'}
+                    className={toggleState ? 'width-select dropdown show' : 'width-select dropdown'}
                     onClick={() => toggleTabOne()}
                   >
                     <button
@@ -116,40 +103,7 @@ const Banner = () => {
                     >
                       <img src={image} alt='image' />
                       {name}
-
-                      <span>
-                        {toggleState ? (
-                          <i className='bx bx-chevron-up'></i>
-                        ) : (
-                          <i className='bx bx-chevron-down'></i>
-                        )}
-                      </span>
                     </button>
-
-                    <ul
-                      className={
-                        toggleState ? 'dropdown-menu show' : 'dropdown-menu'
-                      }
-                    >
-                      {newData.length > 0 &&
-                        newData.map((data, index) => (
-                          <li
-                            key={index}
-                            onClick={(e) => toggleSelected(data, index)}
-                            value='watch'
-                            className={
-                              clicked === index
-                                ? 'option selected focus'
-                                : 'option'
-                            }
-                          >
-                            <div className='coin-wrapper'>
-                              <img src={data.image} alt='image' />
-                              {data.name}
-                            </div>
-                          </li>
-                        ))}
-                    </ul>
                   </div>
                 </div>
                 <ul className='features-list'>
@@ -172,53 +126,14 @@ const Banner = () => {
                     </div>
                   </li>
                 </ul>
-                <div className='currency-selection'>
-                  <label>To</label>
-                  <input
-                    type='text'
-                    value={conversionValue * cryptoQuantity}
-                    onChange={(e) => e}
-                  />
 
-                  <div
-                    className={toggleStateTwo ? 'dropdown show' : 'dropdown'}
-                    onClick={() => toggleTabTwo()}
-                  >
-                    <button
-                      className='dropdown-toggle'
-                      type='button'
-                      data-bs-toggle='dropdown'
-                      aria-expanded='false'
-                    >
-                      <img src={imageTwo} alt='image' /> {nameTwo}
-                      {/* <span>
-                        {toggleStateTwo ? (
-                          <i className='bx bx-chevron-up'></i>
-                        ) : (
-                          <i className='bx bx-chevron-down'></i>
-                        )}
-                      </span> */}
-                    </button>
-                    {/* <ul className='dropdown-menu'>
-                      {category.length > 0 &&
-                        category.map((cat, index) => (
-                          <li
-                            key={index}
-                            value='watch'
-                            className='option selected focus'
-                          >
-                            <img src={cat.image} alt='image' />
-                            {cat.name}
-                          </li>
-                        ))}
-                    </ul> */}
-                  </div>
-                </div>
-                <Link href='https://www.coinbase.com/accounts'>
-                  <button type='submit'>
-                    <i className='bx bxs-hand-right'></i> Buy Bitcoin
-                  </button>
-                </Link>
+                <button type='button'>
+                  <i className='fa fa-plus'></i> Adicionar
+                </button>
+                <button type='button'>
+                  <i className='bx bxs-hand-right'></i> Comprar
+                </button>
+
               </div>
             </div>
           </div>

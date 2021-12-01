@@ -1,48 +1,62 @@
-const Features = () => {
+import { dateLastAccess } from '../../utils/strings';
+
+const Features = (item) => {
+  const dados = item.item;
+
   return (
     <>
-      <div className='features-area pt-100 pb-70'>
+      <div className='features-area pt-50 pb-70'>
         <div className='container'>
           <div className='section-title'>
-            <h2>How To Buy Bitcoin</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco.
-            </p>
+            <h2>{dados.nome_evento}</h2>
+            <div key={'x-event'} dangerouslySetInnerHTML={{
+              __html: dados.descricao,
+            }}>
+
+            </div>
           </div>
-          <div className='row align-items-center justify-content-center'>
-            <div className='col-lg-4 col-md-6 col-sm-6'>
-              <div className='single-features-box'>
-                <img src='/images/features/features-img5.png' alt='image' />
-                <h3>Got Your Wallet Ready?</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipicing elit, sed do
-                  eiusmod tempor incididunt ut labore et doee magna aliqua. Ut
-                  enim ad minim veniam.
-                </p>
+          <div className='earn-money-area pt-100 pb-70'>
+            <div className='container'>
+              <div className='section-title'>
+                <h2>Detalhes do Evento</h2>
               </div>
-            </div>
-            <div className='col-lg-4 col-md-6 col-sm-6'>
-              <div className='single-features-box'>
-                <img src='/images/features/features-img4.png' alt='image' />
-                <h3>Set Up Your Account</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipicing elit, sed do
-                  eiusmod tempor incididunt ut labore et doee magna aliqua. Ut
-                  enim ad minim veniam.
-                </p>
-              </div>
-            </div>
-            <div className='col-lg-4 col-md-6 col-sm-6'>
-              <div className='single-features-box'>
-                <img src='/images/features/features-img6.png' alt='image' />
-                <h3>Trade Cryptocurrency</h3>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipicing elit, sed do
-                  eiusmod tempor incididunt ut labore et doee magna aliqua. Ut
-                  enim ad minim veniam.
-                </p>
+              <div className='row'>
+                <div className='col-lg-6 col-md-12'>
+                  <div className='earn-money-list'>
+                    <ul>
+                      <li>
+                        <i className='fa fa-map'></i>
+                        {dados.local_evento}
+                      </li>
+                      <li>
+                        <i className='bx bx-cog'></i>
+                        {dados.organizador}
+                      </li>
+                      <li>
+                        <i className='bx bxs-badge-check'></i>
+                        Apresentar Qr Code na Entrada
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className='col-lg-6 col-md-12'>
+                  <div className='earn-money-list'>
+                    <ul>
+                      <li>
+                        <i className='bx bxs-badge-check'></i>
+                        {dados.categoria_evento}
+                      </li>
+                      <li>
+                        <i className='bx bx-calendar'></i>
+                        Inicio: {dateLastAccess(dados.data_inicio)} - Fim: {dateLastAccess(dados.data_fim)}
+                      </li>
+                      <li>
+                        <i className="fa fa-clock" aria-hidden="true"></i>
+                        De {dados.hora_inicio} até {dados.hora_fim}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
