@@ -1,28 +1,4 @@
 {
-  "../components/Common/BestSeller.js -> react-owl-carousel3": {
-    "id": "./node_modules/react-owl-carousel3/lib/OwlCarousel.js",
-    "files": [
-      "static/chunks/1.js"
-    ]
-  },
-  "../components/Common/FeedBack.js -> react-owl-carousel3": {
-    "id": "./node_modules/react-owl-carousel3/lib/OwlCarousel.js",
-    "files": [
-      "static/chunks/1.js"
-    ]
-  },
-  "../components/Common/Portfolio.js -> react-owl-carousel3": {
-    "id": "./node_modules/react-owl-carousel3/lib/OwlCarousel.js",
-    "files": [
-      "static/chunks/1.js"
-    ]
-  },
-  "../components/HomeOne/Platform.js -> react-owl-carousel3": {
-    "id": "./node_modules/react-owl-carousel3/lib/OwlCarousel.js",
-    "files": [
-      "static/chunks/1.js"
-    ]
-  },
   "../components/Layout/TopHeader.js -> react-owl-carousel3": {
     "id": "./node_modules/react-owl-carousel3/lib/OwlCarousel.js",
     "files": [

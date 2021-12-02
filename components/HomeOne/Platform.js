@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import ServicesEventozz from '../../services/events';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -46,7 +45,6 @@ const Platform = () => {
   const [Eventozz, setEventozz] = useState([]);
 
   useEffect(() => {
-    //const token = window.localStorage.getItem("AcessToken");
     setisMounted(true);
     setDisplay(true);
     setisMounted(false);

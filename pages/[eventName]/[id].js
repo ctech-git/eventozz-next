@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Banner from '../../components/Common/Banner';
 import Features from '../../components/Trade/Features';
-import BestSeller from '../../components/Common/BestSeller';
 import PaymentArea from '../../components/Trade/PaymentArea';
-import FeedBack from '../../components/Common/FeedBack';
 import RegisterArea from '../../components/Common/RegisterArea';
 import { useRouter } from 'next/router'
 import ServicesEventozz from '../../services/events';
@@ -112,10 +110,7 @@ const Buy = () => {
           >VENDAS ENCERRADAS</span>
         </div>
       )}
-
-      {/* <BestSeller /> */}
       <PaymentArea />
-      {/* <FeedBack /> */}
       <RegisterArea ctaImage='/images/man.png' item={item} />
     </>
   );

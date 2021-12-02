@@ -335,7 +335,7 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li className='nav-item'>
-                  <Link href='/prices' activeClassName='active'>
+                  <Link href='/price-details' activeClassName='active'>
                     <a className='nav-link listing'>Sobre Nós</a>
                   </Link>
                 </li>
@@ -362,7 +362,7 @@ const Navbar = () => {
                   </div>
                   <div className='option-item'>
                     {token && (
-                      <Link href='/price-details/' activeClassName='active'>
+                      <Link href='/prices' activeClassName='active'>
                         <a className='login-btn'>
                           <i className='bx bx-shopping-bag'></i>Compras
                         </a>
