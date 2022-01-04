@@ -11,7 +11,7 @@ export const onlyDecimal = (_string) => {
   else return _string.substring(0, _string.length - 1);
 };
 
-export const ConvertMoney = (string) => {
+export const convertMoney = (string) => {
   string = Number(string);
   string = string?.toLocaleString("pt-BR", { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' });
   console.log(string);

@@ -1,7 +1,7 @@
 import { dateLastAccess } from '../../utils/strings';
 
-const Features = (item) => {
-  const dados = item.item;
+const Features = ({item, showTicketSale}) => {
+  const dados = item;
 
   return (
     <>
@@ -16,6 +16,7 @@ const Features = (item) => {
             </div>
           </div>
         </div>
+        {showTicketSale && <div className="justify-content-center pt-4 row btn-compre-agora absolute"><a className="default-btn"><i className="bx bxs-chat"></i>Comprar agora</a></div>}
       </div>
     </>
   );

@@ -10,15 +10,16 @@ import Portfolio from '../components/Common/Portfolio';
 import OurFeature from '../components/Common/OurFeature';
 import AppDownload from '../components/Common/AppDownload';
 import RegisterAreaTwo from '../components/Common/RegisterAreaTwo';
+import servicesEventozz from '../services/events';
 
-const Index = () => {
-
+const Index = ({events}) => {
+  console.log('eventos -> ', events);
   return (
     <>
       <Banner />
       <Funfact pt100='pt-100' />
       {/* <BuySell pt70='pt-70' /> */}
-      <Platform />
+      <Platform events={events} />
       {/* <AccountCreate title='Get Started in a Few Minutes' /> */}
       {/* <Portfolio bgColor='bg-f9f9f9' /> */}
       {/* <OurFeature title='Our Features' /> */}
@@ -30,3 +31,20 @@ const Index = () => {
 };
 
 export default Index;
+
+export async function getServerSideProps() {
+  const result = await servicesEventozz.getEvents();
+    console.log(result.status);
+
+    let response = [];
+
+    if (result?.status === 200 && result?.data?.success) {
+      response = result?.data?.data;
+    }
+
+    return {
+      props: {
+        events: response
+      },
+    }
+}

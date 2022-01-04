@@ -7775,3 +7775,69 @@ width: 100px;
   cursor: pointer;
 }
 /*# sourceMappingURL=style.css.map */
+
+
+.box-ticket{
+  padding: 40px 20px;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0px 0 30px rgb(1 41 112 / 8%);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.price-box-ticket{
+  font-size: 36px;
+  color: #444444;
+  font-weight: 600;
+}
+
+.box-ticket h3{
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: rgb(0, 167, 157);
+}
+
+.box-ticket.animate{
+  transition: transform 0.5s;
+}
+
+.box-ticket.animate:hover {
+  -ms-transform: scale(1.1); /* IE 9 */
+  -webkit-transform: scale(1.1); /* Safari 3-8 */
+  transform: scale(1.1); 
+}
+
+.box-tickets-total-value-title{
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 0;
+  color: rgb(0, 167, 157);
+}
+
+.box-tickets-total-value-text{
+  font-size: 36px;
+  color: #444444;
+  font-weight: 600;
+  margin-left: 15px;
+}
+
+.btn-compre-agora a{
+  width: fit-content;
+}
+
+.btn-compre-agora.absolute{
+
+}
+
+.box-tickets-total-value-title .div-title{
+  display: block;
+  line-height: 15px;
+}
+
+.box-tickets-total-value-title small{
+  font-size: 12px;
+}

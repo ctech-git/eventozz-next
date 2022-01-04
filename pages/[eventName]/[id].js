@@ -4,61 +4,66 @@ import Features from '../../components/Trade/Features';
 import PaymentArea from '../../components/Trade/PaymentArea';
 import RegisterArea from '../../components/Common/RegisterArea';
 import { useRouter } from 'next/router'
-import ServicesEventozz from '../../services/events';
+import servicesEventozz from '../../services/events';
 import TokensArea from '../../components/HomeThree/TokensArea';
+import EventDetails from '../../components/Common/EventDetails';
 
 
-const Buy = () => {
+const Event = ({event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate}) => {
+  console.log(event);
+  console.log(isActive);
   const router = useRouter();
-  const { id } = router.query
-  const [isEvent, setIsEvent] = useState(false);
-  const [item, setItem] = useState([]);
-  const [isActive, setIsActive] = useState(true);
+  // const { id } = router.query
+  // const [isEvent, setIsEvent] = useState(false);
+  // const [item, setItem] = useState([]);
+  // const [isActive, setIsActive] = useState(true);
   const [eventDay, setEventDay] = useState('');
 
   useEffect(() => {
-    if (id != undefined) {
-      console.log(id)
-      getDetails(id);
-    }
-  }, [id]);
-
-  async function getDetails(id) {
-    const result = await ServicesEventozz.getEventosEspecific(id);
-    if (result.status == 200) {
-      setIsEvent(true);
-      var data = result?.data?.data[0];
-      setItem(data);
-      console.log("+++++++++++++++++++");
-      console.log(data);
-      var today = new Date();
-      var eventDayAux = new Date(data?.data_inicio);
+    if (eventDate != '') {
+      console.log(eventDate);
+      const eventDayAux = new Date(eventDate);
       setEventDay(eventDayAux)
-      console.log(today)
-      console.log(eventDayAux)
-      if (today > eventDayAux) {
-        setIsActive(false)
-      } else {
-        setIsActive(true)
-      }
-
-    } else {
-      setIsEvent(false);
     }
-  }
+  }, [eventDate]);
+
+  // async function getDetails(id) {
+  //   const result = await ServicesEventozz.getEvent(id);
+  //   if (result.status == 200) {
+  //     setIsEvent(true);
+  //     var data = result?.data?.data[0];
+  //     setItem(data);
+  //     console.log("+++++++++++++++++++");
+  //     console.log(data);
+  //     var today = new Date();
+  //     var eventDayAux = new Date(data?.data_inicio);
+  //     setEventDay(eventDayAux)
+  //     console.log(today)
+  //     console.log(eventDayAux)
+  //     if (today > eventDayAux) {
+  //       setIsActive(false)
+  //     } else {
+  //       setIsActive(true)
+  //     }
+
+  //   } else {
+  //     setIsEvent(false);
+  //   }
+  // }
 
 
   return (
     <>
       <div className='trade-cryptocurrency-area'
-        style={{ background: item?.cor_principal ? (item?.cor_principal) : ('#00a79d') }}
-      >{item.imagem_banner ? (
+        style={{ background: event?.cor_principal ? (event?.cor_principal) : ('#00a79d') }}
+      >{event?.imagem_banner ? (
         <div className='col-12'>
           <img
             className="img-eventozz-buy-page-banner"
-            src={item.imagem_banner}
+            src={event?.imagem_banner}
             alt='image'
           />
+
         </div>
       ) : (
         <>
@@ -92,28 +97,92 @@ const Buy = () => {
             <div className='shape9'>
               <img src='/images/shape/shape9.png' alt='image' />
             </div>
+
           </div>
         </>
       )}
 
       </div>
-      <Features item={item} />
-      {isActive ? (
-        <>
-          <TokensArea item={item} endTime={eventDay} />
-          <Banner item={item} />
-        </>
-      ) : (
-        <div className="event-finish">
-          <span
-            style={{ color: item?.cor_secundaria ? (item?.cor_secundaria) : ('#00a79d') }}
-          >VENDAS ENCERRADAS</span>
-        </div>
-      )}
+      <Features item={event} showTicketSale={showTicketSale} />
+      <EventDetails item={event} showTicketSale={showTicketSale} />
+      {showTicketSale && (
+          <>
+            <TokensArea item={event} endTime={eventDay} showTicketSale={showTicketSale} />
+            <Banner item={event} />
+          </>
+        )
+      }
+      {
+        showEventSoon && (
+          <div className="event-finish pt-100">
+            <span
+              style={{ color: event?.cor_secundaria ? (event?.cor_secundaria) : ('#00a79d') }}
+            >EVENTO EM BREVE</span>
+          </div>
+        )
+      }
+      {
+        showClosedSales && (
+          <div className="event-finish pt-100">
+            <span
+              style={{ color: event?.cor_secundaria ? (event?.cor_secundaria) : ('#00a79d') }}
+            >VENDAS ENCERRADAS</span>
+          </div>
+        )
+      }
       <PaymentArea />
-      <RegisterArea ctaImage='/images/man.png' item={item} />
+      <RegisterArea ctaImage='/images/man.png' item={event} />
     </>
   );
 };
 
-export default Buy;
+export default Event;
+
+export async function getServerSideProps(context) {
+  console.log(context);
+  const {params} = context;
+  const {id} = params;
+  const result = await servicesEventozz.getEvent(id);
+  
+  let event = [];
+  let showTicketSale = false;
+  let isActive = false;
+  let showEventSoon = false;
+  let showClosedSales = false;
+  let eventDate = '';
+
+  if (result?.status === 200 && result?.data?.success && result?.data?.data?.length > 0) {
+    event = result?.data?.data[0];
+    let today = new Date();
+    let ticketSaleStartDate = new Date(event?.data_inicio_venda_ingresso);
+    let ticketSaleEndDate = new Date(event?.data_fim_venda_ingresso);
+    let eventSoonDate = new Date(event?.data_inicio_em_breve);
+
+    isActive = Number(event?.active) === 1 ? true : false;
+    eventDate = event?.data_inicio;
+
+    if (today >= ticketSaleStartDate && today <= ticketSaleEndDate) {
+      showTicketSale = true;
+    }
+
+    if (today >= eventSoonDate && today < ticketSaleStartDate) {
+      showEventSoon = true;
+    }
+
+    if (today > ticketSaleEndDate) {
+      showClosedSales = true;
+    }
+
+  }
+
+  return {
+    props: {
+      event,
+      isActive,
+      showTicketSale,
+      showEventSoon,
+      eventDate,
+      showClosedSales
+    },
+  }
+}

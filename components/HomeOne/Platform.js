@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import ServicesEventozz from '../../services/events';
 import { Container, Row, Col } from 'react-bootstrap';
 import { dateLastAccess } from '../../utils/strings';
@@ -39,31 +40,33 @@ const options = {
   },
 };
 
-const Platform = () => {
+const Platform = ({events = []}) => {
+  const router = useRouter()
   const [display, setDisplay] = useState(false);
   const [isMounted, setisMounted] = useState(false);
-  const [Eventozz, setEventozz] = useState([]);
+  // const [Eventozz, setEventozz] = useState([]);
 
   useEffect(() => {
     setisMounted(true);
     setDisplay(true);
     setisMounted(false);
-    getEventos();
+    // getEvents();
   }, []);
 
-  async function getEventos() {
+  // async function getEvents() {
 
-    const result = await ServicesEventozz.getEventos();
-    if (result.status == 200) {
-      setEventozz(result?.data?.data)
-    }
-    console.log("===============")
-    console.log(result)
-  }
-  async function goToEvents(nome, id) {
+  //   const result = await ServicesEventozz.getEvents();
+  //   if (result.status == 200) {
+  //     setEventozz(result?.data?.data)
+  //   }
+  //   console.log("===============")
+  //   console.log(result)
+  // }
+
+  function goToEvents(nome, id) {
     console.log(id)
     let link = nome.replaceAll(" ", "-");
-    window.location.href = `/${link}/${id}`;
+    router.push(`/${link}/${id}`);
   }
 
   return (
@@ -75,7 +78,7 @@ const Platform = () => {
               <h2>Eventozz para você participar</h2>
             </div>
             <Row className="box-events">
-              {Eventozz.map((item, index) => {
+              {events.map((item, index) => {
                 return (
                   <div className="card-events-home" onClick={() => goToEvents(item.nome_evento, item.id)}>
                     <img
