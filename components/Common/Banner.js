@@ -109,7 +109,6 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
   }
 
   async function addCar(type) {
-    // return handleCheckout();
     let accessToken = window.localStorage.getItem("accessToken");
     if (accessToken) {
       var car = [];
