@@ -63,10 +63,10 @@ const Platform = ({events = []}) => {
   //   console.log(result)
   // }
 
-  function goToEvents(nome, id) {
-    console.log(id)
-    let link = nome.replaceAll(" ", "-");
-    router.push(`/${link}/${id}`);
+  function goToEvents(slug) {
+    console.log(slug)
+    // let link = nome.replaceAll(" ", "-");
+    router.push(`/evento/${slug}`);
   }
 
   return (
@@ -80,7 +80,7 @@ const Platform = ({events = []}) => {
             <Row className="box-events">
               {events.map((item, index) => {
                 return (
-                  <div className="card-events-home" onClick={() => goToEvents(item.nome_evento, item.id)}>
+                  <div className="card-events-home" onClick={() => goToEvents(item.slug)}>
                     <img
                       className="img-eventozz"
                       src={item.foto}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { scrollToElement } from '../../utils/scrollTo';
 
 const TokensArea = ({ item, endTime, showTicketSale }) => {
   const [action, setAction] = useState({});
@@ -83,7 +84,7 @@ const TokensArea = ({ item, endTime, showTicketSale }) => {
               </div>
             </div>
           </div>
-          {showTicketSale && <div className="justify-content-center pt-50 row btn-compre-agora absolute"><a className="default-btn"><i className="bx bxs-chat"></i>Comprar agora</a></div>}
+          {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="justify-content-center pt-50 row btn-compre-agora absolute"><a className="default-btn"><i className="bx bxs-chat"></i>Comprar agora</a></div>}
         </div>
       </div>
     </>

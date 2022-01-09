@@ -10,8 +10,8 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    let AcessToken = window.localStorage.getItem("AcessToken");
-    setToken(AcessToken ? (AcessToken) : (false));
+    let accessToken = window.localStorage.getItem("accessToken");
+    setToken(accessToken ? (accessToken) : (false));
   }, []);
   useEffect(() => {
     let elementId = document.getElementById('navbar');

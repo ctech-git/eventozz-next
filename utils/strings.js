@@ -14,7 +14,6 @@ export const onlyDecimal = (_string) => {
 export const convertMoney = (string) => {
   string = Number(string);
   string = string?.toLocaleString("pt-BR", { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' });
-  console.log(string);
   return string;
 };
 
@@ -39,8 +38,6 @@ export const isValidCnpj = (cnpj_string) => {
   ) {
     return false;
   }
-
-  // console.log(cnpj_string, cnpj_string.length);
 
   let tamanho = cnpj_string.length - 2;
   let numeros = cnpj_string.substring(0, tamanho);
@@ -184,6 +181,5 @@ export const percentageMask = (number) => {
 
 export const phoneMaskForList = (number) => {
   const phone = onlyUnsignedNumbers(number);
-  // console.log(phone.replace(/(\d{2})(\d{5})(\d)/, "($1) $2-$3"))
   return phone?.replace(/(\d{2})(\d{5})(\d)/, "($1) $2-$3")
 }

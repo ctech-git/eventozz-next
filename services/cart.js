@@ -1,15 +1,14 @@
 import { Axios } from './axios';
 
-const showppingCartService = {
-  saveShoppingCar: async (car, AcessToken) => {
-    const response = await Axios.post("/purchase/shoppingCar",
+const shoppingCartService = {
+  saveShoppingCart: async (car, accessToken) => {
+    const response = await Axios.post("/purchase/shopping-cart",
       {
-        car: car
+        car
       },
       {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${AcessToken}`
+          'Authorization': `Bearer ${accessToken}`
         }
       }
     )
@@ -20,15 +19,15 @@ const showppingCartService = {
       });
     return response;
   },
-  listShoppingCar: async (id, AcessToken) => {
-    const response = await Axios.get("/purchase/listShoppingCar/?id=" + id,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${AcessToken}`
-        }
+  listShoppingCart: async (eventId, accessToken) => {
+    const response = await Axios.get("/purchase/list-shopping-cart", {
+      params: {
+        eventId
+      },
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
       }
-    )
+    })
       .then(({ ...response }) => {
         return response;
       }).catch(({ ...response }) => {
@@ -36,15 +35,43 @@ const showppingCartService = {
       });
     return response;
   },
-  listShoppingCarAll: async (AcessToken) => {
-    const response = await Axios.get("/purchase/listShoppingCarAll/",
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${AcessToken}`
-        }
+  listShoppingCartAll: async (accessToken) => {
+    const response = await Axios.get("/purchase/list-shopping-cart-all",
+    {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
       }
-    )
+    })
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+    return response;
+  },
+  updateQuantityShoppingCart: async ({idInShoppingCart, quantity, accessToken}) => {
+    const response = await Axios.put("/purchase/update-quantity-shopping-cart", {idInShoppingCart, quantity},
+    {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    })
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+    return response;
+  },
+  deleteShoppingCartItem: async ({idInShoppingCart, accessToken}) => {
+    const response = await Axios.delete("/purchase/delete-shopping-cart-item", {
+      data: {
+        idInShoppingCart
+      },
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    })
       .then(({ ...response }) => {
         return response;
       }).catch(({ ...response }) => {
@@ -55,4 +82,4 @@ const showppingCartService = {
 
 }
 
-export default showppingCartService;
+export default shoppingCartService;

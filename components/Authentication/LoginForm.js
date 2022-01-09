@@ -30,7 +30,7 @@ const LoginForm = () => {
       if (result.status == 200) {
 
         if (result?.data?.token) {
-          window.localStorage.setItem("AcessToken", result?.data?.token);
+          window.localStorage.setItem("accessToken", result?.data?.token);
           window.location.href = "/";
         } else {
           toast.error("Falhar no Login", {
@@ -76,7 +76,7 @@ const LoginForm = () => {
       const response = await Services.LoginNative(cpfEmail, senha);
       if (response.status == 200) {
         if (response?.data?.token) {
-          window.localStorage.setItem("AcessToken", response?.data?.token);
+          window.localStorage.setItem("accessToken", response?.data?.token);
           window.location.href = "/";
         } else {
           toast.error("Falhar no Login", {

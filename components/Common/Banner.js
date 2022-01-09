@@ -1,58 +1,67 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import showppingCartService from '../../services/cart';
+import shoppingCartService from '../../services/cart';
 import { convertMoney, dateLastAccess } from '../../utils/strings';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import servicesEventozz from '../../services/events';
+import { scrollToElement } from '../../utils/scrollTo';
 
 
 
-const Banner = ({ item }) => {
-  console.log(item);
+const Banner = ({ item, handleCheckout, syncCartItems }) => {
   const dados = item;
   const [tickets, setTickets] = useState([]);
   const [valorTotal, setValorTotal] = useState(0);
 
   //converter hook
   const [image, setImage] = useState('/images/voucher.png');
+  const [isLoadingFinish, setIsLoadingFinish] = useState(false);
 
   useEffect(() => {
     if (dados?.id != undefined) {
       getTickets();
     }
-  }, [dados?.id]);
+  }, [dados?.id, syncCartItems]);
 
   async function getTickets() {
-    const acessToken = window.localStorage.getItem("AcessToken");
+    const accessToken = window.localStorage.getItem("accessToken");
 
     const result = await servicesEventozz.getTickets(dados?.id);
     if (result.status == 200) {
       let ticketTypesInfo = result?.data?.data;
-      console.log(ticketTypesInfo)
       let ingressos = [];
 
-      if (acessToken) {
-        const resultClient = await showppingCartService.listShoppingCar(dados?.id, acessToken);
+      if (accessToken) {
+        const resultClient = await shoppingCartService.listShoppingCart(dados?.id, accessToken);
         let vectorClient = resultClient?.data?.data;
-        console.log(vectorClient);
         if (vectorClient.length === 0) {
           ticketTypesInfo.map(a => {
             a.quantidade = 0;
             a.activeValue = a.valor;
             ingressos.push(a);
           });
-          console.log(ingressos);
           setTickets(ingressos)
         } else {
+          console.log(ticketTypesInfo);
+          console.log(vectorClient);
           ticketTypesInfo.map(a => {
+            let hasTicketsInCart = false;
             vectorClient.map((b) => {
-              if (b.id == a.id) {
+              if (b.idIngresso == a.id) {
                 a.quantidade = Number(b.quantidade);
                 a.activeValue = a.qtd_promocional > 0 && Number(b.quantidade) >= a.qtd_promocional ? a.valor_promocional : a.valor;
                 ingressos.push(a);
+                hasTicketsInCart = true;
               }
             });
+            if (!hasTicketsInCart) {
+              ingressos.push({
+                ...a,
+                activeValue: a.valor,
+                quantidade: 0
+              });
+            }
           });
           setTickets(ingressos)
         }
@@ -67,10 +76,8 @@ const Banner = ({ item }) => {
       let totalValue = 0;
       let taxa = Number(dados?.taxa);
       ingressos.map(a => {
-        console.log(a);
         totalValue += a.quantidade * a.activeValue;
       });
-      console.log(totalValue);
       setValorTotal(totalValue);
     } else {
       toast.error('Nenhum Ingresso Encontrado', {
@@ -102,12 +109,13 @@ const Banner = ({ item }) => {
   }
 
   async function addCar(type) {
-    let AcessToken = window.localStorage.getItem("AcessToken");
-    if (AcessToken) {
+    // return handleCheckout();
+    let accessToken = window.localStorage.getItem("accessToken");
+    if (accessToken) {
       var car = [];
       var value = 0;
       tickets.map((x) => {
-        if (x.quantidade != 0) {
+        if (x.quantidade > 0) {
           car.push(x);
           value += 1;
         } else {
@@ -116,16 +124,17 @@ const Banner = ({ item }) => {
       });
 
       if (value != 0) {
-        const result = await showppingCartService.saveShoppingCar(car, AcessToken);
+
+        setIsLoadingFinish(true);
+        const result = await shoppingCartService.saveShoppingCart(car, accessToken);
+        setIsLoadingFinish(false);
         if (result.status == 200) {
           toast.success('Ingressos adicionados ao carrinho', {
             position: "bottom-left",
             autoClose: 2000
           })
 
-          if (type != 'add') {
-            window.location.href = "/prices";
-          }
+          handleCheckout()
         } else {
           toast.error('Error ao adicionar ao carrinho', {
             position: "bottom-left",
@@ -158,6 +167,7 @@ const Banner = ({ item }) => {
       maxQuantity: false
     }
     const newTickets = await Promise.all(tickets.map((a, i) => {
+      let activeValue = a.valor;
       if (a.id === ticketId) {
         if (option === 'plus' && a.quantidade + 1 > a.qtd_disponivel) {
           errorStatus.maxQuantity = true;
@@ -165,10 +175,17 @@ const Banner = ({ item }) => {
         if (option === 'minus' && a.quantidade - 1 < 0) {
           errorStatus.negative = true;
         }
+
+        if (option === 'plus') {
+          activeValue = a.qtd_promocional > 0 && a.quantidade + 1 >= a.qtd_promocional ? a.valor_promocional : a.valor;
+        }
+        if (option === 'minus') {
+          activeValue = a.qtd_promocional > 0 && a.quantidade - 1 >= a.qtd_promocional ? a.valor_promocional : a.valor;
+        }
         return {
           ...a,
-          quantidade: option === 'minus' ? a.quantidade - 1 : a.quantidade + 1,
-          activeValue: a.qtd_promocional > 0 && a.quantidade + 1 >= a.qtd_promocional ? a.valor_promocional : a.valor
+          activeValue,
+          quantidade: option === 'minus' ? a.quantidade - 1 : a.quantidade + 1
         }
       } else {
         return {
@@ -182,15 +199,11 @@ const Banner = ({ item }) => {
 
     if (errorStatus.maxQuantity) return toast.info("A quantidade informada não está mais disponível");
 
-    console.log(newTickets);
-
     let totalValue = 0;
     let taxa = Number(dados.taxa);
     newTickets.map(a => {
-      console.log(a);
       totalValue += a.quantidade * a.activeValue;
     });
-    console.log(totalValue);
     setValorTotal(totalValue)
 
     setTickets(newTickets);
@@ -200,7 +213,7 @@ const Banner = ({ item }) => {
     <>
       <ToastContainer />
 
-      <div className='trade-cryptocurrency-area ptb-100'
+      <div className='trade-cryptocurrency-area ptb-100' id="tickets-sale-area"
         style={{ background: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
       >
         <div className='container'>
@@ -209,12 +222,20 @@ const Banner = ({ item }) => {
             <div className='col-12'>
 
               <div className='trade-cryptocurrency-box'>
+                {
+                  isLoadingFinish && (
+                    <div className='container-spinner'>
+                      <div class="spinner-border absolute" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  )
+                }
                 <div className='section-title'>
                   <h2>Confira nossos ingressos</h2>
                 </div>
                 <div className='d-flex justify-content-evenly row'>
                   {tickets.map((ticket, index) => {
-                    console.log(ticket);
                     return (
                       // <div className='currency-selection'>
                       //   <label>Quantidade</label>

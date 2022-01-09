@@ -94,7 +94,7 @@ const RegisterForm = () => {
         console.log(response)
         if (response.status == 200) {
           if (response?.data?.token) {
-            window.localStorage.setItem("AcessToken", response?.data?.token);
+            window.localStorage.setItem("accessToken", response?.data?.token);
             window.location.href = "/";
           } else {
             toast.error("Falhar no Login", {

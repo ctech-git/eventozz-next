@@ -2,13 +2,7 @@
   "../components/Layout/TopHeader.js -> react-owl-carousel3": {
     "id": "./node_modules/react-owl-carousel3/lib/OwlCarousel.js",
     "files": [
-      "static/chunks/1.js"
-    ]
-  },
-  "../node_modules/next/dist/client/next-dev.js -> ./dev/noop": {
-    "id": "./node_modules/next/dist/client/dev/noop.js",
-    "files": [
-      "static/chunks/0.js"
+      "static/chunks/node_modules_react-owl-carousel3_lib_OwlCarousel_js.js"
     ]
   }
 }

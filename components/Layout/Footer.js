@@ -1,4 +1,7 @@
 import Link from 'next/link';
+import Image from 'next/image';
+
+import LogoEventozz from '../../public/images/logo-eventozz.png'
 
 const Footer = () => {
   return (
@@ -9,7 +12,7 @@ const Footer = () => {
             <div className='col-lg-4 col-sm-6 col-md-6'>
               <div className='single-footer-widget'>
                 <a href='index.html' className='d-inline-block logo'>
-                  <img src='/images/logo-eventozz.png' alt='logo' />
+                  <Image src={LogoEventozz} alt='logo' />
                 </a>
                 <div className='newsletter-form'>
                   {/* <p>SUBSCRIBE TO OUR NEWSLETTER</p>

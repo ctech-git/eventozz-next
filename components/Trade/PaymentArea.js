@@ -1,4 +1,12 @@
 import React from 'react';
+import Image from 'next/image';
+
+import Visa from '../../public/images/payment/visa.png';
+import MasterCard from '../../public/images/payment/master-card.png';
+import AmericanExpress from '../../public/images/payment/american-express.png';
+import Elo from '../../public/images/payment/elo.png';
+import Boleto from '../../public/images/payment/boleto.png';
+import Pix from '../../public/images/payment/pix.png';
 
 const PaymentArea = () => {
   return (
@@ -10,22 +18,22 @@ const PaymentArea = () => {
           </div>
           <ul className='payment-method-list'>
             <li title='Visa'>
-              <img src='/images/payment/visa.png' alt='image' />
+              <Image src={Visa} alt='Visa' />
             </li>
             <li title='Master Card'>
-              <img src='/images/payment/master-card.png' alt='image' />
+              <Image src={MasterCard} alt='Master Card' />
             </li>
             <li title='American Express'>
-              <img src='/images/payment/american-express.png' alt='image' />
+              <Image src={AmericanExpress} alt='Image' />
             </li>
             <li title='Elo'>
-              <img src='/images/payment/elo.png' alt='image' />
+              <Image src={Elo} alt='Elo' />
             </li>
-            <li title='Boleto'>
-              <img src='/images/payment/boleto.png' alt='image' />
-            </li>
+            {/* <li title='Boleto'>
+              <Image src={Boleto} alt='Boleto' />
+            </li> */}
             <li title='Pix'>
-              <img src='/images/payment/pix.png' alt='image' />
+              <Image src={Pix} alt='Pix' />
             </li>
 
             {/* <li title='Apple Pay'>

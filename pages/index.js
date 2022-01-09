@@ -34,7 +34,7 @@ export default Index;
 
 export async function getServerSideProps() {
   const result = await servicesEventozz.getEvents();
-    console.log(result.status);
+    console.log(result);
 
     let response = [];
 

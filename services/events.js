@@ -1,24 +1,23 @@
 import { Axios } from './axios';
 
-const ServicesEventozz = {
+const servicesEventozz = {
   getEvents: async () => {
-    const response = await Axios.get("/list/events",
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        }
+    const response = await Axios.get("/list/events", {
+      headers: {
+        'Content-Type': 'application/json',
       }
-    )
+    })
       .then(({ ...response }) => {
         return response;
       }).catch(({ ...response }) => {
         return response;
       });
+      console.log(response);
     return response;
   },
-  getEvent: async (id) => {
-    console.log(id)
-    const response = await Axios.get("/list/events/especific?id=" + id,
+  getEvent: async (slug) => {
+    console.log(slug)
+    const response = await Axios.get("/list/events/especific?slug=" + slug,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -51,4 +50,4 @@ const ServicesEventozz = {
 
 }
 
-export default ServicesEventozz;
+export default servicesEventozz;
