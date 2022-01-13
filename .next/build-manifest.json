@@ -25,15 +25,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/authentication": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/authentication.js"
-    ],
     "/evento/[eventSlug]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/evento/[eventSlug].js"
+    ],
+    "/price-details": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/price-details.js"
     ]
   },
   "ampFirstPages": []

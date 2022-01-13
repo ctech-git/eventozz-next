@@ -7918,11 +7918,6 @@ width: 100px;
   padding: 0;
 }
 
-.container-tickets-inputs .form-control{
-  border: 2px solid #eeeeee !important;
-  background-color: #fff !important;
-}
-
 .container-tickets-data{
   background: #fafbff;
   padding: 30px;
@@ -7967,6 +7962,33 @@ width: 100px;
   left: 0;
   margin-right: 15px;
 } 
+
+.default-btn.default-outline-btn{
+  background-color: #fff;
+  color: var(--optionalColor);
+  border: solid 1px var(--optionalColor);
+}
+
+.container-tickets-inputs .form-control.input-error{
+  border: 1px solid #d93025 !important;
+}
+
+.text-error{
+  color: #d93025;
+}
+
+.container-checkout .form-control, .container-credit-card-inputs .form-control, .container-tickets-inputs .form-control{
+  border: 2px solid #eeeeee !important;
+  background-color: #fff !important;
+}
+
+.container-checkout .form-select, .container-credit-card-inputs .form-select{
+  height: 50px;
+  border: 2px solid #eeeeee !important;
+  background-color: #fff !important;
+  border-radius: 0;
+  margin-left: 0;
+}
 
 @media (max-width: 767px){
   .col-left-initial-banner{
