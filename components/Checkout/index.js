@@ -3,21 +3,31 @@ import { useCallback, useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import checkoutService from '../../services/checkout';
-import { convertMoney, cpfMask, isValidCpf, isValidEmail, phoneMaskForList } from '../../utils/strings';
+import servicesExternal from '../../services/externalRequest';
+import { isValidCreditCardNumber, isValidExpirationDate } from '../../utils/fieldValidation';
+import { cepMask, convertMoney, cpfMask, cvvMask, expirationDateMask, isValidCpf, isValidEmail, onlyUnsignedNumbers, phoneMaskForList, stringNormalize } from '../../utils/strings';
 import PageBanner from '../Common/PageBanner';
+import { useMediaQuery } from 'react-responsive';
+import Image from 'next/image'
 
 const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem }) => {
-
+    console.log(dados);
+    console.log(cartItems);
+    const isMobile = useMediaQuery({ maxWidth: 768 })
     const [deletedTicketId, setDeletedTicketId] = useState(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [ticketsData, setTicketsData] = useState([]);
     const [ticketIdUsingMyAccountData, setTicketIdUsingMyAccountData] = useState(null);
     const [isLoadingCheckout, setIsLoadingCheckout] = useState(false);
-    const [textLoading, setTextLoading] = useState('Buscando dados da conta');
+    const [textLoading, setTextLoading] = useState('');
     const [showPayment, setShowPayment] = useState(false);
     const [showInputErros, setShowInputErros] = useState(false);
     const [showCheckoutInputErros, setShowCheckoutInputErros] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('pix');
+    const [pixValue, setPixValue] = useState(false);
+    const [installmentOptions, setInstallmentOptions] = useState([]);
+    const [cupom, setCupom] = useState('');
+    const [totalTickets, setTotalTickets] = useState(0);
     const [showCreditCardFields, setShowCreditCardFields] = useState(false);
     const [creditCardData, setCreditCardData] = useState({
         number: '',
@@ -54,6 +64,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     useEffect(() => {
         console.log('there');
         generateInputTicketsData();
+        getAvailablePaymentInfo();
         // setShowPayment(false);
     }, [cartItems]);
 
@@ -83,8 +94,10 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         console.log('here');
         console.log(ticketsData);
         let ticketsDataTemp = {};
+        let totalTicketsTemp = 0;
         await Promise.all(cartItems.map(item => {
             console.log(item);
+            totalTicketsTemp += item.quantidade;
             let ticketsDataItem = ticketsData[item.idIngresso] ? ticketsData[item.idIngresso] : [];
             if (item.quantidade === 0) {
                 ticketsDataItem = [];
@@ -120,9 +133,22 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         // Object.keys(ticketsDataTemp).map( a => {
         //     console.log(ticketsDataTemp[a]);
         // });
+        setTotalTickets(totalTicketsTemp);
         setTicketsData(ticketsDataTemp);
 
-    }, [cartItems, ticketsData])
+    }, [cartItems, ticketsData]);
+
+    const getAvailablePaymentInfo = useCallback(async () => {
+        setIsLoadingCheckout(true);
+        let accessToken = window.localStorage.getItem("accessToken");
+        const response = await checkoutService.getPaymentInfo({ accessToken, params: { eventId: dados?.id ? dados?.id : '', cupomId: cupom ? cupom : false } });
+        if (response?.data?.success && response?.data?.data) {
+            const data = response.data.data;
+            setInstallmentOptions(data?.credit ? data.credit : []);
+            setPixValue(data?.pix ? data.pix : '');
+        }
+        setIsLoadingCheckout(false);
+    }, [])
 
     const handleUseMyAccountData = async ({ checked, ticketsDataIndex, ticketIndex, idIngresso }) => {
         console.log(checked, ticketsDataIndex, ticketIndex);
@@ -159,6 +185,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 });
                 console.log(newTicketsData);
                 setTicketsData(newTicketsData);
+                console.log(idIngresso);
                 setTicketIdUsingMyAccountData(idIngresso);
 
             } else {
@@ -233,13 +260,123 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         setPaymentMethod(value);
         if (value === 'cc') {
             setShowCreditCardFields(true);
-        }else{
+        } else {
             setShowCreditCardFields(false);
         }
     }
 
     const handleChangeInstallmentNumber = (value) => {
         setInstallmentsNumber(value);
+    }
+
+    const handleChangeCreditCardData = ({ value, field }) => {
+        console.log(value, field);
+        if (field === 'cvv' && value.length > 3) {
+            return;
+        } else if (field === 'expirationDate' && value.length > 4) {
+            return;
+        }
+        console.log(value);
+        setCreditCardData(prev => ({
+            ...prev,
+            [field]: value
+        }), [])
+    }
+
+    const handleChangeBillingData = ({ value, field }) => {
+        setBillingData(prev => ({
+            ...prev,
+            [field]: value
+        }), [])
+    }
+
+    async function handlerCep(e) {
+        let value = onlyUnsignedNumbers(e.target.value);
+        handleChangeBillingData({ value, field: 'cep' });
+        console.log(value)
+        if (value.length < 8) {
+            return;
+        }
+        setTextLoading("Buscando informações do CEP");
+        setIsLoadingCheckout(true);
+
+        const result = await servicesExternal.getCep(value);
+        setTextLoading("");
+        setIsLoadingCheckout(false);
+
+        if (result.status == 200 && !result?.data?.erro) {
+            setBillingData({
+                ...billingData,
+                cep: value,
+                state: result?.data?.uf,
+                city: result?.data?.localidade,
+                address: `${result?.data?.logradouro}, ${result?.data?.bairro}`
+            })
+
+        } else {
+            toast.error("Cep invalido", {
+                autoClose: 2000
+            })
+        }
+
+    }
+
+    const onSubmitSale = async () => {
+        const errors = [];
+
+        console.log(billingData);
+        if (!isValidCreditCardNumber(creditCardData.number)) {
+            errors.push("Informe um número de cartão de crédito válido");
+        }
+
+        if (!isValidExpirationDate(creditCardData.expirationDate)) {
+            errors.push("Informe uma Data de Vencimento válida");
+        }
+
+        if (creditCardData.cvv.length <= 1) {
+            errors.push("Informe o Código de Segurança");
+        }
+
+        if (creditCardData.name?.split(' ').length < 2) {
+            errors.push("Informe o nome que está escrito no cartão");
+        }
+
+        if (billingData.cep.length !== 8) {
+            errors.push("Informe um Cep válido");
+        }
+
+        if (billingData.address.length === 0) {
+            errors.push("Informe o endereço da fatura");
+        }
+
+        if (billingData.city.length === 0) {
+            errors.push("Informe a cidade do endereço da fatura");
+        }
+
+        if (billingData.state.length === 0) {
+            errors.push("Informe o estado do endereço da fatura");
+        }
+
+        if (errors.length > 0) {
+            toast.dismiss();
+            return toast.error(<ValidationErrorMenssage errorMessage={errors} />, {
+                autoClose: errors.length * 2000,
+            });
+        }
+    }
+
+    const ValidationErrorMenssage = ({ closeToast, toastProps, errorMessage }) => (
+        <div>
+            {
+                errorMessage.map(error => (
+                    <div>{error}</div>
+                ))
+            }
+        </div>
+    )
+
+    const handleSetCupom = (value) => {
+        setCupom(value);
     }
 
     return (
@@ -260,37 +397,41 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                 </div>
                             )
                         }
-                        <table className='table'>
-                            <thead>
-                                <tr>
-                                    <th scope='col'>Evento</th>
-                                    <th scope='col'>Ingresso</th>
-                                    <th scope='col'>Quantidade</th>
-                                    <th scope='col'>Valor</th>
-                                    <th scope='col'></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {cartItems && cartItems.length > 0 &&
-                                    cartItems.map((cartItem) => {
-                                        console.log(cartItem);
-                                        return (
-                                            <tr key={cartItem.idInShoppingCar}>
-                                                <td>
-                                                    <div className='d-flex align-items-center crypto-image'>
-                                                        <img src={cartItem?.foto} alt='image' />
-                                                        <h3 className='mb-0 crypto-name'>{cartItem.nomeEvento}</h3>
-                                                    </div>
-                                                </td>
-                                                <td>{cartItem.nome}</td>
-                                                <td><span className='trending up'>{cartItem?.quantidade}</span></td>
-                                                <td>{convertMoney(cartItem?.valor * cartItem?.quantidade)}</td>
-
-                                                {
-                                                    !showPayment &&
-                                                    (
-                                                        <td>
-                                                            <div className='d-flex container-acoes'>
+                        {
+                            isMobile ? (
+                                <>
+                                    {cartItems && cartItems.length > 0 &&
+                                        cartItems.map((cartItem) => {
+                                            return (
+                                                <div className='container-ticket-responsivo'>
+                                                    <Row className='pb-2'>
+                                                        <Col xs={4}>
+                                                            <Image src={cartItem?.foto} className='image-evento-tabela' alt='image' width={100} height={83} />
+                                                        </Col>
+                                                        <Col xs={8}>
+                                                            <label>Evento</label>
+                                                            <h3 className='mb-0 crypto-name'>{cartItem.nomeEvento}</h3>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='pb-2'>
+                                                        <Col xs={12}>
+                                                            <label>Tipo de ingresso</label>
+                                                            <h6>{cartItem.nome}</h6>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='pb-2'>
+                                                        <Col xs={6}>
+                                                            <label>Quantidade</label>
+                                                            <h6>{cartItem?.quantidade}</h6>
+                                                        </Col>
+                                                        <Col xs={6}>
+                                                            <label>Valor Total</label>
+                                                            <h6>{convertMoney((cartItem.qtdPromocional > 0 && Number(cartItem.quantidade) >= cartItem.qtdPromocional ? cartItem.valorPromocional : cartItem.valor) * cartItem?.quantidade)}</h6>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='pb-2'>
+                                                        <Col xs={12}>
+                                                            <div className='container-acoes-responsivo d-flex justify-content-center pt-3'>
 
 
                                                                 <div className='container-left'>
@@ -305,14 +446,100 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                                                 </div>
 
                                                             </div>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                    <div className='container-ticket-responsivo resumo'>
+                                        <Row className='pb-2'>
+                                            <Col xs={12}>
+                                                <label>Total (com taxas)</label>
+                                                <h3 className='mb-0 crypto-name'>{paymentMethod === 'pix' ?
+                                                    pixValue ? convertMoney(pixValue) : ''
+                                                    : installmentOptions[0]?.value ?
+                                                        `A partir de ${convertMoney(installmentOptions[0]?.totalValue)}`
+                                                        : ''}</h3>
+                                            </Col>
+                                        </Row>
+                                        <Row className='pb-2'>
+                                            <Col xs={12}>
+                                                <label>Quantidade de ingressos</label>
+                                                <h6>{totalTickets}</h6>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </>
+                            ) : (
+                                <table className='table'>
+                                    <thead>
+                                        <tr>
+                                            <th scope='col'>Evento</th>
+                                            <th scope='col'>Ingresso</th>
+                                            <th scope='col'>Quantidade</th>
+                                            <th scope='col'>Valor</th>
+                                            <th scope='col'></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {cartItems && cartItems.length > 0 &&
+                                            cartItems.map((cartItem) => {
+                                                console.log(cartItem);
+                                                return (
+                                                    <tr key={cartItem.idInShoppingCar}>
+                                                        <td>
+                                                            <div className='d-flex align-items-center crypto-image'>
+                                                                <Image src={cartItem?.foto} alt='image' width={120} height={90} />
+                                                                <h3 className='mb-0 crypto-name'>{cartItem.nomeEvento}</h3>
+                                                            </div>
                                                         </td>
-                                                    )
-                                                }
-                                            </tr>
-                                        )
-                                    })}
-                            </tbody>
-                        </table>
+                                                        <td>{cartItem.nome}</td>
+                                                        <td><span className='trending up'>{cartItem?.quantidade}</span></td>
+                                                        <td>{convertMoney((cartItem.qtdPromocional > 0 && Number(cartItem.quantidade) >= cartItem.qtdPromocional ? cartItem.valorPromocional : cartItem.valor) * cartItem?.quantidade)}</td>
+
+                                                        {
+                                                            !showPayment &&
+                                                            (
+                                                                <td>
+                                                                    <div className='d-flex container-acoes'>
+
+
+                                                                        <div className='container-left'>
+                                                                            <a class="btn btn-outline-danger" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: cartItem.quantidade - 1, cartItem })}><span><i class="fa fa-minus"></i></span></a>
+                                                                        </div>
+                                                                        <div className='container-excluir' onClick={() => handleShowConfirmDeleteItem(cartItem.idInShoppingCar)}>
+                                                                            <div><span><i className="fa fa-trash"></i></span></div>
+                                                                            <div className='underline texto-excluir'>Excluir</div>
+                                                                        </div>
+                                                                        <div className='container-right'>
+                                                                            <a class="btn btn-outline-success" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: Number(cartItem.quantidade) + 1, cartItem })}><span><i class="fa fa-plus"></i></span></a>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </td>
+                                                            )
+                                                        }
+                                                    </tr>
+                                                )
+                                            })}
+                                        <tr>
+                                            <td>Total (com taxas)</td>
+                                            <td></td>
+                                            <td>{totalTickets}</td>
+                                            <td>{paymentMethod === 'pix' ?
+                                                pixValue ? convertMoney(pixValue) : ''
+                                                : installmentOptions[0]?.value ?
+                                                    `A partir de ${convertMoney(installmentOptions[0]?.totalValue)}`
+                                                    : ''}
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            )
+                        }
+
                     </div>
                 </Row>
                 {
@@ -340,8 +567,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                                 </Col>
                                                 <Row className='container-tickets-inputs'>
                                                     {
-                                                        (ticket.idIngresso === ticketIdUsingMyAccountData && i === 0)
-                                                        || (!ticketIdUsingMyAccountData && i === 0) &&
+                                                        ((ticket.idIngresso === ticketIdUsingMyAccountData && i === 0)
+                                                            || (!ticketIdUsingMyAccountData && i === 0)) &&
                                                         <Col className='pb-3 pt-3' xs={12}>
                                                             <Form.Check
                                                                 type='checkbox'
@@ -384,14 +611,14 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     showPayment && (
                         <>
                             <Row className='container-checkout pb-5'>
-                                <Col xs={12} sm={6}>
+                                <Col xs={12} sm={6} className='pt-3'>
                                     {/* <div className='section-title'> */}
                                     <h3>Escolha a forma de pagamento</h3>
                                     {/* </div> */}
                                     <Form.Select value={paymentMethod} onChange={(e) => handlePaymentMethod(e.target.value)}>
                                         <option>Selecione uma opção</option>
-                                        <option value="cc">Cartão de crédito - Taxa 7%</option>
-                                        <option selected value="pix">PIX - Taxa 4%</option>
+                                        <option value="cc">Cartão de crédito - Taxa a partir de 7%</option>
+                                        <option selected value="pix">PIX - Taxa 5%</option>
                                     </Form.Select>
                                 </Col>
 
@@ -399,7 +626,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     {/* <div className='section-title'> */}
                                     <h3>Cupom de desconto</h3>
                                     {/* </div> */}
-                                    <Form.Control placeholder='Insira o código aqui' />
+                                    <Form.Control placeholder='Insira o código aqui' value={cupom} onChange={(e) => handleSetCupom(e.target.value)} />
                                 </Col>
                             </Row>
                             {
@@ -412,29 +639,29 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                             <Col xs={12} md={6} className='pb-3'>
                                                 <Form.Group>
                                                     <Form.Label>Número do Cartão</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={creditCardData.number} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'email', ticketsDataIndex: index, ticketIndex: i })} placeholder="0000 0000 0000 0000" />
-                                                    {showCheckoutInputErros && !isValidCreditCard(ticket.email) && <Form.Text className="text-error">Informe um email válido (Enviaremos o qr code do ingresso).</Form.Text>}
+                                                    <Form.Control className={showCheckoutInputErros && !isValidCreditCardNumber(creditCardData.number) ? 'input-error' : ''} value={creditCardData.number} onChange={(e) => handleChangeCreditCardData({ value: onlyUnsignedNumbers(e.target.value), field: 'number' })} placeholder="0000 0000 0000 0000" />
+                                                    {showCheckoutInputErros && !isValidCreditCardNumber(creditCardData.number) && <Form.Text className="text-error">Informe um número de cartão válido.</Form.Text>}
                                                 </Form.Group>
                                             </Col>
                                             <Col xs={12} md={6} className='pb-3'>
                                                 <Form.Group>
                                                     <Form.Label>Data de Vencimento</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={creditCardData.expirationDate} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'email', ticketsDataIndex: index, ticketIndex: i })} placeholder="00/00" />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe um email válido (Enviaremos o qr code do ingresso).</Form.Text>}
+                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={expirationDateMask(creditCardData.expirationDate)} onChange={(e) => handleChangeCreditCardData({ value: onlyUnsignedNumbers(e.target.value), field: 'expirationDate' })} placeholder="00/00" />
+                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe uma data de vencimento válida.</Form.Text>}
                                                 </Form.Group>
                                             </Col>
                                             <Col xs={12} md={6} className='pb-3'>
                                                 <Form.Group>
                                                     <Form.Label>Cod. Segurança</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={creditCardData.cvv} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'email', ticketsDataIndex: index, ticketIndex: i })} placeholder="000" />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe um email válido (Enviaremos o qr code do ingresso).</Form.Text>}
+                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={cvvMask(creditCardData.cvv)} onChange={(e) => handleChangeCreditCardData({ value: e.target.value, field: 'cvv' })} placeholder="000" />
+                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe um código de segurança válido.</Form.Text>}
                                                 </Form.Group>
                                             </Col>
                                             <Col xs={12} md={6} className='pb-3'>
                                                 <Form.Group>
                                                     <Form.Label>Nome Impresso</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={creditCardData.name} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'email', ticketsDataIndex: index, ticketIndex: i })} />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe um email válido (Enviaremos o qr code do ingresso).</Form.Text>}
+                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={creditCardData.name} onChange={(e) => handleChangeCreditCardData({ value: stringNormalize(e.target.value), field: 'name' })} />
+                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe o nome como aparece no cartão.</Form.Text>}
                                                 </Form.Group>
                                             </Col>
                                         </Row>
@@ -446,29 +673,29 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                             <Col xs={12} md={6} className='pb-3'>
                                                 <Form.Group>
                                                     <Form.Label>CEP</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={billingData.cep} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'email', ticketsDataIndex: index, ticketIndex: i })} placeholder="00000-000" />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe um email válido (Enviaremos o qr code do ingresso).</Form.Text>}
+                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={cepMask(billingData.cep)} onChange={(e) => handlerCep(e)} placeholder="00000-000" />
+                                                    {showCheckoutInputErros && <Form.Text className="text-error">O campo CEP é obrigatório.</Form.Text>}
                                                 </Form.Group>
                                             </Col>
                                             <Col xs={12} md={6} className='pb-3'>
                                                 <Form.Group>
                                                     <Form.Label>Endereço</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={billingData.address} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'email', ticketsDataIndex: index, ticketIndex: i })} />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe um email válido (Enviaremos o qr code do ingresso).</Form.Text>}
+                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={billingData.address} onChange={(e) => handleChangeBillingData({ value: e.target.value, field: 'address' })} />
+                                                    {showCheckoutInputErros && <Form.Text className="text-error">O campo Endereço é obrigatório.</Form.Text>}
                                                 </Form.Group>
                                             </Col>
                                             <Col xs={12} md={6} className='pb-3'>
                                                 <Form.Group>
                                                     <Form.Label>Cidade</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={billingData.city} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'email', ticketsDataIndex: index, ticketIndex: i })} />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe um email válido (Enviaremos o qr code do ingresso).</Form.Text>}
+                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={billingData.city} onChange={(e) => handleChangeBillingData({ value: e.target.value, field: 'city' })} />
+                                                    {showCheckoutInputErros && <Form.Text className="text-error">O campo Cidade é obrigatório.</Form.Text>}
                                                 </Form.Group>
                                             </Col>
                                             <Col xs={12} md={6} className='pb-3'>
                                                 <Form.Group>
                                                     <Form.Label>Estado</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={billingData.state} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'email', ticketsDataIndex: index, ticketIndex: i })} />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe um email válido (Enviaremos o qr code do ingresso).</Form.Text>}
+                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={billingData.state} onChange={(e) => handleChangeBillingData({ value: e.target.value, field: 'state' })} />
+                                                    {showCheckoutInputErros && <Form.Text className="text-error">O campo Estado é obrigatório.</Form.Text>}
                                                 </Form.Group>
                                             </Col>
                                         </Row>
@@ -482,8 +709,11 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                                     <Form.Label>Quantas parcelas?</Form.Label>
                                                     <Form.Select value={installmentsNumber} onChange={(e) => handleChangeInstallmentNumber(e.target.value)}>
                                                         <option>Selecione uma opção</option>
-                                                        <option value="cc">Cartão de crédito - Taxa 7%</option>
-                                                        <option selected value="pix">PIX - Taxa 4%</option>
+                                                        {
+                                                            installmentOptions.map((item, i) => (
+                                                                <option selected={i === 0 ? true : false} value={item.value}>{item.label}</option>
+                                                            ))
+                                                        }
                                                     </Form.Select>
                                                 </Form.Group>
                                             </Col>
@@ -498,7 +728,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     showPayment && (
                         <Row>
                             <Col xs={12}>
-                                <a class="default-btn checkout-button" type="button" onClick={() => handleShowPayment()}><i className='bx bxs-hand-right'></i>Finalizar</a>
+                                <a class="default-btn checkout-button" type="button" onClick={() => onSubmitSale()}><i className='bx bxs-hand-right'></i>Finalizar</a>
                             </Col>
                         </Row>
                     )

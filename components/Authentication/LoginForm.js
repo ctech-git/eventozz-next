@@ -102,7 +102,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <div className='col-lg-6 col-md-12'>
         <div className='login-form'>
           <h2>Já sou cliente</h2>

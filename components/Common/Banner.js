@@ -210,7 +210,7 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
 
   return (
     <>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
 
       <div className='trade-cryptocurrency-area ptb-100' id="tickets-sale-area"
         style={{ background: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}

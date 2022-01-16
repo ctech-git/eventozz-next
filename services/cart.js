@@ -79,7 +79,6 @@ const shoppingCartService = {
       });
     return response;
   },
-
 }
 
 export default shoppingCartService;

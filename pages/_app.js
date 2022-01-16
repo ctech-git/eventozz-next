@@ -12,6 +12,7 @@ import '../public/css/responsive.css';
 import Layout from '../components/Layout/Layout';
 import GoTop from '../components/Shared/GoTop';
 import cookies from 'next-cookies'
+import { ToastContainer } from 'react-toastify';
 
 function App({ Component, pageProps }) {
   const store = useStore(pageProps.initialReduxState);
@@ -22,6 +23,8 @@ function App({ Component, pageProps }) {
         <Component {...pageProps} />
         <GoTop />
       </Layout>
+
+      <ToastContainer limit={1}/>
     </Provider>
   );
 }

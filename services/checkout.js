@@ -14,7 +14,22 @@ const checkoutService = {
         return response;
       });
     return response;
-  }
+  },
+  getPaymentInfo: async ({accessToken, params}) => {
+    const response = await Axios.get("/purchase/payment-info",
+    {
+      params: params,
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    })
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+    return response;
+  },
 
 }
 

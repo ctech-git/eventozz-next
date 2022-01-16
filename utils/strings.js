@@ -163,6 +163,20 @@ export const cepMask = (cep) => {
   const mask = new StringMask("00000-000");
   return mask.apply(cep);
 };
+
+export const cvvMask = (cvv) => {
+  if (cvv === null || cvv === undefined) return;
+  const mask = new StringMask("000");
+  return mask.apply(cvv);
+};
+
+
+export const expirationDateMask = (expirationDate) => {
+  if (expirationDate === null || expirationDate === undefined) return;
+  const mask = new StringMask("00/00");
+  return mask.apply(expirationDate);
+}
+
 export const dateLastAccess = (data) => {
   if (data === null || data === undefined) return;
   data = data?.split("T");
@@ -174,6 +188,13 @@ export const dateLastAccess = (data) => {
   //return days + " Às " + hours;
   return days;
 };
+
+export const stringNormalize = (string) => {
+  if (string === null || string === undefined) return;
+  string = string.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase();
+  console.log(string);
+  return string;
+}
 
 export const percentageMask = (number) => {
   return number.replace(/[^0-9,.]+/g, "").replace(/([0-9,.]+?$)/, "$1%");
