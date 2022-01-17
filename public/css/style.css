@@ -8019,6 +8019,15 @@ width: 100px;
   padding-bottom: 20px;
 }
 
+.cupom-button{
+  height: 50px;
+  margin-top: 0 !important;
+}
+
+.default-btn.checkout-button.cupom-button i{
+  top: unset;
+}
+
 @media (max-width: 767px){
   .col-left-initial-banner{
     position: absolute;

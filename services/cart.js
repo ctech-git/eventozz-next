@@ -79,6 +79,24 @@ const shoppingCartService = {
       });
     return response;
   },
+  getCouponId: async ({couponCode, eventId, accessToken}) => {
+    const response = await Axios.get("/purchase/get-coupon-info",
+    {
+      params: {
+        couponCode,
+        eventId
+      },
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    })
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+    return response;
+  },
 }
 
 export default shoppingCartService;

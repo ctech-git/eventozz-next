@@ -9,8 +9,9 @@ import { cepMask, convertMoney, cpfMask, cvvMask, expirationDateMask, isValidCpf
 import PageBanner from '../Common/PageBanner';
 import { useMediaQuery } from 'react-responsive';
 import Image from 'next/image'
+import shoppingCartService from '../../services/cart';
 
-const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem }) => {
+const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, handleAddCupom }) => {
     console.log(dados);
     console.log(cartItems);
     const isMobile = useMediaQuery({ maxWidth: 768 })
@@ -26,7 +27,10 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     const [paymentMethod, setPaymentMethod] = useState('pix');
     const [pixValue, setPixValue] = useState(false);
     const [installmentOptions, setInstallmentOptions] = useState([]);
-    const [cupom, setCupom] = useState('');
+    const [cupom, setCoupon] = useState('');
+    const [couponId, setCouponId] = useState('');
+    const [couponInfo, setCouponInfo] = useState(false);
+    
     const [totalTickets, setTotalTickets] = useState(0);
     const [showCreditCardFields, setShowCreditCardFields] = useState(false);
     const [creditCardData, setCreditCardData] = useState({
@@ -66,7 +70,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         generateInputTicketsData();
         getAvailablePaymentInfo();
         // setShowPayment(false);
-    }, [cartItems]);
+    }, [cartItems, couponId]);
 
     const ConfirmDeleteModal = () => (
         <Modal show={showConfirmModal}>
@@ -141,14 +145,15 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     const getAvailablePaymentInfo = useCallback(async () => {
         setIsLoadingCheckout(true);
         let accessToken = window.localStorage.getItem("accessToken");
-        const response = await checkoutService.getPaymentInfo({ accessToken, params: { eventId: dados?.id ? dados?.id : '', cupomId: cupom ? cupom : false } });
+        const response = await checkoutService.getPaymentInfo({ accessToken, params: { eventId: dados?.id ? dados?.id : '', couponId: couponId ? couponId : false } });
         if (response?.data?.success && response?.data?.data) {
             const data = response.data.data;
             setInstallmentOptions(data?.credit ? data.credit : []);
             setPixValue(data?.pix ? data.pix : '');
+            setCouponInfo(data?.couponInfo)
         }
         setIsLoadingCheckout(false);
-    }, [])
+    }, [couponId, dados])
 
     const handleUseMyAccountData = async ({ checked, ticketsDataIndex, ticketIndex, idIngresso }) => {
         console.log(checked, ticketsDataIndex, ticketIndex);
@@ -375,8 +380,31 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         </div>
     )
 
-    const handleSetCupom = (value) => {
-        setCupom(value);
+    const handleSetCoupon = async () => {
+        if (!cupom || cupom?.trim() === '') {
+            return toast.error("Adicione um cupom válido");
+        }
+        const accessToken = localStorage.getItem('accessToken');
+        setIsLoadingCheckout(true);
+        setTextLoading("Adicionando cupom");
+        const response = await shoppingCartService.getCouponId({couponCode: cupom, eventId: dados?.id, accessToken});
+        setIsLoadingCheckout(false);
+        setTextLoading("");
+        console.log(response);
+        if (response?.status === 200) {
+            const data = response?.data?.data;
+            if (data?.length > 0) {
+                setCouponId(data[0].couponId);
+                toast.success("Cupom aplicado");
+            }else{
+                setCouponId(null);
+            }
+        }else{
+            setCouponId(null);
+            toast.error(response?.response?.data?.msg ? response.response.data.msg : "Não foi possível adicionar o cupom", {
+                autoClose: 2000
+            })
+        }
     }
 
     return (
@@ -523,8 +551,19 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                                     </tr>
                                                 )
                                             })}
+                                            {
+                                                couponInfo?.value && couponInfo?.code && (
+                                                    <tr>
+                                                        <td><h3 className='mb-0 crypto-name'>Cupom</h3></td>
+                                                        <td>{couponInfo.code}</td>
+                                                        <td></td>
+                                                        <td>{couponInfo.value}</td>
+                                                        <td></td>
+                                                    </tr>
+                                                )
+                                            }
                                         <tr>
-                                            <td>Total (com taxas)</td>
+                                            <td><h3 className='mb-0 crypto-name'>Total (com taxas)</h3></td>
                                             <td></td>
                                             <td>{totalTickets}</td>
                                             <td>{paymentMethod === 'pix' ?
@@ -626,7 +665,14 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     {/* <div className='section-title'> */}
                                     <h3>Cupom de desconto</h3>
                                     {/* </div> */}
-                                    <Form.Control placeholder='Insira o código aqui' value={cupom} onChange={(e) => handleSetCupom(e.target.value)} />
+                                    <Row>
+                                        <Col xs={8}>
+                                            <Form.Control placeholder='Insira o código aqui' value={cupom} onChange={(e) => setCoupon(stringNormalize(e.target.value))} />
+                                        </Col>
+                                        <Col xs={4}>
+                                            <a class="default-btn default-outline-btn checkout-button cupom-button" type="button" onClick={() => handleSetCoupon()}><i className='bx bxs-hand-right'></i>Aplicar</a>
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
                             {

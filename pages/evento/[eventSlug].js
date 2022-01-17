@@ -196,7 +196,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
         <PaymentArea />
         {
           showCheckout && <Checkout dados={event} cartItems={cartItems} handleChangeTicketQuantity={handleChangeTicketQuantity} 
-          handleDeleteItem={handleDeleteItem} isLoadingCartItem={isLoadingCartItem} />
+          handleDeleteItem={handleDeleteItem} isLoadingCartItem={isLoadingCartItem} handleAddCupom={getCartItems} />
         }
         {/* <RegisterArea ctaImage='/images/man.png' item={event} /> */}
       </div>
