@@ -36,6 +36,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
   const [cartItems, setCartItems] = useState([]);
   const [isLoadingCartItem, setIsLoadingCartItem] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [hideOnCheckout, setHideOnCheckout] = useState(false);
 
   useEffect(() => {
     if (eventDate != '') {
@@ -168,7 +169,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
         </div>
         <Features item={event} showTicketSale={showTicketSale} />
         <EventDetails item={event} showTicketSale={showTicketSale} />
-        {showTicketSale && (
+        {showTicketSale && !hideOnCheckout && (
           <>
             <TokensArea item={event} endTime={eventDay} showTicketSale={showTicketSale} />
             <Banner item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
@@ -196,7 +197,8 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
         <PaymentArea />
         {
           showCheckout && <Checkout dados={event} cartItems={cartItems} handleChangeTicketQuantity={handleChangeTicketQuantity} 
-          handleDeleteItem={handleDeleteItem} isLoadingCartItem={isLoadingCartItem} handleAddCupom={getCartItems} />
+          handleDeleteItem={handleDeleteItem} isLoadingCartItem={isLoadingCartItem} handleAddCupom={getCartItems} hideOnCheckout={hideOnCheckout} 
+          setHideOnCheckout={setHideOnCheckout} />
         }
         {/* <RegisterArea ctaImage='/images/man.png' item={event} /> */}
       </div>

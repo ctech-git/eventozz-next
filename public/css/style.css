@@ -66,6 +66,7 @@ Default CSS
   --paragraphColor: #666666;
   --fontSize: 15px;
   --transition: .5s;
+  --error-color: #e74c3c
 }
 
 body {
@@ -8022,10 +8023,63 @@ width: 100px;
 .cupom-button{
   height: 50px;
   margin-top: 0 !important;
+  padding-left: 0;
 }
 
 .default-btn.checkout-button.cupom-button i{
   top: unset;
+}
+
+.container-title-feedback h2{
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--error-color);
+}
+
+.container-msg-feedback .row{
+  margin-left: 0;
+}
+
+.container-msg-feedback .row strong{
+  padding-left: 0;
+}
+
+#container-feedback-error .container-msg-feedback .checkout-button{
+  padding: 12px 30px;
+  color: var(--error-color);
+  border: solid 1px var(--error-color);
+}
+
+.container-img-feedback img{
+  max-width: 100%;
+  height: auto;
+}
+
+#container-feedback-error, #container-feedback-success{
+  padding-top: 150px;
+}
+
+#container-feedback-success .row{
+  margin-left: 0;
+}
+
+#container-feedback-success .container-title-feedback h2{
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--optionalColor);
+}
+
+.container-copy-button{
+  margin-left: 0;
+  padding-left: 0;
+}
+
+#container-feedback-success .container-msg-feedback .checkout-button{
+  padding: 12px 30px;
+}
+
+.container-img-feedback.success-feedback{
+  min-height: 600px;
 }
 
 @media (max-width: 767px){
@@ -8055,5 +8109,9 @@ width: 100px;
     padding-right: 0;
     margin-right: 0;
     margin-left: 0;
+  }
+
+  .container-img-feedback.success-feedback{
+    min-height: 400px;
   }
 }

@@ -1,4 +1,4 @@
 
 export function scrollToElement({id}){
-    return document.getElementById(id).scrollIntoView();
+    return document.getElementById(id)?.scrollIntoView();
 }

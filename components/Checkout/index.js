@@ -10,10 +10,16 @@ import PageBanner from '../Common/PageBanner';
 import { useMediaQuery } from 'react-responsive';
 import Image from 'next/image'
 import shoppingCartService from '../../services/cart';
+import ErrorImage from '../../public/images/erro.svg';
+import SuccessImage from '../../public/images/success.svg';
+import WaitingImage from '../../public/images/waiting.svg';
+import { scrollToElement } from '../../utils/scrollTo';
+import { useRouter } from 'next/router';
 
-const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, handleAddCupom }) => {
+const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, setHideOnCheckout, hideOnCheckout }) => {
     console.log(dados);
     console.log(cartItems);
+    const router = useRouter();
     const isMobile = useMediaQuery({ maxWidth: 768 })
     const [deletedTicketId, setDeletedTicketId] = useState(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -30,7 +36,9 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     const [cupom, setCoupon] = useState('');
     const [couponId, setCouponId] = useState('');
     const [couponInfo, setCouponInfo] = useState(false);
-    
+    const [showConfirmationPayment, setShowConfirmationPayment] = useState(false);
+    const [showErrorOnPayment, setShowErrorOnPayment] = useState(false);
+
     const [totalTickets, setTotalTickets] = useState(0);
     const [showCreditCardFields, setShowCreditCardFields] = useState(false);
     const [creditCardData, setCreditCardData] = useState({
@@ -46,6 +54,12 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         city: '',
         state: ''
     });
+
+    const [paymentFeedback, setPaymentFeedback] = useState({
+        title: '',
+        message: '',
+        image: null
+    })
 
     const [installmentsNumber, setInstallmentsNumber] = useState(1);
 
@@ -71,6 +85,14 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         getAvailablePaymentInfo();
         // setShowPayment(false);
     }, [cartItems, couponId]);
+
+    useEffect(() => {
+        if (showErrorOnPayment) {
+            scrollToElement({ id: 'container-feedback-error' });
+        } else if (showConfirmationPayment) {
+            scrollToElement({ id: 'container-feedback-success' });
+        }
+    }, [showErrorOnPayment, showConfirmationPayment])
 
     const ConfirmDeleteModal = () => (
         <Modal show={showConfirmModal}>
@@ -326,48 +348,61 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
     }
 
-    const onSubmitSale = async () => {
+    const handleSubmitSale = async () => {
         const errors = [];
 
         console.log(billingData);
-        if (!isValidCreditCardNumber(creditCardData.number)) {
-            errors.push("Informe um número de cartão de crédito válido");
-        }
+        // if (!isValidCreditCardNumber(creditCardData.number)) {
+        //     errors.push("Informe um número de cartão de crédito válido");
+        // }
 
-        if (!isValidExpirationDate(creditCardData.expirationDate)) {
-            errors.push("Informe uma Data de Vencimento válida");
-        }
+        // if (!isValidExpirationDate(creditCardData.expirationDate)) {
+        //     errors.push("Informe uma Data de Vencimento válida");
+        // }
 
-        if (creditCardData.cvv.length <= 1) {
-            errors.push("Informe o Código de Segurança");
-        }
+        // if (creditCardData.cvv.length <= 1) {
+        //     errors.push("Informe o Código de Segurança");
+        // }
 
-        if (creditCardData.name?.split(' ').length < 2) {
-            errors.push("Informe o nome que está escrito no cartão");
-        }
+        // if (creditCardData.name?.split(' ').length < 2) {
+        //     errors.push("Informe o nome que está escrito no cartão");
+        // }
 
-        if (billingData.cep.length !== 8) {
-            errors.push("Informe um Cep válido");
-        }
+        // if (billingData.cep.length !== 8) {
+        //     errors.push("Informe um Cep válido");
+        // }
 
-        if (billingData.address.length === 0) {
-            errors.push("Informe o endereço da fatura");
-        }
+        // if (billingData.address.length === 0) {
+        //     errors.push("Informe o endereço da fatura");
+        // }
 
-        if (billingData.city.length === 0) {
-            errors.push("Informe a cidade do endereço da fatura");
-        }
+        // if (billingData.city.length === 0) {
+        //     errors.push("Informe a cidade do endereço da fatura");
+        // }
 
-        if (billingData.state.length === 0) {
-            errors.push("Informe o estado do endereço da fatura");
-        }
+        // if (billingData.state.length === 0) {
+        //     errors.push("Informe o estado do endereço da fatura");
+        // }
 
-        if (errors.length > 0) {
-            toast.dismiss();
-            return toast.error(<ValidationErrorMenssage errorMessage={errors} />, {
-                autoClose: errors.length * 2000,
-            });
-        }
+        // if (errors.length > 0) {
+        //     toast.dismiss();
+        //     return toast.error(<ValidationErrorMenssage errorMessage={errors} />, {
+        //         autoClose: errors.length * 2000,
+        //     });
+        // }
+
+        handlePaymentFeedBack({
+            status: 'captured',
+            // qrCode: '',
+            qrCodeUrl: 'https://api.pagar.me/core/v5/transactions/tran_J09PpKvC6CmNOy4A/qrcode?payment_method=pix'
+        })
+
+
+        //purchaseId
+        //body
+        //body.id
+        //body.status
+        //body.charges[0].last_transaction
     }
 
     const ValidationErrorMenssage = ({ closeToast, toastProps, errorMessage }) => (
@@ -387,7 +422,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         const accessToken = localStorage.getItem('accessToken');
         setIsLoadingCheckout(true);
         setTextLoading("Adicionando cupom");
-        const response = await shoppingCartService.getCouponId({couponCode: cupom, eventId: dados?.id, accessToken});
+        const response = await shoppingCartService.getCouponId({ couponCode: cupom, eventId: dados?.id, accessToken });
         setIsLoadingCheckout(false);
         setTextLoading("");
         console.log(response);
@@ -396,15 +431,144 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             if (data?.length > 0) {
                 setCouponId(data[0].couponId);
                 toast.success("Cupom aplicado");
-            }else{
+            } else {
                 setCouponId(null);
             }
-        }else{
+        } else {
             setCouponId(null);
             toast.error(response?.response?.data?.msg ? response.response.data.msg : "Não foi possível adicionar o cupom", {
                 autoClose: 2000
             })
         }
+    }
+
+    function handlePaymentFeedBack(feedback) {
+
+        let status = feedback.status;
+        let success = false;
+        let title = '';
+        let text = '';
+        let image = '';
+        if (paymentMethod === 'cc') {
+            switch (status) {
+
+                case "not_authorized":
+                    title = 'Compra não autorizada!';
+                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                    image = ErrorImage;
+                    break;
+
+                case "captured":
+                    title = 'Compra autorizada!';
+                    text = 'Seu pagamento já foi aprovado e você receberá seu QR Code em seu email! <br/> Aproveite muito seu evento!';
+                    image = SuccessImage;
+                    success = true;
+                    break;
+
+                case "partial_capture":
+                    title = 'Pagamento sendo processado!';
+                    text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
+                    image = WaitingImage;
+                    success = true;
+                    break;
+
+                case "authorized_pending_capture":
+                    title = 'Pagamento sendo processado!';
+                    text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
+                    image = WaitingImage;
+                    success = true;
+                    break;
+
+                case "waiting_capture":
+                    title = 'Pagamento sendo processado!';
+                    text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
+                    image = WaitingImage;
+                    success = true;
+                    break;
+
+                case "refunded":
+                    title = 'Compra não autorizada!';
+                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                    image = ErrorImage;
+                    break;
+
+                case "voided":
+                    title = 'Compra não autorizada!';
+                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                    image = ErrorImage;
+                    break;
+
+                case "partial_refunded":
+                    title = 'Compra não autorizada!';
+                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                    image = ErrorImage;
+                    break;
+
+                case "partial_void":
+                    title = 'Compra não autorizada!';
+                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                    image = ErrorImage;
+                    break;
+
+                case "error_on_voiding":
+                    title = 'Compra não autorizada!';
+                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                    image = ErrorImage;
+                    break;
+
+                case "error_on_refunding":
+                    title = 'Compra não autorizada!';
+                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                    image = ErrorImage;
+                    break;
+
+                case "waiting_cancellation":
+                    title = 'Compra não autorizada!';
+                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                    image = ErrorImage;
+                    break;
+
+                case "with_error":
+                    title = 'Compra não autorizada!';
+                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                    image = ErrorImage;
+                    break;
+
+                case "failed":
+                    title = 'Compra não autorizada!';
+                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                    image = ErrorImage;
+                    break;
+            }
+        } else {
+            let qrcode = feedback.qrCode;
+            let qRCodeImage = feedback.qrCodeUrl;
+            success = true;
+            title = "Seu PIX foi gerado!";
+            text = `O QR Code para entrada no evento chegará em seu email quando o pagamento for confirmado! <br></br>
+        Além disso, seu nome e CPF estarão na lista e você pode acessar aqui para emitir uma segunda via!
+        </br></br>
+        Desde já, bom evento em nome da Eventozz!`;
+            image = qRCodeImage ? qRCodeImage : '';
+        }
+
+        setPaymentFeedback({
+            title,
+            message: text,
+            image
+        });
+        if (success) {
+            setShowConfirmationPayment(true);
+            setHideOnCheckout(true);
+        } else {
+            setShowErrorOnPayment(true);
+        }
+
+    }
+
+    const handleTryAgain = () => {
+        setShowErrorOnPayment(false);
+        scrollToElement({ id: 'container-checkout' })
     }
 
     return (
@@ -551,17 +715,17 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                                     </tr>
                                                 )
                                             })}
-                                            {
-                                                couponInfo?.value && couponInfo?.code && (
-                                                    <tr>
-                                                        <td><h3 className='mb-0 crypto-name'>Cupom</h3></td>
-                                                        <td>{couponInfo.code}</td>
-                                                        <td></td>
-                                                        <td>{couponInfo.value}</td>
-                                                        <td></td>
-                                                    </tr>
-                                                )
-                                            }
+                                        {
+                                            couponInfo?.value && couponInfo?.code && (
+                                                <tr>
+                                                    <td><h3 className='mb-0 crypto-name'>Cupom</h3></td>
+                                                    <td>{couponInfo.code}</td>
+                                                    <td></td>
+                                                    <td>{couponInfo.value}</td>
+                                                    <td></td>
+                                                </tr>
+                                            )
+                                        }
                                         <tr>
                                             <td><h3 className='mb-0 crypto-name'>Total (com taxas)</h3></td>
                                             <td></td>
@@ -582,7 +746,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     </div>
                 </Row>
                 {
-                    showPayment &&
+                    showPayment && !hideOnCheckout &&
                     <Row>
                         <Col xs={12} sm={6}>
                             <a class="default-btn default-outline-btn checkout-button" type="button" onClick={() => handleBackToTicketsData()}><i className='bx bxs-left-arrow'></i>Voltar para escolha de ingressos</a>
@@ -591,7 +755,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 }
                 <hr className='hr-divisor' />
                 {
-                    !showPayment && (
+                    !showPayment && !hideOnCheckout && (
                         <>
                             <div className='section-title'>
                                 <h2>Preencha as informações dos ingressos</h2>
@@ -647,7 +811,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     )
                 }
                 {
-                    showPayment && (
+                    showPayment && !hideOnCheckout && (
                         <>
                             <Row className='container-checkout pb-5'>
                                 <Col xs={12} sm={6} className='pt-3'>
@@ -666,10 +830,10 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     <h3>Cupom de desconto</h3>
                                     {/* </div> */}
                                     <Row>
-                                        <Col xs={8}>
+                                        <Col xs={6} sm={8}>
                                             <Form.Control placeholder='Insira o código aqui' value={cupom} onChange={(e) => setCoupon(stringNormalize(e.target.value))} />
                                         </Col>
-                                        <Col xs={4}>
+                                        <Col xs={6} sm={4}>
                                             <a class="default-btn default-outline-btn checkout-button cupom-button" type="button" onClick={() => handleSetCoupon()}><i className='bx bxs-hand-right'></i>Aplicar</a>
                                         </Col>
                                     </Row>
@@ -771,21 +935,76 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     )
                 }
                 {
-                    showPayment && (
+                    showPayment && !hideOnCheckout && (
                         <Row>
                             <Col xs={12}>
-                                <a class="default-btn checkout-button" type="button" onClick={() => onSubmitSale()}><i className='bx bxs-hand-right'></i>Finalizar</a>
+                                <a class="default-btn checkout-button" type="button" onClick={() => handleSubmitSale()}><i className='bx bxs-hand-right'></i>Finalizar</a>
                             </Col>
                         </Row>
                     )
                 }
                 {
-                    Object.values(ticketsData).length > 0 && !showPayment && (
+                    Object.values(ticketsData).length > 0 && !showPayment && !hideOnCheckout && (
                         <Row>
                             <Col xs={12}>
                                 <a class="default-btn checkout-button" type="button" onClick={() => handleShowPayment()}><i className='bx bxs-hand-right'></i>Ir para pagamento</a>
                             </Col>
                         </Row>
+                    )
+                }
+                {
+                    showConfirmationPayment && (
+                        <Row id="container-feedback-success">
+                            <Col className='container-msg-feedback m-auto' xs={12} md={6}>
+
+                                <div className='container-title-feedback' xs={12}>
+                                    <h2>{paymentFeedback?.title ? paymentFeedback.title : 'Compra não autorizada!'}</h2>
+                                </div>
+                                <Row dangerouslySetInnerHTML={{ __html: paymentFeedback?.message ? paymentFeedback.message : '' }}></Row>
+                                {
+                                    paymentMethod === 'pix' && paymentFeedback?.image &&
+                                    (
+                                        <Row className='copy-button'>
+                                            <Col className='container-copy-button' xs={6}>
+                                                <a class="default-btn checkout-button" type="button" onClick={() => copyToClipboard(paymentFeedback?.qrCodeUrl)}><i className='bx bxs-copy'></i>Copiar</a>
+                                            </Col>
+                                        </Row>
+                                    )
+                                }
+                            </Col>
+                            <Col className='container-img-feedback success-feedback position-relative' xs={12} md={6}>
+                                <Image src={paymentFeedback?.image} layout='fill' alt="Imagem sucesso" />
+                            </Col>
+                            <Col className='m-auto' xs={12}>
+                                <div className='container-title-feedback' xs={12}>
+                                    <h2>Veja os detalhes na página "Minhas compras"</h2>
+                                </div>
+                                <Col className='container-copy-button' xs={12} sm={6}>
+                                    <a class="default-btn checkout-button" type="button" onClick={() => router.push('/minhas-compras')}><i className='bx bxs-hand-right'></i>Ir para Minhas compras</a>
+                                </Col>
+                            </Col>
+                        </Row>
+                    )
+                }
+                {
+                    showErrorOnPayment && (
+                        <>
+                            <Row id="container-feedback-error">
+                                <Col className='container-msg-feedback m-auto' xs={12} md={6}>
+                                    <div className='container-title-feedback' xs={12}>
+                                        <h2>{paymentFeedback?.title ? paymentFeedback.title : 'Compra não autorizada!'}</h2>
+                                    </div>
+                                    <Row dangerouslySetInnerHTML={{ __html: paymentFeedback?.message ? paymentFeedback.message : '' }}></Row>
+
+                                    <Col xs={12} sm={6}>
+                                        <a class="default-btn default-outline-btn checkout-button" type="button" onClick={() => handleTryAgain()}>Tentar novamente</a>
+                                    </Col>
+                                </Col>
+                                <Col className='container-img-feedback position-relative' xs={12} md={6}>
+                                    <Image src={ErrorImage} layout='fill' alt="Imagem erro" />
+                                </Col>
+                            </Row>
+                        </>
                     )
                 }
 
