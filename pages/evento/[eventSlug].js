@@ -23,7 +23,6 @@ import shoppingCartService from '../../services/cart';
 import { toast } from 'react-toastify';
 import Checkout from '../../components/Checkout';
 
-
 const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate }) => {
   console.log(event);
   console.log(isActive);
@@ -126,7 +125,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
               src={event?.imagem_banner}
               alt='image'
             />
-            {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="absolute btn-compre-agora bannerinicial justify-content-center justify-content-md-start pt-4 row"><a className="default-btn"><i className="bx bxs-chat"></i>Comprar agora</a></div>}
+            {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="absolute btn-compre-agora bannerinicial justify-content-center justify-content-md-start pt-4 row"><a className="default-btn"><i className="bx bxs-chat"></i>{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>}
           </div>
         ) : (
           <>
@@ -136,7 +135,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
                   <div className='col-md-6 p-0 col-left-initial-banner'>
                     <div className='main-banner-content-landing'>
                       <h1 className='text-center text-md-start'>{event.nome_evento}</h1>
-                      {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="absolute btn-compre-agora justify-content-center justify-content-md-start pt-4 row"><a className="default-btn"><i className="bx bxs-chat"></i>Comprar agora</a></div>}
+                      {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="absolute btn-compre-agora justify-content-center justify-content-md-start pt-4 row"><a className="default-btn"><i className="bx bxs-chat"></i>{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>}
                     </div>
                   </div>
                   <div className='col-md-6 p-0 col-right-initial-banner'>

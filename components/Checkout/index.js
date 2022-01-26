@@ -15,6 +15,7 @@ import SuccessImage from '../../public/images/success.svg';
 import WaitingImage from '../../public/images/waiting.svg';
 import { scrollToElement } from '../../utils/scrollTo';
 import { useRouter } from 'next/router';
+import { copyToClipboard } from '../../utils/functions';
 
 const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, setHideOnCheckout, hideOnCheckout }) => {
     console.log(dados);
@@ -58,7 +59,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     const [paymentFeedback, setPaymentFeedback] = useState({
         title: '',
         message: '',
-        image: null
+        image: null,
+        qrCodeLink: ''
     })
 
     const [installmentsNumber, setInstallmentsNumber] = useState(1);
@@ -83,15 +85,17 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         console.log('there');
         generateInputTicketsData();
         getAvailablePaymentInfo();
-        // setShowPayment(false);
+        setShowPayment(false);
     }, [cartItems, couponId]);
 
     useEffect(() => {
-        if (showErrorOnPayment) {
-            scrollToElement({ id: 'container-feedback-error' });
-        } else if (showConfirmationPayment) {
-            scrollToElement({ id: 'container-feedback-success' });
-        }
+        setTimeout(() => {
+            if (showErrorOnPayment) {
+                scrollToElement({ id: 'container-feedback-error' });
+            } else if (showConfirmationPayment) {
+                scrollToElement({ id: 'container-feedback-success' });
+            }
+        }, 1000);
     }, [showErrorOnPayment, showConfirmationPayment])
 
     const ConfirmDeleteModal = () => (
@@ -275,7 +279,36 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             return toast.error("Preencha todos os campos para cada ingresso");
         }
         setShowInputErros(false);
-        return setShowPayment(true);
+        setShowPayment(true);
+        setTimeout(() => {
+            scrollToElement({id: 'hr-divisor'})
+        }, 500);
+    }
+
+    const handleFinishFreeEventSale = () => {
+        console.log(ticketsData);
+        // setShowPayment(true);
+        let showErrorTemp = false;
+        Object.values(ticketsData).map((ticketType, index) => {
+            ticketType.map((ticket, i) => {
+                console.log(ticket);
+                if (
+                    ticket.name.length < 2
+                    || !isValidCpf(ticket.cpf)
+                    || ticket.phone.length < 10
+                    || !isValidEmail(ticket.email)
+                ) {
+                    showErrorTemp = true;
+                }
+            })
+        })
+        console.log(showErrorTemp);
+        if (showErrorTemp) {
+            setShowInputErros(true);
+            return toast.error("Preencha todos os campos para cada ingresso");
+        }
+        setShowInputErros(false);
+        return handleSubmitSale();
     }
 
     const handleBackToTicketsData = () => {
@@ -348,61 +381,192 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
     }
 
+    const generatePayment = () => {
+        let payment = []
+        if (paymentMethod === 'cc') {
+
+            let cardNumer = creditCardData.number.replaceAll('/\s+/g ', '');
+
+            let expirationDate = creditCardData.expirationDate.split('/');
+            let expirationYear = expirationDate[1];
+            let expirationMonth = expirationDate[0];
+            if (expirationMonth < 10) {
+                expirationMonth = expirationMonth.replaceAll('0', '');
+            }
+
+            payment =
+                [
+                    {
+                        "payment_method": "credit_card",
+                        "credit_card": {
+                            "recurrence": false,
+                            "installments": installmentsNumber,
+                            "statement_descriptor": "EVENTOZZ",
+                            "card": {
+                                "number": cardNumer,
+                                "holder_name": creditCardData.name,
+                                "exp_month": expirationMonth,
+                                "exp_year": expirationYear,
+                                "cvv": creditCardData.cvv,
+                                "billing_address": {
+                                    "line_1": billingData?.address,
+                                    "zip_code": billingData?.cep,
+                                    "city": billingData?.city,
+                                    "state": billingData?.state,
+                                    "country": "BR"
+                                }
+                            }
+                        }
+                    }
+                ]
+                ;
+        }
+
+        // else if (paymentMethod === 'boleto') {
+        //     var payment =
+        //         [
+        //             {
+        //                 "payment_method": "boleto",
+        //                 "boleto": {
+        //                     "bank": "001",
+        //                     "instructions": "Pagar até o vencimento",
+        //                     "due_at": "2021-12-20T00:00:00Z",
+        //                     "document_number": "123",
+        //                     "nosso_numero": "1",
+        //                     "metadata": {},
+        //                     "type": "DM"
+        //                 }
+        //             }
+        //         ];
+
+        // }
+        else if (paymentMethod === 'pix') {
+            let expirationPix = '';
+            let now = new Date();
+            let startDateEvent = new Date(dados?.startDate);
+            let startDateEvent3Days = new Date(dados?.startDate).setDate(startDateEvent.getDate() - 3);
+            let startDateEventLessThan1Days = new Date(dados?.startDate).setDate(startDateEvent.getDate() - 1);
+            if (startDateEventLessThan1Days > now) {
+                expirationPix = 3600;
+            } else if (startDateEvent3Days > now) {
+                expirationPix = 43200;
+            } else {
+                expirationPix = 259200;
+            }
+            payment =
+                [
+                    {
+                        "payment_method": "pix",
+                        "pix": {
+                            "expires_in": expirationPix,
+                            "additional_information": [
+                                {
+                                    "name": "Ingresso comprado no",
+                                    "value": " Eventozz"
+                                }
+                            ]
+                        }
+                    }
+                ];
+        }
+
+
+        return payment;
+    }
+
     const handleSubmitSale = async () => {
         const errors = [];
 
+        let eventId = dados?.id;
+
         console.log(billingData);
-        // if (!isValidCreditCardNumber(creditCardData.number)) {
-        //     errors.push("Informe um número de cartão de crédito válido");
-        // }
+        console.log(ticketsData);
+        if (!eventId) {
+            return toast.error("Não conseguimos identificar o evento!");
+        }
+        setIsLoadingCheckout(true);
+        setTextLoading("Finalizando compra");
 
-        // if (!isValidExpirationDate(creditCardData.expirationDate)) {
-        //     errors.push("Informe uma Data de Vencimento válida");
-        // }
+        if (paymentMethod === 'cc') {
 
-        // if (creditCardData.cvv.length <= 1) {
-        //     errors.push("Informe o Código de Segurança");
-        // }
+            if (!isValidCreditCardNumber(creditCardData.number)) {
+                errors.push("Informe um número de cartão de crédito válido");
+            }
 
-        // if (creditCardData.name?.split(' ').length < 2) {
-        //     errors.push("Informe o nome que está escrito no cartão");
-        // }
+            if (!isValidExpirationDate(creditCardData.expirationDate)) {
+                errors.push("Informe uma Data de Vencimento válida");
+            }
 
-        // if (billingData.cep.length !== 8) {
-        //     errors.push("Informe um Cep válido");
-        // }
+            if (creditCardData.cvv.length <= 1) {
+                errors.push("Informe o Código de Segurança");
+            }
 
-        // if (billingData.address.length === 0) {
-        //     errors.push("Informe o endereço da fatura");
-        // }
+            if (creditCardData.name?.split(' ').length < 2) {
+                errors.push("Informe o nome que está escrito no cartão");
+            }
 
-        // if (billingData.city.length === 0) {
-        //     errors.push("Informe a cidade do endereço da fatura");
-        // }
+            if (billingData.cep.length !== 8) {
+                errors.push("Informe um Cep válido");
+            }
 
-        // if (billingData.state.length === 0) {
-        //     errors.push("Informe o estado do endereço da fatura");
-        // }
+            if (billingData.address.length === 0) {
+                errors.push("Informe o endereço da fatura");
+            }
 
-        // if (errors.length > 0) {
-        //     toast.dismiss();
-        //     return toast.error(<ValidationErrorMenssage errorMessage={errors} />, {
-        //         autoClose: errors.length * 2000,
-        //     });
-        // }
+            if (billingData.city.length === 0) {
+                errors.push("Informe a cidade do endereço da fatura");
+            }
 
-        handlePaymentFeedBack({
-            status: 'captured',
-            // qrCode: '',
-            qrCodeUrl: 'https://api.pagar.me/core/v5/transactions/tran_J09PpKvC6CmNOy4A/qrcode?payment_method=pix'
+            if (billingData.state.length === 0) {
+                errors.push("Informe o estado do endereço da fatura");
+            }
+
+
+            if (errors.length > 0) {
+                setTextLoading("");
+                setIsLoadingCheckout(false);
+                toast.dismiss();
+                return toast.error(<ValidationErrorMenssage errorMessage={errors} />, {
+                    autoClose: errors.length * 2000,
+                });
+            }
+        }
+
+        const ticketsDataTemp = [];
+        Object.values(ticketsData).map((ticketType, index) => {
+            console.log(ticketType);
+            if (ticketType?.length > 0) {
+                ticketType.map(ticket => {
+                    ticketsDataTemp.push(ticket);
+                })
+            }
         })
+        console.log(ticketsDataTemp);
+        const ticketsQtd = cartItems.map(item => ({
+            qtd: item.quantidade,
+            ticketId: item.idIngresso
+        }))
+        console.log(ticketsQtd);
 
 
-        //purchaseId
-        //body
-        //body.id
-        //body.status
-        //body.charges[0].last_transaction
+        let payments = await generatePayment();
+
+        let accessToken = window.localStorage.getItem("accessToken");
+        const body = {
+            couponId, eventId, installmentsNumber, paymentMethod, ticketsData: ticketsDataTemp,
+            ticketsQtd, isFree: dados?.is_free, payments
+        }
+        const response = await checkoutService.purchaseSave({ accessToken, body });
+        console.log(response);
+
+        setTextLoading("");
+        setIsLoadingCheckout(false);
+        if (response?.status === 200) {
+            const data = response?.data?.data;
+            handlePaymentFeedBack(data);
+        } else {
+
+        }
     }
 
     const ValidationErrorMenssage = ({ closeToast, toastProps, errorMessage }) => (
@@ -443,119 +607,129 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     }
 
     function handlePaymentFeedBack(feedback) {
-
-        let status = feedback.status;
+        console.log(feedback);
         let success = false;
         let title = '';
         let text = '';
         let image = '';
-        if (paymentMethod === 'cc') {
-            switch (status) {
-
-                case "not_authorized":
-                    title = 'Compra não autorizada!';
-                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                    image = ErrorImage;
-                    break;
-
-                case "captured":
-                    title = 'Compra autorizada!';
-                    text = 'Seu pagamento já foi aprovado e você receberá seu QR Code em seu email! <br/> Aproveite muito seu evento!';
-                    image = SuccessImage;
-                    success = true;
-                    break;
-
-                case "partial_capture":
-                    title = 'Pagamento sendo processado!';
-                    text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
-                    image = WaitingImage;
-                    success = true;
-                    break;
-
-                case "authorized_pending_capture":
-                    title = 'Pagamento sendo processado!';
-                    text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
-                    image = WaitingImage;
-                    success = true;
-                    break;
-
-                case "waiting_capture":
-                    title = 'Pagamento sendo processado!';
-                    text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
-                    image = WaitingImage;
-                    success = true;
-                    break;
-
-                case "refunded":
-                    title = 'Compra não autorizada!';
-                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                    image = ErrorImage;
-                    break;
-
-                case "voided":
-                    title = 'Compra não autorizada!';
-                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                    image = ErrorImage;
-                    break;
-
-                case "partial_refunded":
-                    title = 'Compra não autorizada!';
-                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                    image = ErrorImage;
-                    break;
-
-                case "partial_void":
-                    title = 'Compra não autorizada!';
-                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                    image = ErrorImage;
-                    break;
-
-                case "error_on_voiding":
-                    title = 'Compra não autorizada!';
-                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                    image = ErrorImage;
-                    break;
-
-                case "error_on_refunding":
-                    title = 'Compra não autorizada!';
-                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                    image = ErrorImage;
-                    break;
-
-                case "waiting_cancellation":
-                    title = 'Compra não autorizada!';
-                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                    image = ErrorImage;
-                    break;
-
-                case "with_error":
-                    title = 'Compra não autorizada!';
-                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                    image = ErrorImage;
-                    break;
-
-                case "failed":
-                    title = 'Compra não autorizada!';
-                    text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                    image = ErrorImage;
-                    break;
-            }
-        } else {
-            let qrcode = feedback.qrCode;
-            let qRCodeImage = feedback.qrCodeUrl;
+        let link = '';
+        if (dados?.is_free) {
+            title = 'Reserva realizada!';
+            text = 'Seus ingressos já foram reservados e você receberá o QR Code em seu email! <br/> Aproveite muito seu evento!';
+            image = SuccessImage;
             success = true;
-            title = "Seu PIX foi gerado!";
-            text = `O QR Code para entrada no evento chegará em seu email quando o pagamento for confirmado! <br></br>
-        Além disso, seu nome e CPF estarão na lista e você pode acessar aqui para emitir uma segunda via!
-        </br></br>
-        Desde já, bom evento em nome da Eventozz!`;
-            image = qRCodeImage ? qRCodeImage : '';
+        } else {
+            let status = feedback?.status;
+            if (paymentMethod === 'cc') {
+                switch (status) {
+
+                    case "not_authorized":
+                        title = 'Compra não autorizada!';
+                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                        image = ErrorImage;
+                        break;
+
+                    case "captured":
+                        title = 'Compra autorizada!';
+                        text = 'Seu pagamento já foi aprovado e você receberá seu QR Code em seu email! <br/> Aproveite muito seu evento!';
+                        image = SuccessImage;
+                        success = true;
+                        break;
+
+                    case "partial_capture":
+                        title = 'Pagamento sendo processado!';
+                        text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
+                        image = WaitingImage;
+                        success = true;
+                        break;
+
+                    case "authorized_pending_capture":
+                        title = 'Pagamento sendo processado!';
+                        text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
+                        image = WaitingImage;
+                        success = true;
+                        break;
+
+                    case "waiting_capture":
+                        title = 'Pagamento sendo processado!';
+                        text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
+                        image = WaitingImage;
+                        success = true;
+                        break;
+
+                    case "refunded":
+                        title = 'Compra não autorizada!';
+                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                        image = ErrorImage;
+                        break;
+
+                    case "voided":
+                        title = 'Compra não autorizada!';
+                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                        image = ErrorImage;
+                        break;
+
+                    case "partial_refunded":
+                        title = 'Compra não autorizada!';
+                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                        image = ErrorImage;
+                        break;
+
+                    case "partial_void":
+                        title = 'Compra não autorizada!';
+                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                        image = ErrorImage;
+                        break;
+
+                    case "error_on_voiding":
+                        title = 'Compra não autorizada!';
+                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                        image = ErrorImage;
+                        break;
+
+                    case "error_on_refunding":
+                        title = 'Compra não autorizada!';
+                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                        image = ErrorImage;
+                        break;
+
+                    case "waiting_cancellation":
+                        title = 'Compra não autorizada!';
+                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                        image = ErrorImage;
+                        break;
+
+                    case "with_error":
+                        title = 'Compra não autorizada!';
+                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                        image = ErrorImage;
+                        break;
+
+                    case "failed":
+                        title = 'Compra não autorizada!';
+                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                        image = ErrorImage;
+                        break;
+                }
+            } else {
+                let qrCodeLink = feedback.qrCode;
+                let qRCodeImage = feedback.qrCodeUrl;
+                success = true;
+                title = "Seu PIX foi gerado!";
+                text = `O QR Code para entrada no evento chegará em seu email quando o pagamento for confirmado! <br></br>
+            Além disso, seu nome e CPF estarão na lista e você pode acessar aqui para emitir uma segunda via!
+            </br></br>
+            Desde já, bom evento em nome da Eventozz!`;
+                image = qRCodeImage ? qRCodeImage : '';
+                link = qrCodeLink ? qrCodeLink : false;
+            }
         }
 
         setPaymentFeedback({
             title,
             message: text,
-            image
+            image,
+            qrCodeLink: link
         });
         if (success) {
             setShowConfirmationPayment(true);
@@ -618,28 +792,31 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                                         </Col>
                                                         <Col xs={6}>
                                                             <label>Valor Total</label>
-                                                            <h6>{convertMoney((cartItem.qtdPromocional > 0 && Number(cartItem.quantidade) >= cartItem.qtdPromocional ? cartItem.valorPromocional : cartItem.valor) * cartItem?.quantidade)}</h6>
+                                                            <h6>{dados?.is_free ? 'Gratuito' : convertMoney((cartItem.qtdPromocional > 0 && Number(cartItem.quantidade) >= cartItem.qtdPromocional ? cartItem.valorPromocional : cartItem.valor) * cartItem?.quantidade)}</h6>
                                                         </Col>
                                                     </Row>
-                                                    <Row className='pb-2'>
-                                                        <Col xs={12}>
-                                                            <div className='container-acoes-responsivo d-flex justify-content-center pt-3'>
+                                                    {
+                                                        !showPayment && !hideOnCheckout &&
+                                                        (<Row className='pb-2'>
+                                                            <Col xs={12}>
+                                                                <div className='container-acoes-responsivo d-flex justify-content-center pt-3'>
 
 
-                                                                <div className='container-left'>
-                                                                    <a class="btn btn-outline-danger" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: cartItem.quantidade - 1, cartItem })}><span><i class="fa fa-minus"></i></span></a>
-                                                                </div>
-                                                                <div className='container-excluir' onClick={() => handleShowConfirmDeleteItem(cartItem.idInShoppingCar)}>
-                                                                    <div><span><i className="fa fa-trash"></i></span></div>
-                                                                    <div className='underline texto-excluir'>Excluir</div>
-                                                                </div>
-                                                                <div className='container-right'>
-                                                                    <a class="btn btn-outline-success" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: Number(cartItem.quantidade) + 1, cartItem })}><span><i class="fa fa-plus"></i></span></a>
-                                                                </div>
+                                                                    <div className='container-left'>
+                                                                        <a class="btn btn-outline-danger" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: cartItem.quantidade - 1, cartItem })}><span><i class="fa fa-minus"></i></span></a>
+                                                                    </div>
+                                                                    <div className='container-excluir' onClick={() => handleShowConfirmDeleteItem(cartItem.idInShoppingCar)}>
+                                                                        <div><span><i className="fa fa-trash"></i></span></div>
+                                                                        <div className='underline texto-excluir'>Excluir</div>
+                                                                    </div>
+                                                                    <div className='container-right'>
+                                                                        <a class="btn btn-outline-success" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: Number(cartItem.quantidade) + 1, cartItem })}><span><i class="fa fa-plus"></i></span></a>
+                                                                    </div>
 
-                                                            </div>
-                                                        </Col>
-                                                    </Row>
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+                                                        )}
                                                 </div>
                                             )
                                         })
@@ -647,12 +824,13 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     <div className='container-ticket-responsivo resumo'>
                                         <Row className='pb-2'>
                                             <Col xs={12}>
-                                                <label>Total (com taxas)</label>
-                                                <h3 className='mb-0 crypto-name'>{paymentMethod === 'pix' ?
-                                                    pixValue ? convertMoney(pixValue) : ''
-                                                    : installmentOptions[0]?.value ?
-                                                        `A partir de ${convertMoney(installmentOptions[0]?.totalValue)}`
-                                                        : ''}</h3>
+                                                <label>{dados?.is_free ? 'Total' : 'Total (com taxas)'}</label>
+                                                {dados?.is_free ? <h3 className='mb-0 crypto-name'>Gratuito</h3> :
+                                                    <h3 className='mb-0 crypto-name'>{paymentMethod === 'pix' ?
+                                                        pixValue ? convertMoney(pixValue) : ''
+                                                        : installmentOptions[0]?.value ?
+                                                            `A partir de ${convertMoney(installmentOptions[0]?.totalValue)}`
+                                                            : ''}</h3>}
                                             </Col>
                                         </Row>
                                         <Row className='pb-2'>
@@ -688,10 +866,10 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                                         </td>
                                                         <td>{cartItem.nome}</td>
                                                         <td><span className='trending up'>{cartItem?.quantidade}</span></td>
-                                                        <td>{convertMoney((cartItem.qtdPromocional > 0 && Number(cartItem.quantidade) >= cartItem.qtdPromocional ? cartItem.valorPromocional : cartItem.valor) * cartItem?.quantidade)}</td>
+                                                        <td>{dados?.is_free ? 'Gratuito' : convertMoney((cartItem.qtdPromocional > 0 && Number(cartItem.quantidade) >= cartItem.qtdPromocional ? cartItem.valorPromocional : cartItem.valor) * cartItem?.quantidade)}</td>
 
                                                         {
-                                                            !showPayment &&
+                                                            !showPayment && !hideOnCheckout &&
                                                             (
                                                                 <td>
                                                                     <div className='d-flex container-acoes'>
@@ -727,14 +905,15 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                             )
                                         }
                                         <tr>
-                                            <td><h3 className='mb-0 crypto-name'>Total (com taxas)</h3></td>
+                                            <td><h3 className='mb-0 crypto-name'>{dados?.is_free ? 'Total' : 'Total (com taxas)'}</h3></td>
                                             <td></td>
                                             <td>{totalTickets}</td>
-                                            <td>{paymentMethod === 'pix' ?
-                                                pixValue ? convertMoney(pixValue) : ''
-                                                : installmentOptions[0]?.value ?
-                                                    `A partir de ${convertMoney(installmentOptions[0]?.totalValue)}`
-                                                    : ''}
+                                            <td>{dados?.is_free ? 'Gratuito' :
+                                                paymentMethod === 'pix' ?
+                                                    pixValue ? convertMoney(pixValue) : ''
+                                                    : installmentOptions[0]?.value ?
+                                                        `A partir de ${convertMoney(installmentOptions[0]?.totalValue)}`
+                                                        : ''}
                                             </td>
                                             <td></td>
                                         </tr>
@@ -753,7 +932,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                         </Col>
                     </Row>
                 }
-                <hr className='hr-divisor' />
+                <hr id="hr-divisor" className='hr-divisor' />
                 {
                     !showPayment && !hideOnCheckout && (
                         <>
@@ -813,7 +992,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 {
                     showPayment && !hideOnCheckout && (
                         <>
-                            <Row className='container-checkout pb-5'>
+                            <Row id="container-payment-checkout" className='container-checkout pb-5'>
                                 <Col xs={12} sm={6} className='pt-3'>
                                     {/* <div className='section-title'> */}
                                     <h3>Escolha a forma de pagamento</h3>
@@ -947,7 +1126,10 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     Object.values(ticketsData).length > 0 && !showPayment && !hideOnCheckout && (
                         <Row>
                             <Col xs={12}>
-                                <a class="default-btn checkout-button" type="button" onClick={() => handleShowPayment()}><i className='bx bxs-hand-right'></i>Ir para pagamento</a>
+                                <a class="default-btn checkout-button" type="button" onClick={() => {
+                                    if (dados?.is_free) handleFinishFreeEventSale()
+                                    else handleShowPayment()
+                                }}><i className='bx bxs-hand-right'></i>{dados?.is_free ? 'Reservar ingressos' : 'Ir para pagamento'}</a>
                             </Col>
                         </Row>
                     )
@@ -962,11 +1144,11 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                 </div>
                                 <Row dangerouslySetInnerHTML={{ __html: paymentFeedback?.message ? paymentFeedback.message : '' }}></Row>
                                 {
-                                    paymentMethod === 'pix' && paymentFeedback?.image &&
+                                    !dados?.is_free && paymentMethod === 'pix' && paymentFeedback?.qrCodeLink &&
                                     (
                                         <Row className='copy-button'>
-                                            <Col className='container-copy-button' xs={6}>
-                                                <a class="default-btn checkout-button" type="button" onClick={() => copyToClipboard(paymentFeedback?.qrCodeUrl)}><i className='bx bxs-copy'></i>Copiar</a>
+                                            <Col className='container-copy-button' xs={12}>
+                                                <a class="default-btn checkout-button" type="button" onClick={() => copyToClipboard(paymentFeedback?.qrCodeLink)}><i className='bx bxs-copy'></i>Copiar</a>
                                             </Col>
                                         </Row>
                                     )

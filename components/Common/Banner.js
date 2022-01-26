@@ -35,7 +35,7 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
       if (accessToken) {
         const resultClient = await shoppingCartService.listShoppingCart(dados?.id, accessToken);
         let vectorClient = resultClient?.data?.data;
-        if (vectorClient.length === 0) {
+        if (vectorClient?.length === 0) {
           ticketTypesInfo.map(a => {
             a.quantidade = 0;
             a.activeValue = a.valor;
@@ -47,7 +47,7 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
           console.log(vectorClient);
           ticketTypesInfo.map(a => {
             let hasTicketsInCart = false;
-            vectorClient.map((b) => {
+            vectorClient?.map((b) => {
               if (b.idIngresso == a.id) {
                 a.quantidade = Number(b.quantidade);
                 a.activeValue = a.qtd_promocional > 0 && Number(b.quantidade) >= a.qtd_promocional ? a.valor_promocional : a.valor;
@@ -253,7 +253,7 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
                       <div className="col-lg-3 col-md-6 col-sm-10 ticket-animate">
                         <div className="box-ticket animate">
                           <h3>{ticket.nome}</h3>
-                          <div className="price-box-ticket">{convertMoney(ticket.activeValue)}</div>
+                          <div className="price-box-ticket">{dados?.is_free ? 'Gratuito' : convertMoney(ticket.activeValue)}</div>
                           <ul>
                           </ul>
                           <div className="row mt-5 mb-5">
@@ -277,10 +277,10 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
                   <div className='align-items-end d-flex'>
                     <span className='box-tickets-total-value-title'>
                       <div className='d-block div-title'>Valor Total</div>
-                      <small>(Sem taxas inclusas)</small>
+                      {!dados?.is_free && <small>(Sem taxas inclusas)</small>}
                     </span>
                   </div>
-                  <span className='box-tickets-total-value-text'>{convertMoney(valorTotal)}</span>
+                  <span className='box-tickets-total-value-text'>{dados?.is_free ? 'Gratuito' : convertMoney(valorTotal)}</span>
                 </div>
 
                 <div className="box-button-landing justify-content-center" >

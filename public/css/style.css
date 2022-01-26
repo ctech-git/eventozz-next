@@ -8114,4 +8114,14 @@ width: 100px;
   .container-img-feedback.success-feedback{
     min-height: 400px;
   }
+
+  .img-eventozz-buy-page-banner{
+    height: auto !important;
+  }
+
+  .container-checkout .cupom-button{
+    padding-left: 0;
+    padding-right: 0;
+  }
+
 }

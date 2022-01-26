@@ -84,7 +84,7 @@ const TokensArea = ({ item, endTime, showTicketSale }) => {
               </div>
             </div>
           </div>
-          {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="justify-content-center pt-50 row btn-compre-agora absolute"><a className="default-btn"><i className="bx bxs-chat"></i>Comprar agora</a></div>}
+          {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="justify-content-center pt-50 row btn-compre-agora absolute"><a className="default-btn"><i className="bx bxs-chat"></i>{item?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>}
         </div>
       </div>
     </>
