@@ -40,7 +40,7 @@ const options = {
   },
 };
 
-const Platform = ({events = []}) => {
+const Platform = ({ events = [] }) => {
   const router = useRouter()
   const [display, setDisplay] = useState(false);
   const [isMounted, setisMounted] = useState(false);
@@ -80,12 +80,15 @@ const Platform = ({events = []}) => {
             <Row className="box-events">
               {events.map((item, index) => {
                 return (
-                  <div className="card-events-home" onClick={() => goToEvents(item.slug)}>
-                    <img
-                      className="img-eventozz"
-                      src={item.foto}
-                      alt='image'
-                    />
+                  <Col xs={12} sm={6} md={3} className="card-events-home" onClick={() => goToEvents(item.slug)}>
+                    <div className='container-image-event'>
+                      <img
+                        className="img-eventozz"
+                        src={item.foto}
+                        alt='image'
+                      />
+                    </div>
+
                     <div>
                       <label>{dateLastAccess(item.data_inicio)}</label>
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -99,7 +102,7 @@ const Platform = ({events = []}) => {
                     <span>{item.nome_evento}</span>
                     <span className="legend-events">{item.local_evento}</span>
 
-                  </div>
+                  </Col>
                 )
               })}
               {/* 

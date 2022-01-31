@@ -149,8 +149,7 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
 
 
     } else {
-      toast.error('Faça login', {
-        position: "bottom-left",
+      toast.error('É necessário fazer login para continuar', {
         autoClose: 2000
       })
       setTimeout(function () {

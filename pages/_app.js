@@ -13,19 +13,22 @@ import Layout from '../components/Layout/Layout';
 import GoTop from '../components/Shared/GoTop';
 import cookies from 'next-cookies'
 import { ToastContainer } from 'react-toastify';
+import { AuthContext, AuthProvider } from '../context/auth';
+import { useContext, useEffect } from 'react';
 
 function App({ Component, pageProps }) {
   const store = useStore(pageProps.initialReduxState);
 
   return (
-    <Provider store={store}>
-      <Layout>
-        <Component {...pageProps} />
-        <GoTop />
-      </Layout>
-
-      <ToastContainer limit={1}/>
-    </Provider>
+    <AuthProvider>
+      <Provider store={store}>
+        <Layout>
+          <Component {...pageProps} />
+          <GoTop />
+        </Layout>
+        <ToastContainer limit={1} />
+      </Provider>
+    </AuthProvider>
   );
 }
 

@@ -2012,10 +2012,10 @@ box eventos listagem lista events
 }
 .card-events-home{
   cursor: pointer;
-  width: 23% !important;
-  min-width: 23% !important;
-  margin-left: 1%;
-  margin-right: 1%;
+  /* width: 23% !important;
+  min-width: 23% !important; */
+  /* margin-left: 1%;
+  margin-right: 1%; */
   margin-bottom: 50px;
   
 }
@@ -8080,6 +8080,28 @@ width: 100px;
 
 .container-img-feedback.success-feedback{
   min-height: 600px;
+}
+
+.container-image-event{
+  position: relative;
+  padding-bottom: 83.33%;
+}
+
+.container-image-event img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100% !important;
+}
+
+.divisor-login-types{
+  font-size: 18px;
+}
+
+.linkNavbar{
+  background: transparent;
+  border: none;
 }
 
 @media (max-width: 767px){

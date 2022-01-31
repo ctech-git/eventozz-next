@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { isValidCpf, cpfMask, phoneMaskForList, onlyUnsignedNumbers } from '../../utils/strings';
 import Services from '../../services/login';
 import ServicesExternal from '../../services/externalRequest';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoogleLogin from 'react-google-login';
+import { AuthContext } from '../../context/auth';
 
 
 
 const RegisterForm = () => {
 
+  const authContext = useContext(AuthContext);
+
+  const {setUserToken} = authContext;
   const [etapa, setEtapa] = useState(1);
 
   const [fullName, setFullName] = useState("");
@@ -95,6 +99,7 @@ const RegisterForm = () => {
         if (response.status == 200) {
           if (response?.data?.token) {
             window.localStorage.setItem("accessToken", response?.data?.token);
+            setUserToken(response?.data?.token);
             window.location.href = "/";
           } else {
             toast.error("Falhar no Login", {
@@ -164,6 +169,17 @@ const RegisterForm = () => {
       <div className='col-lg-6 col-md-12'>
         <div className='register-form'>
           <h2>Quero criar uma conta</h2>
+          {etapa == 1 && (
+            <GoogleLogin
+              clientId="1061997614720-m694ntnbcs1q0f1595lggt8hgjt968bm.apps.googleusercontent.com"
+              buttonText="Entrar com Google"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              className="login-with-google"
+              cookiePolicy={'single_host_origin'}
+            />
+          )}
+          <p className='pt-4 divisor-login-types text-center'>ou</p>
           <form>
             {etapa == 1 && (
               <>
@@ -310,16 +326,7 @@ const RegisterForm = () => {
               </div>
             )}
           </form>
-          {etapa == 1 && (
-            <GoogleLogin
-              clientId="1061997614720-m694ntnbcs1q0f1595lggt8hgjt968bm.apps.googleusercontent.com"
-              buttonText="Entrar com Google"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              className="login-with-google"
-              cookiePolicy={'single_host_origin'}
-            />
-          )}
+          
         </div>
       </div>
     </>

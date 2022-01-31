@@ -1,18 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { Button } from 'react-bootstrap';
+import { AuthContext } from '../../context/auth';
 import Link from '../../utils/ActiveLink';
 
 const Navbar = () => {
+  const authContext = useContext(AuthContext);
   const [showMenu, setshowMenu] = useState(false);
-  const [token, setToken] = useState(false);
-
+  const {userToken, logout} = authContext;
+  console.log(logout);
+  // const [token, setToken] = useState(false);
+  console.log(userToken);
   const toggleMenu = () => {
     setshowMenu(!showMenu);
   };
 
-  useEffect(() => {
-    let accessToken = window.localStorage.getItem("accessToken");
-    setToken(accessToken ? (accessToken) : (false));
-  }, []);
+  // useEffect(() => {
+  //   let accessToken = window.localStorage.getItem("accessToken");
+  //   setToken(accessToken ? (accessToken) : (false));
+  // }, []);
   useEffect(() => {
     let elementId = document.getElementById('navbar');
     document.addEventListener('scroll', () => {
@@ -50,7 +55,7 @@ const Navbar = () => {
                 <div className='d-flex align-items-center'>
                   <div className='option-item'>
                     {
-                      token ? (
+                      userToken ? (
                         <Link href='/wallet' activeClassName='active'>
                           <a className='login-btn'>
                             <i className='bx bx-user'></i>
@@ -344,10 +349,10 @@ const Navbar = () => {
                 <div className='d-flex align-items-center'>
                   <div className='option-item'>
                     {
-                      token ? (
-                        <Link href='/wallet' activeClassName='active'>
+                      userToken ? (
+                        <Link href='/minhas-compras' activeClassName='active'>
                           <a className='login-btn'>
-                            <i className='bx bx-user'></i> Perfil
+                            <i className='bx bx-user'></i> Minhas compras
                           </a>
                         </Link>
                       ) : (
@@ -361,12 +366,12 @@ const Navbar = () => {
 
                   </div>
                   <div className='option-item'>
-                    {token && (
-                      <Link href='/prices' activeClassName='active'>
+                    {userToken && (
+                      <Button onClick={() => logout()} className='linkNavbar' activeClassName='active'>
                         <a className='login-btn'>
-                          <i className='bx bx-shopping-bag'></i>Compras
+                          <i className='bx bx-log-out'></i>Sair
                         </a>
-                      </Link>
+                      </Button>
                     )}
                   </div>
                   <div className='option-item'>

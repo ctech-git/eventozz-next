@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { isValidCpf, onlyUnsignedNumbers } from '../../utils/strings';
 import Services from '../../services/login';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoogleLogin from 'react-google-login';
+import { AuthContext } from '../../context/auth';
+import { useRouter } from 'next/router';
 
 const LoginForm = () => {
+
+  const router = useRouter();
+  const authContext = useContext(AuthContext);
+  const {setUserToken, setUserName} = authContext;
 
   const [emailCPF, setEmailCPF] = useState("");
   const [senha, setSenha] = useState("");
@@ -31,7 +37,9 @@ const LoginForm = () => {
 
         if (result?.data?.token) {
           window.localStorage.setItem("accessToken", result?.data?.token);
-          window.location.href = "/";
+          setUserToken(result?.data?.token);
+          router.push("/");
+          // window.location.href = "/";
         } else {
           toast.error("Falhar no Login", {
             position: "bottom-left",
@@ -74,10 +82,13 @@ const LoginForm = () => {
     if (!isError) {
       console.log("--------------")
       const response = await Services.LoginNative(cpfEmail, senha);
+      console.log(response);
       if (response.status == 200) {
         if (response?.data?.token) {
           window.localStorage.setItem("accessToken", response?.data?.token);
-          window.location.href = "/";
+          setUserToken(response?.data?.token);
+          router.push("/");
+          // window.location.href = "/";
         } else {
           toast.error("Falhar no Login", {
             position: "bottom-left",
@@ -106,6 +117,16 @@ const LoginForm = () => {
       <div className='col-lg-6 col-md-12'>
         <div className='login-form'>
           <h2>Já sou cliente</h2>
+          <GoogleLogin
+            clientId="1061997614720-m694ntnbcs1q0f1595lggt8hgjt968bm.apps.googleusercontent.com"
+            buttonText="Entrar com Google"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            className="login-with-google"
+            cookiePolicy={'single_host_origin'}
+          />
+          <p className='pt-4 divisor-login-types text-center'>ou</p>
+
           <form>
             <div className='form-group'>
               <input
@@ -143,14 +164,7 @@ const LoginForm = () => {
           </form>
 
 
-          <GoogleLogin
-            clientId="1061997614720-m694ntnbcs1q0f1595lggt8hgjt968bm.apps.googleusercontent.com"
-            buttonText="Entrar com Google"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            className="login-with-google"
-            cookiePolicy={'single_host_origin'}
-          />
+          
 
 
         </div>

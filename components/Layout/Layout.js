@@ -10,8 +10,18 @@ import NavbarTwo from './NavbarTwo';
 
 //footer
 import Footer from './Footer';
+import { useContext, useEffect } from 'react';
+import { AuthContext } from '../../context/auth';
 
 const Layout = ({ children }) => {
+
+  const authContext = useContext(AuthContext);
+
+  const { checkUserToken } = authContext;
+
+  useEffect(() => {
+    checkUserToken();
+  }, [])
 
   const router = useRouter();
   const { pathname } = router;
