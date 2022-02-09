@@ -212,7 +212,12 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
       {/* <ToastContainer /> */}
 
       <div className='trade-cryptocurrency-area ptb-100' id="tickets-sale-area"
-        style={{ background: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
+        style={{
+          background:
+            dados?.cor_principal ?
+              (dados?.cor_principal) :
+              ('linear-gradient(0deg, #0062ff, #081587)')
+        }}
       >
         <div className='container'>
           <div className='row align-items-center'>

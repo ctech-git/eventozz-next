@@ -2,6 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Head from 'next/head';
+import { Row, Col } from 'react-bootstrap';
 
 import Banner from '../../components/Common/Banner';
 import Features from '../../components/Trade/Features';
@@ -54,14 +55,14 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
       console.log(data)
       setCartItems(data);
       setShowCheckout(true);
-      scrollToElement({id: 'container-checkout'});
-    }else{
+      scrollToElement({ id: 'container-checkout' });
+    } else {
       return toast.info("Não encontramos nenhum ingresso no seu carrinho");
     }
     setIsLoadingCartItem(false);
   };
 
-  const handleChangeTicketQuantity = async ({idInShoppingCart, quantity, cartItem}) => {
+  const handleChangeTicketQuantity = async ({ idInShoppingCart, quantity, cartItem }) => {
     console.log(quantity, cartItem.qtdDisponivel);
     if (quantity > cartItem.qtdDisponivel) {
       return toast.info("A quantidade informada não está mais disponível");
@@ -73,35 +74,35 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
     // return;
     const accessToken = window.localStorage.getItem("accessToken");
     setIsLoadingCartItem(true);
-    const result = await shoppingCartService.updateQuantityShoppingCart({idInShoppingCart, quantity, accessToken});
+    const result = await shoppingCartService.updateQuantityShoppingCart({ idInShoppingCart, quantity, accessToken });
     var data = result?.data;
     if (data?.success) {
       console.log(data)
       getCartItems();
       // setCartItems(data);
       // setShowCheckout(true);
-    }else{
+    } else {
       return toast.info("Não encontramos nenhum ingresso no seu carrinho");
     }
     setIsLoadingCartItem(false);
-  }; 
+  };
 
   const handleDeleteItem = async (idInShoppingCart) => {
 
     const accessToken = window.localStorage.getItem("accessToken");
     setIsLoadingCartItem(true);
-    const result = await shoppingCartService.deleteShoppingCartItem({idInShoppingCart, accessToken});
+    const result = await shoppingCartService.deleteShoppingCartItem({ idInShoppingCart, accessToken });
     var data = result?.data;
     if (data?.success) {
       console.log(data)
       getCartItems();
       // setCartItems(data);
       // setShowCheckout(true);
-    }else{
+    } else {
       return toast.info("Não encontramos nenhum ingresso no seu carrinho");
     }
     setIsLoadingCartItem(false);
-  }; 
+  };
 
   return (
     <>
@@ -125,7 +126,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
               src={event?.imagem_banner}
               alt='image'
             />
-            {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="absolute btn-compre-agora bannerinicial justify-content-center justify-content-md-start pt-4 row"><a className="default-btn"><i className="bx bxs-chat"></i>{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>}
+            {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora bannerinicial justify-content-center justify-content-md-start pt-4 row"><a className="default-btn"><i className="bx bxs-chat"></i>{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>}
           </div>
         ) : (
           <>
@@ -135,7 +136,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
                   <div className='col-md-6 p-0 col-left-initial-banner'>
                     <div className='main-banner-content-landing'>
                       <h1 className='text-center text-md-start'>{event.nome_evento}</h1>
-                      {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="absolute btn-compre-agora justify-content-center justify-content-md-start pt-4 row"><a className="default-btn"><i className="bx bxs-chat"></i>{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>}
+                      {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora justify-content-center justify-content-md-start pt-4 row"><a className="default-btn"><i className="bx bxs-chat"></i>{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>}
                     </div>
                   </div>
                   <div className='col-md-6 p-0 col-right-initial-banner'>
@@ -166,15 +167,26 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
         )}
 
         </div>
-        <Features item={event} showTicketSale={showTicketSale} />
-        <EventDetails item={event} showTicketSale={showTicketSale} />
+
         {showTicketSale && !hideOnCheckout && (
           <>
             <TokensArea item={event} endTime={eventDay} showTicketSale={showTicketSale} />
+          </>
+        )}
+
+        <Row>
+          <Col xs={12}>
+            <EventDetails item={event} showTicketSale={showTicketSale} />
+          </Col>
+        </Row>
+
+        {showTicketSale && !hideOnCheckout && (
+          <>
             <Banner item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
           </>
-        )
-        }
+        )}
+
+
         {
           showEventSoon && (
             <div className="event-finish pt-100">
@@ -195,11 +207,10 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
         }
         <PaymentArea />
         {
-          showCheckout && <Checkout dados={event} cartItems={cartItems} handleChangeTicketQuantity={handleChangeTicketQuantity} 
-          handleDeleteItem={handleDeleteItem} isLoadingCartItem={isLoadingCartItem} handleAddCupom={getCartItems} hideOnCheckout={hideOnCheckout} 
-          setHideOnCheckout={setHideOnCheckout} />
+          showCheckout && <Checkout dados={event} cartItems={cartItems} handleChangeTicketQuantity={handleChangeTicketQuantity}
+            handleDeleteItem={handleDeleteItem} isLoadingCartItem={isLoadingCartItem} handleAddCupom={getCartItems} hideOnCheckout={hideOnCheckout}
+            setHideOnCheckout={setHideOnCheckout} />
         }
-        {/* <RegisterArea ctaImage='/images/man.png' item={event} /> */}
       </div>
     </>
   );

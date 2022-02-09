@@ -56,35 +56,34 @@ const TokensArea = ({ item, endTime, showTicketSale }) => {
         <div className='container'>
           <div className='row justify-content-center align-items-center'>
             <div className='col-lg-6 col-md-12'>
-              <div className='tokens-image'>
+              {/* <div className='tokens-image'>
                 <img src={item.foto} alt='image' />
-              </div>
+              </div> */}
             </div>
-            <div className='col-lg-6 col-md-12'>
-              <div className='tokens-content'>
-                <h2>{item.texto_contador}</h2>
-                <span>{item.descricao_contador}</span>
-                <div id='countdown'>
-                  <ul>
-                    <li>
-                      <span id='days'>{days}</span>DAYS
-                    </li>
-                    <li>
-                      <span id='hours'>{hours}</span>HOURS
-                    </li>
-                    <li>
-                      <span id='minutes'>{minutes}</span>MIN
-                    </li>
-                    <li>
-                      <span id='seconds'>{seconds}</span>SEC
-                    </li>
-                  </ul>
-                </div>
+            <div className='tokens-content text-center pb-100'>
+              <h2>{item.texto_contador}</h2>
+              <span>{item.descricao_contador}</span>
+              <div id='countdown'>
+                <ul>
+                  <li>
+                    <span id='days'>{days}</span>DAYS
+                  </li>
+                  <li>
+                    <span id='hours'>{hours}</span>HOURS
+                  </li>
+                  <li>
+                    <span id='minutes'>{minutes}</span>MIN
+                  </li>
+                  <li>
+                    <span id='seconds'>{seconds}</span>SEC
+                  </li>
+                </ul>
+              </div>
 
-              </div>
             </div>
+
           </div>
-          {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="justify-content-center pt-50 row btn-compre-agora absolute"><a className="default-btn"><i className="bx bxs-chat"></i>{item?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>}
+          {/* {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="justify-content-center pt-50 row btn-compre-agora absolute"><a className="default-btn"><i className="bx bxs-chat"></i>{item?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>} */}
         </div>
       </div>
     </>

@@ -9,7 +9,7 @@ import { scrollToElement } from '../../utils/scrollTo';
 
 
 
-const EventDetails = ({item, showTicketSale}) => {
+const EventDetails = ({ item, showTicketSale }) => {
   const dados = item;
 
   return (
@@ -76,10 +76,18 @@ const EventDetails = ({item, showTicketSale}) => {
                     </div>
                   </div>
                 </div>
-                {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="justify-content-center pt-4 row btn-compre-agora absolute"><a className="default-btn"><i className="bx bxs-chat"></i>{dados?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>}
+                {/* {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="justify-content-center pt-4 row btn-compre-agora absolute"><a className="default-btn"><i className="bx bxs-chat"></i>{dados?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>} */}
+                <div className='section-title pt-100'>
+                  <div key={'x-event'} dangerouslySetInnerHTML={{
+                    __html: dados.descricao,
+                  }}>
 
+                  </div>
+                </div>
               </div>
+
             </div>
+
           </div>
         </div>
         <div className='lines'>
