@@ -8104,6 +8104,20 @@ width: 100px;
   border: none;
 }
 
+.container-spinner.minhas-compras{
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+}
+
+.container-spinner.minhas-compras .spinner-border{
+  color: #000;
+}
+
+.container-minhas-compras{
+  min-height: 200px;
+}
+
 @media (max-width: 767px){
   .col-left-initial-banner{
     position: absolute;

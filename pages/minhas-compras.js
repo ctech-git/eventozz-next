@@ -3,6 +3,11 @@ import RegisterArea from '../components/Common/RegisterArea';
 import AppDownload from '../components/Common/AppDownload';
 import RegisterAreaTwo from '../components/Common/RegisterAreaTwo';
 import Link from 'next/link';
+import servicesEventozz from '../services/events';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../context/auth';
+import { Button, Container } from 'react-bootstrap';
+import { EventDetails } from '../components/EventDetails';
 
 const Wallet = () => {
 
@@ -77,14 +82,33 @@ const Wallet = () => {
       "status": "PAGO",
     }
   ];
+  const [eventzz, setEventzz] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showEventDetails, setShowEventDetails] = useState(false);
+
+  const getUserEventzz = useCallback(async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const result = await servicesEventozz.getUserEventzz({ accessToken });
+    setIsLoading(false);
+    if (result?.data?.success) {
+      setEventzz(result?.data?.data);
+      //nome_evento
+      //descricao
+      //status_descricao = pending | paid | failed | gratuito
+    }
+  }, [])
+
+  useEffect(() => {
+    getUserEventzz();
+  }, [])
 
   const selectStatus = (string) => {
     switch (string) {
-      case "PAGO":
+      case "paid":
         return "Pago com Sucesso";
-      case "PENDENTE":
+      case "pending":
         return "Pagamento Pendente";
-      case "FALHA":
+      case "failed":
         return "Pagamento Invalido";
       default:
         break;
@@ -92,16 +116,43 @@ const Wallet = () => {
   }
   const selectStatusIcon = (string) => {
     switch (string) {
-      case "PAGO":
+      case "paid":
         return "bx bx-check-double";
-      case "PENDENTE":
+      case "pending":
         return "bx bx-loader-circle";
-      case "FALHA":
+      case "failed":
         return "bx bx-message-square-x";
       default:
         break;
     }
   }
+
+  const formatEventDate = (item) => {
+    console.log(item);
+    let date = '';
+    if (item?.startDate === item?.endDate) {
+      date = `${item.startDate} de ${item.startTime} a ${item.endTime}`;
+    } else {
+      date = `de ${item.startDate} ${item.startTime} a ${item.endDate} ${item.endTime}`
+    }
+
+    return date;
+  }
+
+  const handleHideEventDetails = () => {
+    setShowEventDetails(false);
+  }
+
+  const LoadingCheckout = () => (
+    <div className='container-minhas-compras'>
+      <div className='container-spinner minhas-compras'>
+        <div class="spinner-border absolute" role="status">
+          <span class="sr-only"></span>
+        </div>
+        <h2 className='pt-2'>Buscando ingressos...</h2>
+      </div>
+    </div>
+  )
 
   return (
     <>
@@ -109,42 +160,64 @@ const Wallet = () => {
         pageTitle='Bem Vindo ao Seu Perfil'
         pageSubTitle='Aqui você tem acesso a todos os seus ingressos'
       />
-      <div className='wallet-area ptb-100'>
-        <div className='container'>
-          <div className='wallet-tabs'>
-            <div className='row align-items-center'>
-              {Eventozz.map((item, index) => {
-                let iconPayment = selectStatusIcon(item.status);
-                return (
-                  <div className='col-lg-4 col-md-12 box-ticket'>
-                    <div className='tab-content' id='myTabContent'>
-                      <div className='tab-pane fade show active' id='security' role='tabpanel' >
-                        <div className='box'>
-                          <h3>{item.nome}</h3>
-                          <p> {item.descricao} </p>
-                          <ul className='features-list'>
-                            <li>
-                              <i className={iconPayment}></i> {
-                                selectStatus(item.status)
-                              }
-                            </li>
-                          </ul>
-                          <Link href='/about'>
-                            <a className='default-btn'>
-                              <i className='bx bxs-bookmark-alt-minus'></i> Ver Ingresso
-                            </a>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-
+      {
+        !showEventDetails && (
+          <div className='wallet-area ptb-100'>
+            <div className='container'>
+              <div className='wallet-tabs'>
+                <div className='row align-items-center'>
+                  {
+                    isLoading ? (
+                      <LoadingCheckout />
+                    ) : (
+                      eventzz.map((item, index) => {
+                        let iconPayment = selectStatusIcon(item.statusDescription);
+                        return (
+                          <div className='col-lg-4 col-md-12 box-ticket'>
+                            <div className='tab-content' id='myTabContent'>
+                              <div className='tab-pane fade show active' id='security' role='tabpanel' >
+                                <div className='box'>
+                                  <h3>{item.eventName}</h3>
+                                  <p>{item.categoria_evento}</p>
+                                  <p>Local do evento: {item.eventPlace}</p>
+                                  <p>Data: {formatEventDate(item)}</p>
+                                  <ul className='features-list'>
+                                    <li>
+                                      <i className={iconPayment}></i> {
+                                        selectStatus(item.statusDescription)
+                                      }
+                                    </li>
+                                  </ul>
+                                  {/* <Link href='/about'> */}
+                                  <Button className='default-btn' onClick={() => setShowEventDetails(true)}>
+                                    <i className='bx bxs-bookmark-alt-minus'></i> Ver detalhes
+                                  </Button>
+                                  {/* </Link> */}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })
+                    )}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        )
+      }
+      {
+        showEventDetails && (
+          <>
+            <Container>
+              <EventDetails />
+            </Container>
+            <Button onClick={() => handleHideEventDetails()} className='back-icon linkNavbar'>
+              <i className='bx bx-x'></i>
+            </Button>
+          </>
+        )
+      }
       <RegisterArea
         bgGradient='bg-gradient-image'
         blackText='black-text'

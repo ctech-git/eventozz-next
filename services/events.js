@@ -1,8 +1,8 @@
 import { Axios } from './axios';
 
 const servicesEventozz = {
-  getEvents: async () => {
-    const response = await Axios.get("/list/events", {
+  getEventzz: async () => {
+    const response = await Axios.get("/list/eventzz", {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -17,7 +17,7 @@ const servicesEventozz = {
   },
   getEvent: async (slug) => {
     console.log(slug)
-    const response = await Axios.get("/list/events/especific?slug=" + slug,
+    const response = await Axios.get("/list/eventzz/especific?slug=" + slug,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -45,6 +45,21 @@ const servicesEventozz = {
       }).catch(({ ...response }) => {
         return response;
       });
+    return response;
+  },
+  getUserEventzz: async ({accessToken}) => {
+    const response = await Axios.get("/list/user-eventzz", {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+      console.log(response);
     return response;
   },
 

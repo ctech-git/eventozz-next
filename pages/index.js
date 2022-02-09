@@ -33,7 +33,7 @@ const Index = ({events}) => {
 export default Index;
 
 export async function getServerSideProps() {
-  const result = await servicesEventozz.getEvents();
+  const result = await servicesEventozz.getEventzz();
     console.log(result);
 
     let response = [];
