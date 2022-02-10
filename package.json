@@ -1,6 +1,9 @@
 {
   "name": "novis-react-next",
   "version": "1.0.0",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "dev": "next",
     "build": "next build",

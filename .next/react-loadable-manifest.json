@@ -1,20 +1,39 @@
 {
-  "../components/Common/Portfolio.js -> react-owl-carousel3": {
-    "id": "../components/Common/Portfolio.js -> react-owl-carousel3",
+  "../components/Common/BestSeller.js -> react-owl-carousel3": {
+    "id": 8694,
     "files": [
-      "static/chunks/node_modules_react-owl-carousel3_lib_OwlCarousel_js.js"
+      "static/chunks/617777a1.1644fe3b1f74e2ae.js"
+    ]
+  },
+  "../components/Common/FeedBack.js -> react-owl-carousel3": {
+    "id": 8694,
+    "files": [
+      "static/chunks/617777a1.1644fe3b1f74e2ae.js"
+    ]
+  },
+  "../components/Common/Portfolio.js -> react-owl-carousel3": {
+    "id": 8694,
+    "files": [
+      "static/chunks/617777a1.1644fe3b1f74e2ae.js"
     ]
   },
   "../components/HomeOne/Platform.js -> react-owl-carousel3": {
-    "id": "../components/HomeOne/Platform.js -> react-owl-carousel3",
+    "id": 8694,
     "files": [
-      "static/chunks/node_modules_react-owl-carousel3_lib_OwlCarousel_js.js"
+      "static/chunks/617777a1.1644fe3b1f74e2ae.js"
     ]
   },
   "../components/Layout/TopHeader.js -> react-owl-carousel3": {
-    "id": "../components/Layout/TopHeader.js -> react-owl-carousel3",
+    "id": 8694,
     "files": [
-      "static/chunks/node_modules_react-owl-carousel3_lib_OwlCarousel_js.js"
+      "static/chunks/617777a1.1644fe3b1f74e2ae.js"
+    ]
+  },
+  "price-details.js -> react-apexcharts": {
+    "id": 7229,
+    "files": [
+      "static/chunks/6c44d60f.bb18ec5f566864ca.js",
+      "static/chunks/229.abf0b97a3204af0b.js"
     ]
   }
 }
