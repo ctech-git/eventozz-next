@@ -31,7 +31,7 @@ const Footer = () => {
                     <div id='validator-newsletter' className='form-result'></div>
                   </form> */}
                 </div>
-                <ul className='social-links'>
+                {/* <ul className='social-links'>
                   <li>
                     <a href='#' target='_blank' className='facebook'>
                       <i className='bx bxl-facebook'></i>
@@ -52,7 +52,7 @@ const Footer = () => {
                       <i className='bx bxl-instagram'></i>
                     </a>
                   </li>
-                </ul>
+                </ul> */}
               </div>
             </div>
             <div className='col-lg-2 col-sm-6 col-md-6'>

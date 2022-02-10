@@ -11,7 +11,7 @@ import { scrollToElement } from '../../utils/scrollTo';
 
 const EventDetails = ({ item, showTicketSale }) => {
   const dados = item;
-
+  console.log(dados);
   return (
     <>
 
@@ -43,7 +43,7 @@ const EventDetails = ({ item, showTicketSale }) => {
                           {dados.organizador}
                         </li>
                         <li>
-                          <i className='bx bxs-badge-check'
+                          <i className='bx bxs-barcode'
                             style={{ color: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
                           ></i>
                           Apresentar Qr Code na Entrada
@@ -64,7 +64,7 @@ const EventDetails = ({ item, showTicketSale }) => {
                           <i className='bx bx-calendar'
                             style={{ color: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
                           ></i>
-                          Inicio: {dateLastAccess(dados.data_inicio)} - Fim: {dateLastAccess(dados.data_fim)}
+                          Inicio: {dateLastAccess(dados.data_inicio)} <br/>Fim: {dateLastAccess(dados.data_fim)}
                         </li>
                         <li>
                           <i className="fa fa-clock" aria-hidden="true"

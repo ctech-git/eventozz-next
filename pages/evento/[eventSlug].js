@@ -27,6 +27,7 @@ import Checkout from '../../components/Checkout';
 const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate }) => {
   console.log(event);
   console.log(isActive);
+  console.log(eventDate);
   const router = useRouter();
   // const { id } = router.query
   // const [isEvent, setIsEvent] = useState(false);
@@ -126,7 +127,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
               src={event?.imagem_banner}
               alt='image'
             />
-            {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora bannerinicial justify-content-center justify-content-md-start pt-4 row"><a className="default-btn"><i className="bx bxs-chat"></i>{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>}
+            {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora bannerinicial justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>}
           </div>
         ) : (
           <>
@@ -136,7 +137,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
                   <div className='col-md-6 p-0 col-left-initial-banner'>
                     <div className='main-banner-content-landing'>
                       <h1 className='text-center text-md-start'>{event.nome_evento}</h1>
-                      {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora justify-content-center justify-content-md-start pt-4 row"><a className="default-btn"><i className="bx bxs-chat"></i>{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>}
+                      {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>}
                     </div>
                   </div>
                   <div className='col-md-6 p-0 col-right-initial-banner'>
@@ -233,6 +234,7 @@ export async function getServerSideProps(context) {
 
   if (result?.status === 200 && result?.data?.success && result?.data?.data?.length > 0) {
     event = result?.data?.data[0];
+    console.log(event);
     let today = new Date();
     let ticketSaleStartDate = new Date(event?.data_inicio_venda_ingresso);
     let ticketSaleEndDate = new Date(event?.data_fim_venda_ingresso);

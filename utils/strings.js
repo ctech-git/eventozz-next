@@ -181,11 +181,9 @@ export const dateLastAccess = (data) => {
   if (data === null || data === undefined) return;
   data = data?.split("T");
   let days = data[0]?.split("-");
+  console.log(days);
   days = days[2] + "/" + days[1] + "/" + days[0]
-  // let hours = data[1]?.split(":");
-  // hours = hours[0] + ":" + hours[1];
-
-  //return days + " Às " + hours;
+  
   return days;
 };
 

@@ -1174,7 +1174,8 @@
   }
   .trade-cryptocurrency-box button i {
     font-size: 15px;
-    margin-left: -25px;
+    margin-left: 0;
+    position: relative;
   }
   .payment-method-list {
     margin-top: -15px;

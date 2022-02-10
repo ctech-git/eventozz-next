@@ -62,20 +62,20 @@ const TokensArea = ({ item, endTime, showTicketSale }) => {
             </div>
             <div className='tokens-content text-center pb-100'>
               <h2>{item.texto_contador}</h2>
-              <span>{item.descricao_contador}</span>
+              <h6>{item.descricao_contador}</h6>
               <div id='countdown'>
                 <ul>
                   <li>
-                    <span id='days'>{days}</span>DAYS
+                    <span id='days'>{days}</span>DIAS
                   </li>
                   <li>
-                    <span id='hours'>{hours}</span>HOURS
+                    <span id='hours'>{hours}</span>HORAS
                   </li>
                   <li>
                     <span id='minutes'>{minutes}</span>MIN
                   </li>
                   <li>
-                    <span id='seconds'>{seconds}</span>SEC
+                    <span id='seconds'>{seconds}</span>SEG
                   </li>
                 </ul>
               </div>

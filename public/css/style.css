@@ -216,7 +216,7 @@ p:last-child {
   font-weight: 600;
 }
 
-.default-btn i {
+.default-btn i:not(.btn-comprar-agora):not(.btn-compre-agora) {
   top: 50%;
   left: 30px;
   position: absolute;
@@ -5892,11 +5892,11 @@ display: flex;
 
 .trade-cryptocurrency-box button i {
   font-size: 20px;
-  margin-left: -30px;
+  /* margin-left: -30px;
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+          transform: translateY(-50%); */
   line-height: 1;
 }
 
@@ -7835,6 +7835,8 @@ width: 100px;
 .btn-compre-agora a{
   width: fit-content;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .btn-compre-agora.absolute{
@@ -7959,6 +7961,7 @@ width: 100px;
   text-align: center;
   font-size: 20px;
   margin-top: 15px;
+  min-height: 50px !important;
 }
 
 .default-btn.checkout-button i{
@@ -8118,6 +8121,18 @@ width: 100px;
   min-height: 200px;
 }
 
+.btn-comprar-agora{
+  margin-left: 5px;
+}
+
+.default-btn-danger{
+  border-color: #dc3545 !important;
+  color: #dc3545 !important;
+  font-size: 13px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
 @media (max-width: 767px){
   .col-left-initial-banner{
     position: absolute;
@@ -8160,4 +8175,12 @@ width: 100px;
     padding-right: 0;
   }
 
+  .trade-cryptocurrency-box{
+    padding-top: 40px !important;
+  }
+
+  .tokens-content{
+    width: 100%;
+    padding-right: 0;
+  }
 }

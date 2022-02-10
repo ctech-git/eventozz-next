@@ -824,7 +824,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     <div className='container-ticket-responsivo resumo'>
                                         <Row className='pb-2'>
                                             <Col xs={12}>
-                                                <label>{dados?.is_free ? 'Total' : 'Total (com taxas)'}</label>
+                                                <label>{dados?.is_free ? 'Total' : 'Total (com taxas administrativas)'}</label>
                                                 {dados?.is_free ? <h3 className='mb-0 crypto-name'>Gratuito</h3> :
                                                     <h3 className='mb-0 crypto-name'>{paymentMethod === 'pix' ?
                                                         pixValue ? convertMoney(pixValue) : ''
@@ -905,7 +905,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                             )
                                         }
                                         <tr>
-                                            <td><h3 className='mb-0 crypto-name'>{dados?.is_free ? 'Total' : 'Total (com taxas)'}</h3></td>
+                                            <td><h3 className='mb-0 crypto-name'>{dados?.is_free ? 'Total' : 'Total (com taxas administrativas)'}</h3></td>
                                             <td></td>
                                             <td>{totalTickets}</td>
                                             <td>{dados?.is_free ? 'Gratuito' :
@@ -928,7 +928,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     showPayment && !hideOnCheckout &&
                     <Row>
                         <Col xs={12} sm={6}>
-                            <a class="default-btn default-outline-btn checkout-button" type="button" onClick={() => handleBackToTicketsData()}><i className='bx bxs-left-arrow'></i>Voltar para escolha de ingressos</a>
+                            <a class="default-btn default-btn-danger default-outline-btn checkout-button" type="button" onClick={() => handleBackToTicketsData()}>Deseja alterar a quantidade de ingressos?</a>
                         </Col>
                     </Row>
                 }
@@ -1013,7 +1013,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                             <Form.Control placeholder='Insira o código aqui' value={cupom} onChange={(e) => setCoupon(stringNormalize(e.target.value))} />
                                         </Col>
                                         <Col xs={6} sm={4}>
-                                            <a class="default-btn default-outline-btn checkout-button cupom-button" type="button" onClick={() => handleSetCoupon()}><i className='bx bxs-hand-right'></i>Aplicar</a>
+                                            <a class="default-btn default-outline-btn checkout-button cupom-button" type="button" onClick={() => handleSetCoupon()}>Aplicar</a>
                                         </Col>
                                     </Row>
                                 </Col>
@@ -1117,7 +1117,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     showPayment && !hideOnCheckout && (
                         <Row>
                             <Col xs={12}>
-                                <a class="default-btn checkout-button" type="button" onClick={() => handleSubmitSale()}><i className='bx bxs-hand-right'></i>Finalizar</a>
+                                <a class="default-btn checkout-button" type="button" onClick={() => handleSubmitSale()}>Finalizar</a>
                             </Col>
                         </Row>
                     )
@@ -1129,7 +1129,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                 <a class="default-btn checkout-button" type="button" onClick={() => {
                                     if (dados?.is_free) handleFinishFreeEventSale()
                                     else handleShowPayment()
-                                }}><i className='bx bxs-hand-right'></i>{dados?.is_free ? 'Reservar ingressos' : 'Ir para pagamento'}</a>
+                                }}>{dados?.is_free ? 'Reservar ingressos' : 'Ir para pagamento'}</a>
                             </Col>
                         </Row>
                     )
