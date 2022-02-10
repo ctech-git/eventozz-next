@@ -105,8 +105,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 <h5>Remover ingresso da lista?</h5>
             </Modal.Body>
             <Modal.Footer>
-                <button type="button" class="btn btn-danger" onClick={() => handleConfirmDeleteItem(deletedTicketId)}>Confirmar</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={() => handleCancelDeleteTicket()}>Cancelar</button>
+                <button type="button" class="btn btn-danger min-height-45" onClick={() => handleConfirmDeleteItem(deletedTicketId)}>Confirmar</button>
+                <button type="button" class="btn btn-primary min-height-45" data-dismiss="modal" onClick={() => handleCancelDeleteTicket()}>Cancelar</button>
             </Modal.Footer>
         </Modal>
     )
@@ -137,7 +137,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 console.log(item.quantidade);
                 console.log(ticketsDataItem?.length);
                 let initialQuantity = item.quantidade - ticketsDataItem?.length;
-                for (let i = 0; i < initialQuantity; i++) {
+                for (let i = 0;i < initialQuantity;i++) {
                     console.log(i);
                     console.log();
                     ticketsDataItem.push({
@@ -281,7 +281,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         setShowInputErros(false);
         setShowPayment(true);
         setTimeout(() => {
-            scrollToElement({id: 'hr-divisor'})
+            scrollToElement({ id: 'hr-divisor' })
         }, 500);
     }
 
@@ -561,11 +561,11 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
         setTextLoading("");
         setIsLoadingCheckout(false);
-        if (response?.status === 200) {
+        if (response?.data?.status === 200) {
             const data = response?.data?.data;
             handlePaymentFeedBack(data);
         } else {
-
+            handlePaymentFeedBack(null, true, response?.data?.msg);
         }
     }
 
@@ -606,123 +606,135 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         }
     }
 
-    function handlePaymentFeedBack(feedback) {
+    function handlePaymentFeedBack(feedback, errorPix = false, msgErrorPix = '') {
         console.log(feedback);
         let success = false;
         let title = '';
         let text = '';
         let image = '';
         let link = '';
-        if (dados?.is_free) {
-            title = 'Reserva realizada!';
-            text = 'Seus ingressos já foram reservados e você receberá o QR Code em seu email! <br/> Aproveite muito seu evento!';
-            image = SuccessImage;
-            success = true;
+
+
+        if (errorPix) {
+            title = 'Falha na transação';
+            text = msgErrorPix;
+            image = ErrorImage;
+            link = false;
         } else {
-            let status = feedback?.status;
-            if (paymentMethod === 'cc') {
-                switch (status) {
-
-                    case "not_authorized":
-                        title = 'Compra não autorizada!';
-                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                        image = ErrorImage;
-                        break;
-
-                    case "captured":
-                        title = 'Compra autorizada!';
-                        text = 'Seu pagamento já foi aprovado e você receberá seu QR Code em seu email! <br/> Aproveite muito seu evento!';
-                        image = SuccessImage;
-                        success = true;
-                        break;
-
-                    case "partial_capture":
-                        title = 'Pagamento sendo processado!';
-                        text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
-                        image = WaitingImage;
-                        success = true;
-                        break;
-
-                    case "authorized_pending_capture":
-                        title = 'Pagamento sendo processado!';
-                        text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
-                        image = WaitingImage;
-                        success = true;
-                        break;
-
-                    case "waiting_capture":
-                        title = 'Pagamento sendo processado!';
-                        text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
-                        image = WaitingImage;
-                        success = true;
-                        break;
-
-                    case "refunded":
-                        title = 'Compra não autorizada!';
-                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                        image = ErrorImage;
-                        break;
-
-                    case "voided":
-                        title = 'Compra não autorizada!';
-                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                        image = ErrorImage;
-                        break;
-
-                    case "partial_refunded":
-                        title = 'Compra não autorizada!';
-                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                        image = ErrorImage;
-                        break;
-
-                    case "partial_void":
-                        title = 'Compra não autorizada!';
-                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                        image = ErrorImage;
-                        break;
-
-                    case "error_on_voiding":
-                        title = 'Compra não autorizada!';
-                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                        image = ErrorImage;
-                        break;
-
-                    case "error_on_refunding":
-                        title = 'Compra não autorizada!';
-                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                        image = ErrorImage;
-                        break;
-
-                    case "waiting_cancellation":
-                        title = 'Compra não autorizada!';
-                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                        image = ErrorImage;
-                        break;
-
-                    case "with_error":
-                        title = 'Compra não autorizada!';
-                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                        image = ErrorImage;
-                        break;
-
-                    case "failed":
-                        title = 'Compra não autorizada!';
-                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
-                        image = ErrorImage;
-                        break;
-                }
-            } else {
-                let qrCodeLink = feedback.qrCode;
-                let qRCodeImage = feedback.qrCodeUrl;
+            console.log("=============")
+            if (dados?.is_free) {
+                title = 'Reserva realizada!';
+                text = 'Seus ingressos já foram reservados e você receberá o QR Code em seu email! <br/> Aproveite muito seu evento!';
+                image = SuccessImage;
                 success = true;
-                title = "Seu PIX foi gerado!";
-                text = `O QR Code para entrada no evento chegará em seu email quando o pagamento for confirmado! <br></br>
+            } else {
+                let status = feedback?.status;
+                if (paymentMethod === 'cc') {
+                    switch (status) {
+
+                        case "not_authorized":
+                            title = 'Compra não autorizada!';
+                            text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                            image = ErrorImage;
+                            break;
+
+                        case "captured":
+                            title = 'Compra autorizada!';
+                            text = 'Seu pagamento já foi aprovado e você receberá seu QR Code em seu email! <br/> Aproveite muito seu evento!';
+                            image = SuccessImage;
+                            success = true;
+                            break;
+
+                        case "partial_capture":
+                            title = 'Pagamento sendo processado!';
+                            text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
+                            image = WaitingImage;
+                            success = true;
+                            break;
+
+                        case "authorized_pending_capture":
+                            title = 'Pagamento sendo processado!';
+                            text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
+                            image = WaitingImage;
+                            success = true;
+                            break;
+
+                        case "waiting_capture":
+                            title = 'Pagamento sendo processado!';
+                            text = 'Seu pagamento está <strong>sendo processado pela operadora do cartão</strong>. Assim que tivermos uma resposta, já lhe enviamos no email. É só aguardar!';
+                            image = WaitingImage;
+                            success = true;
+                            break;
+
+                        case "refunded":
+                            title = 'Compra não autorizada!';
+                            text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                            image = ErrorImage;
+                            break;
+
+                        case "voided":
+                            title = 'Compra não autorizada!';
+                            text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                            image = ErrorImage;
+                            break;
+
+                        case "partial_refunded":
+                            title = 'Compra não autorizada!';
+                            text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                            image = ErrorImage;
+                            break;
+
+                        case "partial_void":
+                            title = 'Compra não autorizada!';
+                            text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                            image = ErrorImage;
+                            break;
+
+                        case "error_on_voiding":
+                            title = 'Compra não autorizada!';
+                            text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                            image = ErrorImage;
+                            break;
+
+                        case "error_on_refunding":
+                            title = 'Compra não autorizada!';
+                            text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                            image = ErrorImage;
+                            break;
+
+                        case "waiting_cancellation":
+                            title = 'Compra não autorizada!';
+                            text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                            image = ErrorImage;
+                            break;
+
+                        case "with_error":
+                            title = 'Compra não autorizada!';
+                            text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                            image = ErrorImage;
+                            break;
+
+                        case "failed":
+                            title = 'Compra não autorizada!';
+                            text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                            image = ErrorImage;
+                            break;
+                    }
+                } else {
+                    let qrCodeLink = feedback?.qrCode;
+                    let qRCodeImage = feedback?.qrCodeUrl;
+                    success = true;
+                    title = "Seu PIX foi gerado!";
+                    text = `O QR Code para entrada no evento chegará em seu email quando o pagamento for confirmado! <br></br>
             Além disso, seu nome e CPF estarão na lista e você pode acessar aqui para emitir uma segunda via!
             </br></br>
             Desde já, bom evento em nome da Eventozz!`;
-                image = qRCodeImage ? qRCodeImage : '';
-                link = qrCodeLink ? qrCodeLink : false;
+                    image = qRCodeImage ? qRCodeImage : '';
+                    link = qrCodeLink ? qrCodeLink : false;
+                }
             }
+
+
         }
 
         setPaymentFeedback({
@@ -731,6 +743,9 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             image,
             qrCodeLink: link
         });
+
+
+
         if (success) {
             setShowConfirmationPayment(true);
             setHideOnCheckout(true);
@@ -928,7 +943,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     showPayment && !hideOnCheckout &&
                     <Row>
                         <Col xs={12} sm={6}>
-                            <a class="default-btn default-btn-danger default-outline-btn checkout-button" type="button" onClick={() => handleBackToTicketsData()}>Deseja alterar a quantidade de ingressos?</a>
+                            <a class="default-btn default-btn-danger default-outline-btn checkout-button  min-height-45" type="button" onClick={() => handleBackToTicketsData()}>Deseja alterar a quantidade de ingressos?</a>
                         </Col>
                     </Row>
                 }
@@ -1013,7 +1028,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                             <Form.Control placeholder='Insira o código aqui' value={cupom} onChange={(e) => setCoupon(stringNormalize(e.target.value))} />
                                         </Col>
                                         <Col xs={6} sm={4}>
-                                            <a class="default-btn default-outline-btn checkout-button cupom-button" type="button" onClick={() => handleSetCoupon()}>Aplicar</a>
+                                            <a class="default-btn default-outline-btn checkout-button cupom-button  min-height-45" type="button" onClick={() => handleSetCoupon()}>Aplicar</a>
                                         </Col>
                                     </Row>
                                 </Col>
@@ -1117,7 +1132,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     showPayment && !hideOnCheckout && (
                         <Row>
                             <Col xs={12}>
-                                <a class="default-btn checkout-button" type="button" onClick={() => handleSubmitSale()}>Finalizar</a>
+                                <a class="default-btn checkout-button min-height-45" type="button" onClick={() => handleSubmitSale()}>Finalizar</a>
                             </Col>
                         </Row>
                     )
@@ -1126,7 +1141,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     Object.values(ticketsData).length > 0 && !showPayment && !hideOnCheckout && (
                         <Row>
                             <Col xs={12}>
-                                <a class="default-btn checkout-button" type="button" onClick={() => {
+                                <a class="default-btn checkout-button  min-height-45" type="button" onClick={() => {
                                     if (dados?.is_free) handleFinishFreeEventSale()
                                     else handleShowPayment()
                                 }}>{dados?.is_free ? 'Reservar ingressos' : 'Ir para pagamento'}</a>
@@ -1148,7 +1163,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     (
                                         <Row className='copy-button'>
                                             <Col className='container-copy-button' xs={12}>
-                                                <a class="default-btn checkout-button" type="button" onClick={() => copyToClipboard(paymentFeedback?.qrCodeLink)}><i className='bx bxs-copy'></i>Copiar</a>
+                                                <a class="default-btn checkout-button  min-height-45" type="button" onClick={() => copyToClipboard(paymentFeedback?.qrCodeLink)}><i className='bx bxs-copy'></i>Copiar</a>
                                             </Col>
                                         </Row>
                                     )
@@ -1162,7 +1177,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     <h2>Veja os detalhes na página "Minhas compras"</h2>
                                 </div>
                                 <Col className='container-copy-button' xs={12} sm={6}>
-                                    <a class="default-btn checkout-button" type="button" onClick={() => router.push('/minhas-compras')}><i className='bx bxs-hand-right'></i>Ir para Minhas compras</a>
+                                    <a class="default-btn checkout-button  min-height-45" type="button" onClick={() => router.push('/minhas-compras')}><i className='bx bxs-hand-right'></i>Ir para Minhas compras</a>
                                 </Col>
                             </Col>
                         </Row>
@@ -1179,7 +1194,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     <Row dangerouslySetInnerHTML={{ __html: paymentFeedback?.message ? paymentFeedback.message : '' }}></Row>
 
                                     <Col xs={12} sm={6}>
-                                        <a class="default-btn default-outline-btn checkout-button" type="button" onClick={() => handleTryAgain()}>Tentar novamente</a>
+                                        <a class="default-btn default-outline-btn checkout-button  min-height-45" type="button" onClick={() => handleTryAgain()}>Tentar novamente</a>
                                     </Col>
                                 </Col>
                                 <Col className='container-img-feedback position-relative' xs={12} md={6}>

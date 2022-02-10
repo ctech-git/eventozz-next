@@ -34,6 +34,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/evento/[eventSlug].js"
+    ],
+    "/minhas-compras": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/minhas-compras.js"
     ]
   },
   "ampFirstPages": []
