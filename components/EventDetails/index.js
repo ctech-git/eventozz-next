@@ -1,11 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import GoogleLogin from 'react-google-login';
 import { AuthContext } from '../../context/auth';
 import { useRouter } from 'next/router';
 import { Col, Row } from 'react-bootstrap';
+import servicesEventozz from '../../services/events';
 
-export const EventDetails = () => {
+export const EventDetails = ({eventId, handleClose}) => {
 
   const router = useRouter();
   const authContext = useContext(AuthContext);
@@ -13,6 +14,18 @@ export const EventDetails = () => {
 
   const [emailCPF, setEmailCPF] = useState("");
   const [senha, setSenha] = useState("");
+
+  const loadEvent = useCallback( async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const response = await servicesEventozz.findEvent({accessToken, eventId})
+    console.log(response);
+  }, [eventId])
+
+  useEffect( () => {
+    if (eventId) {
+      loadEvent();
+    }
+  }, [eventId])
 
   return (
     <Row>
@@ -51,7 +64,7 @@ export const EventDetails = () => {
 
 
             <button type='button' onClick={() => loginEmail()}>
-              Entrar
+              Fechar
             </button>
 
           </form>

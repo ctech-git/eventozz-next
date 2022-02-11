@@ -83,6 +83,7 @@ const Wallet = () => {
     }
   ];
   const [eventzz, setEventzz] = useState([]);
+  const [eventId, setEventId] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showEventDetails, setShowEventDetails] = useState(false);
 
@@ -139,6 +140,12 @@ const Wallet = () => {
     return date;
   }
 
+  const handleOpenEventDetails = (item) => {
+    console.log(item);
+    setEventId(item);
+    setShowEventDetails(true)
+  }
+
   const handleHideEventDetails = () => {
     setShowEventDetails(false);
   }
@@ -189,7 +196,7 @@ const Wallet = () => {
                                     </li>
                                   </ul>
                                   {/* <Link href='/about'> */}
-                                  <Button className='default-btn' onClick={() => setShowEventDetails(true)}>
+                                  <Button className='default-btn' onClick={() => handleOpenEventDetails(item)}>
                                     <i className='bx bxs-bookmark-alt-minus'></i> Ver detalhes
                                   </Button>
                                   {/* </Link> */}
@@ -210,7 +217,7 @@ const Wallet = () => {
         showEventDetails && (
           <>
             <Container>
-              <EventDetails />
+              <EventDetails handleClose={handleHideEventDetails()} eventId={eventId} />
             </Container>
             <Button onClick={() => handleHideEventDetails()} className='back-icon linkNavbar'>
               <i className='bx bx-x'></i>

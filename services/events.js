@@ -62,6 +62,26 @@ const servicesEventozz = {
       console.log(response);
     return response;
   },
+  findEvent: async ({accessToken, eventId}) => {
+    console.log(eventId)
+    const response = await Axios.get("/list/eventzz/find",
+      {
+        params: {
+          eventId
+        },
+        headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+        }
+      }
+    )
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+    return response;
+  },
 
 }
 

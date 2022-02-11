@@ -56,7 +56,7 @@ const Navbar = () => {
                   <div className='option-item'>
                     {
                       userToken ? (
-                        <Link href='/wallet' activeClassName='active'>
+                        <Link href='/minhas-compras' activeClassName='active'>
                           <a className='login-btn'>
                             <i className='bx bx-user'></i>
                           </a>

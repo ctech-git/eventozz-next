@@ -38,7 +38,7 @@ const LoginForm = () => {
         if (result?.data?.token) {
           window.localStorage.setItem("accessToken", result?.data?.token);
           setUserToken(result?.data?.token);
-          router.push("/");
+          router.back();
           // window.location.href = "/";
         } else {
           toast.error("Falhar no Login", {
@@ -87,7 +87,7 @@ const LoginForm = () => {
         if (response?.data?.token) {
           window.localStorage.setItem("accessToken", response?.data?.token);
           setUserToken(response?.data?.token);
-          router.push("/");
+          router.back();
           // window.location.href = "/";
         } else {
           toast.error("Falhar no Login", {
@@ -108,7 +108,6 @@ const LoginForm = () => {
         autoClose: 2000
       })
     }
-
   }
 
   return (
