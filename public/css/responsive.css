@@ -1,5 +1,11 @@
 /* Max width 767px */
 @media only screen and (max-width: 767px) {
+  .VersionWeb{
+    display: none !important;
+  }
+  .VersionMobile{
+    display: block !important;
+  }
   body {
     font-size: 14px;
   }
@@ -33,14 +39,14 @@
     display: none;
   }
   .navbar-area .navbar .navbar-nav {
+    text-align: center;
     margin-left: 0px;
-    height: 450px;
+    height: 100vh;
     overflow-y: scroll;
     position: absolute;
     background: #fff;
     width: 100%;
     left: 0;
-    top: 15px;
     right: 0;
     margin: 0 auto;
     z-index: 999;
@@ -1851,15 +1857,20 @@
   .navbar-light .navbar-brand {
     display: none;
   }
+  .VersionWeb{
+    display: none !important;
+  }
+  .VersionMobile{
+    display: block !important;
+  }
   .navbar-area .navbar .navbar-nav {
     margin-left: 0px;
-    height: 450px;
+    height: 100vh;
     overflow-y: scroll;
     position: absolute;
     background: #fff;
     width: 100%;
     left: -4px;
-    top: 15px;
     z-index: 999;
   }
   .hamburger-menu {
@@ -2946,6 +2957,12 @@
   }
   .navbar-area .container-fluid {
     max-width: 960px;
+  }
+  .VersionWeb{
+    display: none !important;
+  }
+  .VersionMobile{
+    display: block !important;
   }
   .navbar-area .navbar .navbar-nav {
     margin-left: 20px;

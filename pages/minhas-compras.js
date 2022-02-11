@@ -129,7 +129,7 @@ const Wallet = () => {
   }
 
   const formatEventDate = (item) => {
-    console.log(item);
+
     let date = '';
     if (item?.startDate === item?.endDate) {
       date = `${item.startDate} de ${item.startTime} a ${item.endTime}`;
@@ -141,7 +141,7 @@ const Wallet = () => {
   }
 
   const handleOpenEventDetails = (item) => {
-    console.log(item);
+
     setEventId(item);
     setShowEventDetails(true)
   }

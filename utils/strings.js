@@ -181,16 +181,16 @@ export const dateLastAccess = (data) => {
   if (data === null || data === undefined) return;
   data = data?.split("T");
   let days = data[0]?.split("-");
-  console.log(days);
+
   days = days[2] + "/" + days[1] + "/" + days[0]
-  
+
   return days;
 };
 
 export const stringNormalize = (string) => {
   if (string === null || string === undefined) return;
   string = string.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase();
-  console.log(string);
+
   return string;
 }
 

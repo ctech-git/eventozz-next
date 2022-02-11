@@ -356,7 +356,15 @@ Navbar Area CSS
   padding-top: 30px;
   padding-bottom: 30px;
 }
-
+.VersionWeb{
+  display: block;
+}
+.VersionMobile{
+  display: none;
+}
+.navbar-nav {
+  align-items: center !important;
+}
 .navbar-area .navbar .navbar-nav .nav-item a:hover, .navbar-area .navbar .navbar-nav .nav-item a.active {
   color: var(--mainColor);
 }
@@ -572,10 +580,17 @@ width: 70% !important;
 .navbar-area .navbar .others-option .option-item .login-btn i {
   position: absolute;
   top: 50%;
-  font-size: 20px;
-  left: -3px;
+  font-size: 35px;
+  left: -5px;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
+}
+
+.whitout-arrow::before{
+  display: none !important;
+}
+.whitout-arrow{
+  font-size: 25px !important;
 }
 
 .navbar-area .navbar .others-option .option-item .login-btn:hover {

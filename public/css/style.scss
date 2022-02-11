@@ -152,6 +152,10 @@ p {
 .bg-fff0ee {
     background-color: #fff0ee;
 }
+.responsive-others-option .login-btn {
+    font-size: 40px !important;
+  }
+  
 /*section-title*/
 .section-title {
     text-align: center;
@@ -508,7 +512,7 @@ Navbar Area CSS
                     i {
                         position: absolute;
                         top: 50%;
-                        font-size: 20px;
+                        font-size: 40px;
                         left: -3px;
                         transform: translateY(-50%);
                     }
@@ -556,7 +560,7 @@ Navbar Area CSS
                     i {
                         position: absolute;
                         top: 50%;
-                        font-size: 20px;
+                        font-size: 40px !important;
                         left: -3px;
                         transform: translateY(-50%);
                     }

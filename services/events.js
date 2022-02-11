@@ -12,11 +12,11 @@ const servicesEventozz = {
       }).catch(({ ...response }) => {
         return response;
       });
-      console.log(response);
+
     return response;
   },
   getEvent: async (slug) => {
-    console.log(slug)
+
     const response = await Axios.get("/list/eventzz/especific?slug=" + slug,
       {
         headers: {
@@ -32,7 +32,7 @@ const servicesEventozz = {
     return response;
   },
   getTickets: async (id) => {
-    console.log(id)
+
     const response = await Axios.get("/list/tickets/?id=" + id,
       {
         headers: {
@@ -47,7 +47,7 @@ const servicesEventozz = {
       });
     return response;
   },
-  getUserEventzz: async ({accessToken}) => {
+  getUserEventzz: async ({ accessToken }) => {
     const response = await Axios.get("/list/user-eventzz", {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
@@ -59,19 +59,19 @@ const servicesEventozz = {
       }).catch(({ ...response }) => {
         return response;
       });
-      console.log(response);
+
     return response;
   },
-  findEvent: async ({accessToken, eventId}) => {
-    console.log(eventId)
+  findEvent: async ({ accessToken, eventId }) => {
+
     const response = await Axios.get("/list/eventzz/find",
       {
         params: {
           eventId
         },
         headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
         }
       }
     )
