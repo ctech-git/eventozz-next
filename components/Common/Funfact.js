@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Funfact = ({ pt100 }) => {
+const Funfact = ({ pt100, id="funfact" }) => {
   return (
     <>
-      <div className={`funfacts-area ${pt100}`}>
+      <div id={id} className={`funfacts-area ${pt100}`}>
         <div className='container'>
           <div className='row justify-content-center'>
             <div className='col-lg-3 col-md-3 col-sm-6 col-6'>

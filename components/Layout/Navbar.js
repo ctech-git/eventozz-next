@@ -118,8 +118,8 @@ const Navbar = () => {
                     </>
                   ) : (
                     <li className='nav-item'>
-                      <Link href='/authentication' activeClassName='active'>
-                        <a className='nav-link listing' onClick={() => getTo('/authentication')}>Entrar</a>
+                      <Link href='/login' activeClassName='active'>
+                        <a className='nav-link listing' onClick={() => getTo('/login')}>Entrar</a>
                       </Link>
                     </li>
                   )}
@@ -163,8 +163,8 @@ const Navbar = () => {
                       </>
                     ) : (
                       <></>
-                      // <Link href='/authentication' activeClassName='active'>
-                      //   <a className='login-btn' onClick={() => getTo('/authentication')}>
+                      // <Link href='/login' activeClassName='active'>
+                      //   <a className='login-btn' onClick={() => getTo('/login')}>
                       //     <i className='bx bx-log-in'></i> Entrar
                       //   </a>
                       // </Link>

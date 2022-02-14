@@ -72,7 +72,7 @@ const Platform = ({ events = [] }) => {
   return (
     <>
       {display && (
-        <div className='cryptocurrency-platform-area'>
+        <div id="eventozz-to-participate" className='cryptocurrency-platform-area'>
           <div className='container-fluid'>
             <div className='section-title'>
               <h2>Eventozz para você participar</h2>

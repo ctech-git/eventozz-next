@@ -1200,7 +1200,10 @@ div.shape, div.shape span{
 }
 
 .main-banner-image {
-  margin-left: -70px;
+  /* margin-left: -70px; */
+  margin-left: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .banner-area {

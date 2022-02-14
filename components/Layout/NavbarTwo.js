@@ -43,7 +43,7 @@ const NavbarTwo = () => {
               <div className='responsive-others-option'>
                 <div className='d-flex align-items-center'>
                   <div className='option-item'>
-                    <Link href='/authentication' activeClassName='active'>
+                    <Link href='/login' activeClassName='active'>
                       <a className='login-btn'>
                         <i className='bx bx-log-in'></i>
                       </a>
@@ -325,7 +325,7 @@ const NavbarTwo = () => {
               <div className='others-option'>
                 <div className='d-flex align-items-center'>
                   <div className='option-item'>
-                    <Link href='/authentication' activeClassName='active'>
+                    <Link href='/login' activeClassName='active'>
                       <a className='login-btn'>
                         <i className='bx bx-log-in'></i> Login
                       </a>

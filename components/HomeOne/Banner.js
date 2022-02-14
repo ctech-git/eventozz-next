@@ -1,8 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
+import { AuthContext } from '../../context/auth';
+import { scrollToElement } from '../../utils/scrollTo';
+import { useRouter } from 'next/router';
 
 const Banner = () => {
+  const router = useRouter();
+  const authContext = useContext(AuthContext);
+  const { userToken } = authContext;
+  console.log(userToken);
   const [name, setName] = useState('Bitcoin');
   const [nameTwo, setNameTwo] = useState('USD');
 
@@ -169,23 +176,27 @@ const Banner = () => {
           <div className='row align-items-center m-0'>
             <div className='col-xl-6 col-lg-6 col-md-12 p-0'>
               <div className='main-banner-content'>
-                <h1>Participe & Organize eventos de forma facil, rapida e segura!</h1>
+                <h1>Participe de eventos de forma fácil, rápida e segura!</h1>
                 <p>
-                  Somos uma empresa de tecnologia especializada em inovação. Uma iniciativa 100% paraense focada em promover a melhor experiencia para você que participa de eventos e para você que organiza.
+                  Compre seus ingressos online e receba no WhatsApp seu qr code de entrada
+                  {/* Somos uma empresa de tecnologia especializada em inovação. Uma iniciativa 100% paraense focada em promover a melhor experiencia para você que participa de eventos e para você que organiza. */}
                 </p>
-                <Link
+                <div onClick={() => {userToken ? scrollToElement({id: 'funfact-area-banner'}) : router.push('/login')}} className="pt-4 row btn-compre-agora absolute"><a className='default-btn'>
+                    <i className='bx bxs-user'></i> {userToken ? "Veja os eventos" : "Cadastre-se"}
+                  </a></div>
+                {/* <Link
                   href='https://www.coinbase.com/signup'
                   className='default-btn'
                 >
                   <a className='default-btn'>
-                    <i className='bx bxs-user'></i> Cadastre-se
+                    <i className='bx bxs-user'></i> {userToken ? "Cadastre-se" : "Veja os eventos"}
                   </a>
-                </Link>
+                </Link> */}
               </div>
             </div>
             <div className='col-xl-4 col-lg-12 col-md-12 p-0'>
               <div className='main-banner-image'>
-                <img src='/images/banner/banner-img1.png' alt='image' />
+                <img src='/images/banner/banner-img1-reduzida.png' alt='image' />
               </div>
             </div>
           </div>

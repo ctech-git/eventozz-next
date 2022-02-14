@@ -153,7 +153,7 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
         autoClose: 2000
       })
       setTimeout(function () {
-        window.location.href = "/authentication";
+        window.location.href = "/login";
       }, 2000);
     }
   }

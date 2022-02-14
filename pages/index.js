@@ -17,7 +17,7 @@ const Index = ({events}) => {
   return (
     <>
       <Banner />
-      <Funfact pt100='pt-100' />
+      <Funfact id="funfact-area-banner" pt100='pt-100' />
       {/* <BuySell pt70='pt-70' /> */}
       <Platform events={events} />
       {/* <AccountCreate title='Get Started in a Few Minutes' /> */}
