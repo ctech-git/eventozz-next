@@ -6207,7 +6207,9 @@ Payment Method Area CSS
 Blog Area CSS
 =================================================*/
 .single-blog-post {
-  margin-bottom: 30px;
+  cursor:pointer ;
+
+  margin-bottom: 50px;
 }
 
 .single-blog-post .post-image {
@@ -6228,6 +6230,14 @@ Blog Area CSS
   left: 15px;
   top: 15px;
 }
+.open-button{
+  color: var(--optionalColor) !important;
+}
+.close-button{
+  color:#dc3545 !important;
+}
+
+
 
 .single-blog-post .post-image .tag-list a {
   padding: 3px 12px;
