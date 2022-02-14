@@ -725,7 +725,14 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     let qRCodeImage = feedback?.qrCodeUrl;
                     success = true;
                     title = "Seu PIX foi gerado!";
-                    text = `O QR Code para entrada no evento chegará em seu email quando o pagamento for confirmado! <br></br>
+                    text = `
+                    1º passo - Primeiro selecione e copie o código da conta que deseja pagar;<br></br>
+2º passo - Depois abra o app do seu banco favorito e vá para a área de Pix;<br></br>
+3º passo - Clique em Pix Copia e Cola;<br></br>
+4º passo - Onde está escrito Código Pix, cole o código que foi copiado no primeiro passo;<br></br>
+5º passo - Confirme os dados da transação;<br></br>
+6º passo - Aguarde a confirmação em seu Whatsapp e em seu email;<br></br>
+            O QR Code para entrada no evento chegará em seu email quando o pagamento for confirmado! <br></br>
             Além disso, seu nome e CPF estarão na lista e você pode acessar aqui para emitir uma segunda via!
             </br></br>
             Desde já, bom evento em nome da Eventozz!`;

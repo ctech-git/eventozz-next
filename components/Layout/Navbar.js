@@ -117,11 +117,11 @@ const Navbar = () => {
                       </li>
                     </>
                   ) : (
-                    <Link href='/authentication' activeClassName='active'>
-                      <a className='login-btn' onClick={() => getTo('/authentication')}>
-                        <i className='bx bx-log-in'></i> Entrar
-                      </a>
-                    </Link>
+                    <li className='nav-item'>
+                      <Link href='/authentication' activeClassName='active'>
+                        <a className='nav-link listing' onClick={() => getTo('/authentication')}>Entrar</a>
+                      </Link>
+                    </li>
                   )}
 
                 <li className='nav-item megamenu support VersionWeb'>
@@ -162,11 +162,12 @@ const Navbar = () => {
                         </ul>
                       </>
                     ) : (
-                      <Link href='/authentication' activeClassName='active'>
-                        <a className='login-btn' onClick={() => getTo('/authentication')}>
-                          <i className='bx bx-log-in'></i> Entrar
-                        </a>
-                      </Link>
+                      <></>
+                      // <Link href='/authentication' activeClassName='active'>
+                      //   <a className='login-btn' onClick={() => getTo('/authentication')}>
+                      //     <i className='bx bx-log-in'></i> Entrar
+                      //   </a>
+                      // </Link>
                     )
                   }
 

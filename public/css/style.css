@@ -2068,8 +2068,16 @@ box eventos listagem lista events
   margin-top: -5px !important;
 }
 .img-eventozz-buy-page-banner{
-  height: 600px !important;
+  height: 100% !important;
   width: 100% !important;
+  position: absolute;
+    top: 0;
+    left: 0;
+}
+.dimension-automatic{
+  position: relative;
+  padding-bottom: 56.25%;
+  width: 100%;
 }
 .img-eventozz-buy-page{
   height: 500px !important;
@@ -2079,7 +2087,6 @@ box eventos listagem lista events
 .img-eventozz{
   height: 260px !important;
   width: 100%;
-  border-radius: 20px;
 }
 
 /*================================================
@@ -8106,7 +8113,7 @@ width: 100px;
 
 .container-image-event{
   position: relative;
-  padding-bottom: 83.33%;
+  padding-bottom: 56.25%;
 }
 
 .container-image-event img{

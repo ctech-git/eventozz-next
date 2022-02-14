@@ -122,11 +122,13 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
           style={{ background: event?.cor_principal ? (event?.cor_principal) : ('#00a79d') }}
         >{event?.imagem_banner ? (
           <div className='col-12 d-flex justify-content-center'>
-            <img
-              className="img-eventozz-buy-page-banner"
-              src={event?.imagem_banner}
-              alt='image'
-            />
+            <div className='dimension-automatic'>
+              <img
+                className="img-eventozz-buy-page-banner"
+                src={event?.imagem_banner}
+                alt='image'
+              />
+            </div>
             {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora bannerinicial justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>}
           </div>
         ) : (
