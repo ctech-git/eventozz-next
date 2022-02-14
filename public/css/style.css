@@ -57,7 +57,7 @@ Default CSS
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap");
 :root {
-  --fontFamily: 'Lato', sans-serif;
+  --fontFamily: 'Montserrat', sans-serif;
   --fontFamily2: 'Open Sans', sans-serif;
   --mainColor: #5466f9;
   --optionalColor: #00a79D;
@@ -68,7 +68,9 @@ Default CSS
   --transition: .5s;
   --error-color: #e74c3c
 }
-
+.mt-10{
+  margin-top: 10px;
+}
 body {
   margin: 0;
   padding: 0;
