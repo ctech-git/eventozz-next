@@ -85,8 +85,8 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li className='nav-item megamenu'>
-                  <Link href='/buy' activeClassName='active'>
-                    <a className='nav-link' onClick={() => getTo('/buy')}>Eventos</a>
+                  <Link href='/eventos' activeClassName='active'>
+                    <a className='nav-link' onClick={() => getTo('/eventos')}>Eventos</a>
                   </Link>
 
                 </li>

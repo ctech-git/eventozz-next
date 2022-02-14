@@ -726,16 +726,25 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     success = true;
                     title = "Seu PIX foi gerado!";
                     text = `
-                    1º passo - Primeiro selecione e copie o código da conta que deseja pagar;<br></br>
-2º passo - Depois abra o app do seu banco favorito e vá para a área de Pix;<br></br>
-3º passo - Clique em Pix Copia e Cola;<br></br>
-4º passo - Onde está escrito Código Pix, cole o código que foi copiado no primeiro passo;<br></br>
-5º passo - Confirme os dados da transação;<br></br>
-6º passo - Aguarde a confirmação em seu Whatsapp e em seu email;<br></br>
-            O QR Code para entrada no evento chegará em seu email quando o pagamento for confirmado! <br></br>
-            Além disso, seu nome e CPF estarão na lista e você pode acessar aqui para emitir uma segunda via!
-            </br></br>
-            Desde já, bom evento em nome da Eventozz!`;
+                    Agora você já pode efetuar o pagamento para gerarmos o seu código de entrada!</br>
+                    Siga o seguinte passo-a-passo:
+                    <ul style="
+                    margin-top: 10px;
+                ">
+                                    <li><strong>1º passo</strong> - Primeiro selecione e copie o código da conta que deseja pagar no botão COPIAR logo abaixo;</li>
+                                    <li><strong>2º passo</strong> - Depois abra o app do seu banco favorito e vá para a área de Pix;</li>
+                                    <li><strong>3º passo</strong> - Clique em Pix Copia e Cola;</li>
+                                    <li><strong>4º passo</strong> - Onde está escrito Código Pix, cole o código que foi copiado no primeiro passo;</li>
+                                    <li><strong>5º passo</strong> - Confirme os dados da transação;</li>
+                                    <li><strong>6º passo</strong> - Aguarde a confirmação em seu Whatsapp e em seu email;</li>
+                                    </ul>
+                    </br>
+                    
+                                <span style="margin-top: 5px;">O QR Code para entrada no evento chegará em seu Whatsapp quando o pagamento for confirmado!</span>
+                                <br>
+                                <span style="margin-top: 5px;">Além disso, seu nome e CPF estarão na lista e você pode acessar aqui para emitir uma segunda via!</span>
+                                <br>
+                                <span style="margin-top: 5px;">Desde já, bom evento em nome da Eventozz!</span>`;
                     image = qRCodeImage ? qRCodeImage : '';
                     link = qrCodeLink ? qrCodeLink : false;
                 }
@@ -1180,12 +1189,12 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                 <Image src={paymentFeedback?.image} layout='fill' alt="Imagem sucesso" />
                             </Col>
                             <Col className='m-auto' xs={12}>
-                                <div className='container-title-feedback' xs={12}>
+                                {/* <div className='container-title-feedback' xs={12}>
                                     <h2>Veja os detalhes na página "Minhas compras"</h2>
                                 </div>
                                 <Col className='container-copy-button' xs={12} sm={6}>
                                     <a class="default-btn checkout-button  min-height-45" type="button" onClick={() => router.push('/minhas-compras')}><i className='bx bxs-hand-right'></i>Ir para Minhas compras</a>
-                                </Col>
+                                </Col> */}
                             </Col>
                         </Row>
                     )

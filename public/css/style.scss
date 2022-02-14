@@ -67,6 +67,9 @@ Default CSS
     --fontSize: 15px;
     --transition: .5s;
 }
+.mt-10{
+    margin-top: 10px;
+}
 body {
     margin: 0;
     padding: 0;
@@ -5505,7 +5508,8 @@ Payment Method Area CSS
 Blog Area CSS
 =================================================*/
 .single-blog-post {
-    margin-bottom: 30px;
+    margin-bottom: 50px;
+    cursor:pointer ;
 
     .post-image {
         margin-bottom: 25px;

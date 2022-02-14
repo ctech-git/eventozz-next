@@ -1,20 +1,14 @@
 {
-  "../components/Common/Portfolio.js -> react-owl-carousel3": {
-    "id": "../components/Common/Portfolio.js -> react-owl-carousel3",
-    "files": [
-      "static/chunks/node_modules_react-owl-carousel3_lib_OwlCarousel_js.js"
-    ]
-  },
-  "../components/HomeOne/Platform.js -> react-owl-carousel3": {
-    "id": "../components/HomeOne/Platform.js -> react-owl-carousel3",
-    "files": [
-      "static/chunks/node_modules_react-owl-carousel3_lib_OwlCarousel_js.js"
-    ]
-  },
   "../components/Layout/TopHeader.js -> react-owl-carousel3": {
     "id": "../components/Layout/TopHeader.js -> react-owl-carousel3",
     "files": [
       "static/chunks/node_modules_react-owl-carousel3_lib_OwlCarousel_js.js"
+    ]
+  },
+  "eventos.js -> react-apexcharts": {
+    "id": "eventos.js -> react-apexcharts",
+    "files": [
+      "static/chunks/node_modules_react-apexcharts_dist_react-apexcharts_min_js.js"
     ]
   }
 }

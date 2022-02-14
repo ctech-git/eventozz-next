@@ -1,6 +1,20 @@
 import { Axios } from './axios';
 
 const servicesEventozz = {
+  getEventzzGeneral: async () => {
+    const response = await Axios.get("/list/eventzzGeneral", {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+
+    return response;
+  },
   getEventzz: async () => {
     const response = await Axios.get("/list/eventzz", {
       headers: {
