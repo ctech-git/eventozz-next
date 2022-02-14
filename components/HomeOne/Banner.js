@@ -176,14 +176,14 @@ const Banner = () => {
           <div className='row align-items-center m-0'>
             <div className='col-xl-6 col-lg-6 col-md-12 p-0'>
               <div className='main-banner-content'>
-                <h1>Participe de eventos de forma fácil, rápida e segura!</h1>
+                {/* <h1>Participe de eventos de forma fácil, rápida e segura!</h1> */}
                 <p>
-                  Compre seus ingressos online e receba no WhatsApp seu qr code de entrada
+                  {/* Compre seus ingressos online e receba no WhatsApp seu qr code de entrada */}
                   {/* Somos uma empresa de tecnologia especializada em inovação. Uma iniciativa 100% paraense focada em promover a melhor experiencia para você que participa de eventos e para você que organiza. */}
                 </p>
-                <div onClick={() => {userToken ? scrollToElement({id: 'funfact-area-banner'}) : router.push('/login')}} className="pt-4 row btn-compre-agora absolute"><a className='default-btn'>
+                {/* <div onClick={() => {userToken ? scrollToElement({id: 'funfact-area-banner'}) : router.push('/login')}} className="pt-4 row btn-compre-agora absolute"><a className='default-btn'>
                     <i className='bx bxs-user'></i> {userToken ? "Veja os eventos" : "Cadastre-se"}
-                  </a></div>
+                  </a></div> */}
                 {/* <Link
                   href='https://www.coinbase.com/signup'
                   className='default-btn'
@@ -194,11 +194,23 @@ const Banner = () => {
                 </Link> */}
               </div>
             </div>
-            <div className='col-xl-4 col-lg-12 col-md-12 p-0'>
+            {/* <div className='col-xl-4 col-lg-12 col-md-12 p-0'>
               <div className='main-banner-image'>
                 <img src='/images/banner/banner-img1-reduzida.png' alt='image' />
               </div>
+            </div> */}
+             <div className='about-content'>
+            <div className='content'>
+              <h1>Participe de eventos de forma fácil, rápida e segura!</h1>
+              <p>
+                  Compre seus ingressos online e receba no WhatsApp seu qr code de entrada
+                  {/* Somos uma empresa de tecnologia especializada em inovação. Uma iniciativa 100% paraense focada em promover a melhor experiencia para você que participa de eventos e para você que organiza. */}
+                </p>
+                <div onClick={() => {userToken ? scrollToElement({id: 'funfact-area-banner'}) : router.push('/login')}} className="pt-4 row btn-compre-agora absolute home"><a className='default-btn'>
+                    <i className='bx bxs-user'></i> {userToken ? "Veja os eventos" : "Cadastre-se"}
+                  </a></div>
             </div>
+          </div>
           </div>
         </div>
         <div className='shape1'>

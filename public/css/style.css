@@ -8174,6 +8174,11 @@ width: 100px;
   padding-right: 10px !important;
 }
 
+.btn-compre-agora.absolute.home{
+  display: flex;
+  justify-content: flex-start; 
+}
+
 @media (max-width: 767px){
   .col-left-initial-banner{
     position: absolute;
@@ -8223,5 +8228,9 @@ width: 100px;
   .tokens-content{
     width: 100%;
     padding-right: 0;
+  }
+  .btn-compre-agora.absolute.home{
+    display: flex;
+    justify-content: center; 
   }
 }
