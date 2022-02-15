@@ -1,15 +1,13 @@
 
-const AdvisorArea = ({bgColor}) => {
+const AdvisorArea = ({ bgColor }) => {
   return (
     <>
       <div className={`advisor-area pt-100 pb-70 ${bgColor}`}>
         <div className='container'>
           <div className='section-title'>
-            <h2>Our Advisors</h2>
+            <h2>Nossa Equipe</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco.
+              Se liga só na equipe responsavel pro desenvolver toda a tecnologia que possibilitará você orgnaizar seu evento da melhor forma
             </p>
           </div>
           <div className='row justify-content-center'>

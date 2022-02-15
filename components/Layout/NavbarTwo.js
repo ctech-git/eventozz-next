@@ -299,7 +299,7 @@ const NavbarTwo = () => {
                       </Link>
                     </li>
                     <li className='nav-item'>
-                      <Link href='/contact' activeClassName='active'>
+                      <Link href='/contato' activeClassName='active'>
                         <a className='nav-link'>
                           <i className='bx bx-phone-call'></i>
                           Contact Us
@@ -333,12 +333,12 @@ const NavbarTwo = () => {
                   </div>
                   <div className='option-item'>
                     <Link
-                      href='/contact'
+                      href='/contato'
                       className='register-btn'
                       activeClassName='active'
                     >
                       <a className='register-btn'>
-                      <i className='bx bxs-contact'></i> Contact
+                        <i className='bx bxs-contact'></i> Contact
                       </a>
                     </Link>
                   </div>

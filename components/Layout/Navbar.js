@@ -92,8 +92,8 @@ const Navbar = () => {
                 </li>
 
                 <li className='nav-item'>
-                  <Link href='/price-details' activeClassName='active'>
-                    <a className='nav-link listing' onClick={() => getTo('/price-details')}>Sobre Nós</a>
+                  <Link href='/sobre-nos' activeClassName='active'>
+                    <a className='nav-link listing' onClick={() => getTo('/sobre-nos')}>Sobre Nós</a>
                   </Link>
                 </li>
                 {
@@ -179,8 +179,8 @@ const Navbar = () => {
 
 
                   <div className='option-item'>
-                    <Link href='/contact' activeClassName='active'>
-                      <a className='default-btn' onClick={() => getTo('/contact')}>
+                    <Link href='/contato' activeClassName='active'>
+                      <a className='default-btn' onClick={() => getTo('/contato')}>
                         <i className='bx bxs-chat' ></i> Fale Conosco
                       </a>
                     </Link>

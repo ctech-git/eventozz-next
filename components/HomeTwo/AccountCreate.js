@@ -4,7 +4,7 @@ const AccountCreate = () => {
       <div className='account-create-process-area bg-image pt-100 pb-70'>
         <div className='container'>
           <div className='section-title'>
-            <h2>Get Started in a Few Minutes</h2>
+            <h2>Crie Eventos em Poucos Minutos</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
