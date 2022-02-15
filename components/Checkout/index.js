@@ -640,7 +640,11 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
                         case "captured":
                             title = 'Compra autorizada!';
-                            text = 'Seu pagamento já foi aprovado e você receberá seu QR Code em seu email! <br/> Aproveite muito seu evento!';
+                            text = `Ficamos extremamente felizes em dizer que sua compra <strong> está autorizada!✅ </strong><br>
+                                Em alguns minutos você receberá no seu Whatsapp e no email o seu <strong>QR Code de entrada no evento.</strong><br><br>
+                                Você só precisará levar esse comprovante no dia do evento. Tudo bem? <br><br>
+                                Lembre-se: <strong>cada QR é ÚNICO.</strong> Então só poderá acessar o evento UMA pessoa por QR Code. Não saia enviando para outras pessoas para evitar qualquer problema.<br><br>
+                                `;
                             image = SuccessImage;
                             success = true;
                             break;

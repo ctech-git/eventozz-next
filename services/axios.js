@@ -8,7 +8,6 @@ export const Axios = axios.create({
   headers: {
     'Content-Type': 'application/json',
   }
-
 })
 
 export const ApiCEP = axios.create({
