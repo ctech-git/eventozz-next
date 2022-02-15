@@ -387,9 +387,9 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
             let cardNumer = creditCardData.number.replaceAll('/\s+/g ', '');
 
-            let expirationDate = creditCardData.expirationDate.split('/');
-            let expirationYear = expirationDate[1];
-            let expirationMonth = expirationDate[0];
+            let expirationDate = creditCardData.expirationDate;
+            let expirationYear = `${expirationDate[2]}${expirationDate[3]}`;
+            let expirationMonth = `${expirationDate[0]}${expirationDate[1]}`;
             if (expirationMonth < 10) {
                 expirationMonth = expirationMonth.replaceAll('0', '');
             }
