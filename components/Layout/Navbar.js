@@ -55,7 +55,7 @@ const Navbar = () => {
               <div className='logo'>
                 <Link href='/'>
                   <a onClick={() => getTo('/')}>
-                    <img src='/images/logo-eventozz.png' alt='logo' />
+                    <img src='/images/logo-eventozz.png' alt='logo' className='image-logo-mobile' />
                   </a>
                 </Link>
               </div>

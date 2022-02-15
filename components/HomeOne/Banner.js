@@ -4,6 +4,7 @@ import axios from 'axios';
 import { AuthContext } from '../../context/auth';
 import { scrollToElement } from '../../utils/scrollTo';
 import { useRouter } from 'next/router';
+import { useMediaQuery } from 'react-responsive';
 
 const Banner = () => {
   const router = useRouter();
@@ -12,6 +13,7 @@ const Banner = () => {
   console.log(userToken);
   const [name, setName] = useState('Bitcoin');
   const [nameTwo, setNameTwo] = useState('USD');
+  const isMobile = useMediaQuery({ maxWidth: 768 })
 
   //api data
   const [newData, setnewData] = useState([]);
@@ -66,153 +68,16 @@ const Banner = () => {
     };
     getData();
   }, [coinSymbol]);
+  console.log(isMobile);
   return (
     <>
       <div className='main-banner-area'>
-        <div className='container'>
-          {/*
-          <div className='main-banner-box'>
-            
-            <div className='currency-selection'>
-              <label>YOU PAY</label>
-              <input
-                type='text'
-                value={cryptoQuantity}
-                onChange={(e) => setcryptoQuantity(e.target.value)}
-              />
-              <div
-                className={toggleState ? 'dropdown show' : 'dropdown'}
-                onClick={() => toggleTabOne()}
-              >
-                <button
-                  className='dropdown-toggle'
-                  type='button'
-                  data-bs-toggle='dropdown'
-                  aria-expanded='false'
-                >
-                  <img src={image} alt='image' />
-                  {name}
-
-                  <span>
-                    {toggleState ? (
-                      <i className='bx bx-chevron-up'></i>
-                    ) : (
-                      <i className='bx bx-chevron-down'></i>
-                    )}
-                  </span>
-                </button>
-                <ul
-                  className={
-                    toggleState ? 'dropdown-menu show' : 'dropdown-menu'
-                  }
-                >
-                  {newData.length > 0 &&
-                    newData.map((data, index) => (
-                      <li
-                        key={index}
-                        onClick={(e) => toggleSelected(data, index)}
-                        value='watch'
-                        className={
-                          clicked === index ? 'option selected focus' : 'option'
-                        }
-                      >
-                        <div className='coin-wrapper'>
-                          <img src={data.image} alt='image' />
-                          <span className='coin-name'> {data.name} </span>
-                        </div>
-                      </li>
-                    ))}
-                </ul>
-              </div>
-            </div>
-            
-            <ul className='features-list'>
-              <li>
-                <div className='d-flex align-items-center'>
-                  <span className='first-span'>
-                    <i className='fas fa-minus'></i>
-                    2.00 USD
-                  </span>
-                  <span className='second-span'>TOTAL CARD FEES</span>
-                </div>
-              </li>
-              <li>
-                <div className='d-flex align-items-center'>
-                  <span className='first-span'>
-                    <i className='fas fa-divide'></i>
-                    47202
-                  </span>
-                  <span className='second-span'>CONVERSION RATE</span>
-                </div>
-              </li>
-            </ul>
-             <div className='currency-selection'>
-              <label>YOU RECEIVE</label>
-              <input
-                type='text'
-                value={conversionValue * cryptoQuantity}
-                onChange={(e) => e}
-              />
-              <div className='dropdown'>
-                <button
-                  className='dropdown-toggle'
-                  type='button'
-                  data-bs-toggle='dropdown'
-                  aria-expanded='false'
-                >
-                  <img src={imageTwo} alt='image' /> {nameTwo}
-                </button>
-              </div>
-            </div> 
-            <a
-              href={`https://www.coinbase.com/accounts?quantity=${cryptoQuantity}`}
-              target='_blank'
-              className="coinbaseBtn"
-            >
-              <i className='bx bxs-hand-right'></i> Buy With Visa
-            </a>
-          </div>
-          */}
+        {isMobile ? <img src='/images/banner/banner-eventozz-mobile.png' alt='image' /> : <img className='img-banner-eventozz' src='/images/banner/banner-eventozz.png' alt='image' />}
+        {/* <div className='container'>
           <div className='row align-items-center m-0'>
-            <div className='col-xl-6 col-lg-6 col-md-12 p-0'>
-              <div className='main-banner-content'>
-                {/* <h1>Participe de eventos de forma fácil, rápida e segura!</h1> */}
-                <p>
-                  {/* Compre seus ingressos online e receba no WhatsApp seu qr code de entrada */}
-                  {/* Somos uma empresa de tecnologia especializada em inovação. Uma iniciativa 100% paraense focada em promover a melhor experiencia para você que participa de eventos e para você que organiza. */}
-                </p>
-                {/* <div onClick={() => {userToken ? scrollToElement({id: 'funfact-area-banner'}) : router.push('/login')}} className="pt-4 row btn-compre-agora absolute"><a className='default-btn'>
-                    <i className='bx bxs-user'></i> {userToken ? "Veja os eventos" : "Cadastre-se"}
-                  </a></div> */}
-                {/* <Link
-                  href='https://www.coinbase.com/signup'
-                  className='default-btn'
-                >
-                  <a className='default-btn'>
-                    <i className='bx bxs-user'></i> {userToken ? "Cadastre-se" : "Veja os eventos"}
-                  </a>
-                </Link> */}
-              </div>
-            </div>
-            {/* <div className='col-xl-4 col-lg-12 col-md-12 p-0'>
-              <div className='main-banner-image'>
-                <img src='/images/banner/banner-img1-reduzida.png' alt='image' />
-              </div>
-            </div> */}
-             <div className='about-content'>
-            <div className='content'>
-              <h1>Participe de eventos de forma fácil, rápida e segura!</h1>
-              <p>
-                  Compre seus ingressos online e receba no WhatsApp seu qr code de entrada
-                  {/* Somos uma empresa de tecnologia especializada em inovação. Uma iniciativa 100% paraense focada em promover a melhor experiencia para você que participa de eventos e para você que organiza. */}
-                </p>
-                <div onClick={() => {userToken ? scrollToElement({id: 'funfact-area-banner'}) : router.push('/login')}} className="pt-4 row btn-compre-agora absolute home"><a className='default-btn'>
-                    <i className='bx bxs-user'></i> {userToken ? "Veja os eventos" : "Cadastre-se"}
-                  </a></div>
-            </div>
+            
           </div>
-          </div>
-        </div>
+        </div> */}
         <div className='shape1'>
           <img src='/images/shape/shape1.png' alt='image' />
         </div>
