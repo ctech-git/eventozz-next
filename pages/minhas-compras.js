@@ -125,7 +125,7 @@ const Wallet = () => {
                                     </li>
                                   </ul>
                                   {
-                                    (item.statusDescription == 'paid' || item.isFree == true) && (
+                                    (item.statusDescription == 'paid' || item.isFree == "1" || item.isFree == 1 || item.isFree == true) && (
                                       <Button className='default-btn' onClick={() => handleOpenEventDetails(item)}>
                                         <i className='bx bxs-bookmark-alt-minus'></i> Ver detalhes
                                       </Button>
