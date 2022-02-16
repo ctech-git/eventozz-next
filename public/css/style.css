@@ -202,6 +202,7 @@ p:last-child {
 /*default-btn*/
 .default-btn {
   border-radius: 5px;
+  cursor: pointer;
   -webkit-transition: var(--transition);
   transition: var(--transition);
   display: inline-block;
@@ -4150,6 +4151,7 @@ Wallet Area CSS
 
 .wallet-tabs .tab-pane {
   padding-right: 15px;
+  margin-bottom: 50px;
 }
 
 .wallet-tabs .tab-pane .box {
@@ -5940,7 +5942,10 @@ Profile Authentication Area CSS
   position: relative;
   background-color: #f9f9f9;
 }
-
+    
+.back-icon{
+  background-color: linear-gradient(0deg, #0062ff, #081587) !important;
+}
 .profile-authentication-area .back-icon {
   position: absolute;
   right: 20px;
@@ -8142,10 +8147,23 @@ width: 100px;
 .divisor-login-types{
   font-size: 18px;
 }
-
+.container-flexEnd{
+  display: flex;
+  justify-content: end;
+}
+.head-event{
+  margin-top: 25px;
+  justify-content: center;
+  text-align: center;
+}
 .linkNavbar{
-  background: transparent;
+  background: white;
   border: none;
+  cursor: pointer;
+}
+.linkNavbar .bx-x{
+  color: #081587 !important;
+  font-size: 60px;
 }
 
 .container-spinner.minhas-compras{

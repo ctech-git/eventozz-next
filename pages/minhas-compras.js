@@ -1,87 +1,14 @@
 import PageBanner from '../components/Common/PageBanner';
 import RegisterArea from '../components/Common/RegisterArea';
-import AppDownload from '../components/Common/AppDownload';
-import RegisterAreaTwo from '../components/Common/RegisterAreaTwo';
-import Link from 'next/link';
 import servicesEventozz from '../services/events';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../context/auth';
 import { Button, Container } from 'react-bootstrap';
-import { EventDetails } from '../components/EventDetails';
+// import QRCode from 'qrcode'
+import { QRCode } from "react-qr-svg";
+
 
 const Wallet = () => {
 
-  const Eventozz = [
-    {
-      "id": 1,
-      "nome": "Gerado Rufino",
-      "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      "status": "PAGO",
-      "data": "20/09/2021"
-    },
-    {
-      "id": 2,
-      "nome": "Gerado Rufino",
-      "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      "status": "PENDENTE",
-      "data": "20/09/2021"
-    },
-    {
-      "id": 3,
-      "nome": "Gerado Rufino",
-      "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      "status": "PAGO",
-      "data": "20/09/2021"
-    },
-    {
-      "id": 4,
-      "nome": "Gerado Rufino",
-      "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      "status": "FALHA",
-      "data": "20/09/2021"
-    },
-    {
-      "id": 5,
-      "nome": "Gerado Rufino",
-      "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      "status": "PAGO",
-      "data": "20/09/2021"
-    },
-    {
-      "id": 6,
-      "nome": "Gerado Rufino",
-      "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      "status": "PAGO",
-      "data": "20/09/2021"
-    },
-    {
-      "id": 7,
-      "nome": "Gerado Rufino",
-      "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      "status": "PAGO",
-      "data": "20/09/2021"
-    },
-    {
-      "id": 8,
-      "nome": "Gerado Rufino",
-      "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      "status": "PAGO",
-      "data": "20/09/2021"
-    },
-    {
-      "id": 9,
-      "nome": "Gerado Rufino",
-      "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      "status": "PAGO",
-      "data": "20/09/2021"
-    },
-    {
-      "id": 10,
-      "nome": "Gerado Rufino",
-      "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-      "status": "PAGO",
-    }
-  ];
   const [eventzz, setEventzz] = useState([]);
   const [eventId, setEventId] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -92,10 +19,9 @@ const Wallet = () => {
     const result = await servicesEventozz.getUserEventzz({ accessToken });
     setIsLoading(false);
     if (result?.data?.success) {
+
       setEventzz(result?.data?.data);
-      //nome_evento
-      //descricao
-      //status_descricao = pending | paid | failed | gratuito
+
     }
   }, [])
 
@@ -142,7 +68,7 @@ const Wallet = () => {
 
   const handleOpenEventDetails = (item) => {
 
-    setEventId(item);
+    setEventId(item)
     setShowEventDetails(true)
   }
 
@@ -161,30 +87,33 @@ const Wallet = () => {
     </div>
   )
 
+
   return (
     <>
-      <PageBanner
-        pageTitle='Bem Vindo ao Seu Perfil'
-        pageSubTitle='Aqui você tem acesso a todos os seus ingressos'
-      />
       {
-        !showEventDetails && (
-          <div className='wallet-area ptb-100'>
-            <div className='container'>
-              <div className='wallet-tabs'>
-                <div className='row align-items-center'>
-                  {
-                    isLoading ? (
-                      <LoadingCheckout />
-                    ) : (
-                      eventzz.map((item, index) => {
-                        let iconPayment = selectStatusIcon(item.statusDescription);
-                        return (
-                          <div className='col-lg-4 col-md-12 box-ticket'>
-                            <div className='tab-content' id='myTabContent'>
+        !showEventDetails ? (
+          <>
+            <PageBanner
+              pageTitle='Historico'
+              pageSubTitle='Aqui você tem acesso a todos os seus ingressos'
+            />
+            <div className='wallet-area ptb-100'>
+              <div className='container'>
+                <div className='wallet-tabs'>
+                  <div className='row align-items-center'>
+                    {
+                      isLoading ? (
+                        <LoadingCheckout />
+                      ) : (
+                        eventzz.map((item, index) => {
+                          console.log(item)
+                          let iconPayment = selectStatusIcon(item.statusDescription);
+                          return (
+                            <div className='col-lg-4 col-md-12'>
+
                               <div className='tab-pane fade show active' id='security' role='tabpanel' >
                                 <div className='box'>
-                                  <h3>{item.eventName}</h3>
+                                  <h4>{item.id} - {item.eventName}</h4>
                                   <p>{item.categoria_evento}</p>
                                   <p>Local do evento: {item.eventPlace}</p>
                                   <p>Data: {formatEventDate(item)}</p>
@@ -195,42 +124,70 @@ const Wallet = () => {
                                       }
                                     </li>
                                   </ul>
-                                  {/* <Link href='/about'> */}
-                                  <Button className='default-btn' onClick={() => handleOpenEventDetails(item)}>
-                                    <i className='bx bxs-bookmark-alt-minus'></i> Ver detalhes
-                                  </Button>
-                                  {/* </Link> */}
+                                  {
+                                    (item.statusDescription == 'paid' || item.isFree == true) && (
+                                      <Button className='default-btn' onClick={() => handleOpenEventDetails(item)}>
+                                        <i className='bx bxs-bookmark-alt-minus'></i> Ver detalhes
+                                      </Button>
+                                    )}
                                 </div>
                               </div>
+
                             </div>
-                          </div>
-                        )
-                      })
-                    )}
+                          )
+                        })
+                      )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )
-      }
-      {
-        showEventDetails && (
+          </>
+        ) : (
           <>
             <Container>
-              <EventDetails handleClose={handleHideEventDetails()} eventId={eventId} />
+              <div className="container-flexEnd">
+                <div onClick={() => handleHideEventDetails()} className='linkNavbar'>
+                  <i className='bx bx-x'></i>
+                </div>
+              </div>
+              <div className='head-event'>
+                <h4>{eventId.id} - {eventId.eventName}</h4>
+              </div>
+              <div className='wallet-area ptb-100'>
+                <div className='container'>
+                  <div className='wallet-tabs'>
+                    <div className='row align-items-center'>
+                      {eventId.ticketsSale.map((item, index) => {
+                        console.log(item)
+                        return (
+                          <>
+                            <div className='col-lg-4 col-md-12'>
+                              <div className='tab-pane fade show active'>
+                                <div className='box'>
+                                  <h4>{item.id} - {item.nome}</h4>
+                                  <p>{item.email}</p>
+                                  <QRCode
+                                    bgColor="#FFFFFF"
+                                    fgColor="#000000"
+                                    level="Q"
+                                    style={{ width: 256 }}
+                                    value={item?.codigo}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </Container>
-            <Button onClick={() => handleHideEventDetails()} className='back-icon linkNavbar'>
-              <i className='bx bx-x'></i>
-            </Button>
           </>
         )
       }
-      <RegisterArea
-        bgGradient='bg-gradient-image'
-        blackText='black-text'
-        ctaImage='/images/man-with-ipad.png'
-      />
-      {/* <RegisterArea ctaImage='/images/man.png' /> */}
+
     </>
   );
 };

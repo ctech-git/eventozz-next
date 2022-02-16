@@ -25,14 +25,9 @@ import { toast } from 'react-toastify';
 import Checkout from '../../components/Checkout';
 
 const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate }) => {
-  console.log(event);
-  console.log(isActive);
-  console.log(eventDate);
+
   const router = useRouter();
-  // const { id } = router.query
-  // const [isEvent, setIsEvent] = useState(false);
-  // const [item, setItem] = useState([]);
-  // const [isActive, setIsActive] = useState(true);
+
   const [eventDay, setEventDay] = useState('');
   const [cartItems, setCartItems] = useState([]);
   const [isLoadingCartItem, setIsLoadingCartItem] = useState(false);
@@ -41,7 +36,6 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
 
   useEffect(() => {
     if (eventDate != '') {
-      console.log(eventDate);
       const eventDayAux = new Date(eventDate);
       setEventDay(eventDayAux)
     }
@@ -53,7 +47,6 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
     const result = await shoppingCartService.listShoppingCart(event.id, accessToken);
     var data = result?.data?.data;
     if (data?.length > 0) {
-      console.log(data)
       setCartItems(data);
       setShowCheckout(true);
       scrollToElement({ id: 'container-checkout' });
@@ -64,7 +57,6 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
   };
 
   const handleChangeTicketQuantity = async ({ idInShoppingCart, quantity, cartItem }) => {
-    console.log(quantity, cartItem.qtdDisponivel);
     if (quantity > cartItem.qtdDisponivel) {
       return toast.info("A quantidade informada não está mais disponível");
     }
@@ -78,7 +70,6 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
     const result = await shoppingCartService.updateQuantityShoppingCart({ idInShoppingCart, quantity, accessToken });
     var data = result?.data;
     if (data?.success) {
-      console.log(data)
       getCartItems();
       // setCartItems(data);
       // setShowCheckout(true);
@@ -95,7 +86,6 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
     const result = await shoppingCartService.deleteShoppingCartItem({ idInShoppingCart, accessToken });
     var data = result?.data;
     if (data?.success) {
-      console.log(data)
       getCartItems();
       // setCartItems(data);
       // setShowCheckout(true);
@@ -222,7 +212,6 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
 export default Event;
 
 export async function getServerSideProps(context) {
-  console.log(context);
   const { params } = context;
   const { eventSlug: slug } = params;
   const result = await servicesEventozz.getEvent(slug);
@@ -236,7 +225,6 @@ export async function getServerSideProps(context) {
 
   if (result?.status === 200 && result?.data?.success && result?.data?.data?.length > 0) {
     event = result?.data?.data[0];
-    console.log(event);
     let today = new Date();
     let ticketSaleStartDate = new Date(event?.data_inicio_venda_ingresso);
     let ticketSaleEndDate = new Date(event?.data_fim_venda_ingresso);

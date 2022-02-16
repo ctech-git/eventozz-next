@@ -15,11 +15,6 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
-    "/": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/index.js"
-    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -35,10 +30,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/evento/[eventSlug].js"
     ],
-    "/eventos": [
+    "/minhas-compras": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/eventos.js"
+      "static/chunks/pages/minhas-compras.js"
     ]
   },
   "ampFirstPages": []

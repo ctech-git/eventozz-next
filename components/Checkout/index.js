@@ -18,8 +18,7 @@ import { useRouter } from 'next/router';
 import { copyToClipboard } from '../../utils/functions';
 
 const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, setHideOnCheckout, hideOnCheckout }) => {
-    console.log(dados);
-    console.log(cartItems);
+
     const router = useRouter();
     const isMobile = useMediaQuery({ maxWidth: 768 })
     const [deletedTicketId, setDeletedTicketId] = useState(null);
@@ -82,7 +81,6 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     }
 
     useEffect(() => {
-        console.log('there');
         generateInputTicketsData();
         getAvailablePaymentInfo();
         setShowPayment(false);
@@ -121,12 +119,10 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     )
 
     const generateInputTicketsData = useCallback(async () => {
-        console.log('here');
-        console.log(ticketsData);
+
         let ticketsDataTemp = {};
         let totalTicketsTemp = 0;
         await Promise.all(cartItems.map(item => {
-            console.log(item);
             totalTicketsTemp += item.quantidade;
             let ticketsDataItem = ticketsData[item.idIngresso] ? ticketsData[item.idIngresso] : [];
             if (item.quantidade === 0) {
@@ -134,12 +130,10 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             } else if (item.quantidade < ticketsDataItem?.length) {
                 ticketsDataItem = ticketsDataItem.filter((a, i) => item.quantidade > i)
             } else if (item.quantidade > ticketsDataItem?.length) {
-                console.log(item.quantidade);
-                console.log(ticketsDataItem?.length);
+
                 let initialQuantity = item.quantidade - ticketsDataItem?.length;
                 for (let i = 0;i < initialQuantity;i++) {
-                    console.log(i);
-                    console.log();
+
                     ticketsDataItem.push({
                         description: `${i + 1}º - ${item.nome}`,
                         idIngresso: item.idIngresso,
@@ -152,17 +146,12 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             }
             ticketsDataTemp[item.idIngresso] = ticketsDataItem;
         }));
-        console.log(ticketsDataTemp);
-        console.log(Object.values(ticketsDataTemp));
+
         Object.values(ticketsDataTemp).map(a => {
-            console.log(a);
             a.map(b => {
-                console.log(b);
             })
         })
-        // Object.keys(ticketsDataTemp).map( a => {
-        //     console.log(ticketsDataTemp[a]);
-        // });
+
         setTotalTickets(totalTicketsTemp);
         setTicketsData(ticketsDataTemp);
 
@@ -174,6 +163,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         const response = await checkoutService.getPaymentInfo({ accessToken, params: { eventId: dados?.id ? dados?.id : '', couponId: couponId ? couponId : false } });
         if (response?.data?.success && response?.data?.data) {
             const data = response.data.data;
+            console.log("=======");
+            console.log(data);
             setInstallmentOptions(data?.credit ? data.credit : []);
             setPixValue(data?.pix ? data.pix : '');
             setCouponInfo(data?.couponInfo)
@@ -182,24 +173,19 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     }, [couponId, dados])
 
     const handleUseMyAccountData = async ({ checked, ticketsDataIndex, ticketIndex, idIngresso }) => {
-        console.log(checked, ticketsDataIndex, ticketIndex);
         if (checked) {
             let accessToken = window.localStorage.getItem("accessToken");
             setTextLoading("Buscando dados da conta");
             setIsLoadingCheckout(true);
             const result = await checkoutService.getCustomerForCheckout(accessToken)
-            console.log(result);
             if (result.status === 200) {
                 const data = result.data.data;
-                console.log(data);
 
                 let newTicketsData = {}
                 Object.values(ticketsData).map((ticketType, index) => {
-                    console.log(ticketType);
                     const idIngresso = ticketType[0].idIngresso;
 
                     const newTicketData = ticketType.map((ticket, i) => {
-                        console.log(ticket);
                         if (index === ticketsDataIndex && i === ticketIndex) {
                             return {
                                 ...ticket,
@@ -214,9 +200,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     });
                     newTicketsData[idIngresso] = newTicketData;
                 });
-                console.log(newTicketsData);
                 setTicketsData(newTicketsData);
-                console.log(idIngresso);
                 setTicketIdUsingMyAccountData(idIngresso);
 
             } else {
@@ -232,15 +216,12 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     }
 
     const handleChangeTicketData = ({ value, field, ticketsDataIndex, ticketIndex }) => {
-        console.log(value, field, ticketsDataIndex, ticketIndex);
 
         let newTicketsData = {}
         Object.values(ticketsData).map((ticketType, index) => {
-            console.log(ticketType);
             const idIngresso = ticketType[0].idIngresso;
 
             const newTicketData = ticketType.map((ticket, i) => {
-                console.log(ticket);
                 if (index === ticketsDataIndex && i === ticketIndex) {
                     return {
                         ...ticket,
@@ -252,17 +233,13 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             });
             newTicketsData[idIngresso] = newTicketData;
         });
-        console.log(newTicketsData);
         setTicketsData(newTicketsData)
     }
 
     const handleShowPayment = () => {
-        console.log(ticketsData);
-        // setShowPayment(true);
         let showErrorTemp = false;
         Object.values(ticketsData).map((ticketType, index) => {
             ticketType.map((ticket, i) => {
-                console.log(ticket);
                 if (
                     ticket.name.length < 2
                     || !isValidCpf(ticket.cpf)
@@ -273,7 +250,6 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 }
             })
         })
-        console.log(showErrorTemp);
         if (showErrorTemp) {
             setShowInputErros(true);
             return toast.error("Preencha todos os campos para cada ingresso");
@@ -286,12 +262,10 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     }
 
     const handleFinishFreeEventSale = () => {
-        console.log(ticketsData);
         // setShowPayment(true);
         let showErrorTemp = false;
         Object.values(ticketsData).map((ticketType, index) => {
             ticketType.map((ticket, i) => {
-                console.log(ticket);
                 if (
                     ticket.name.length < 2
                     || !isValidCpf(ticket.cpf)
@@ -302,7 +276,6 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 }
             })
         })
-        console.log(showErrorTemp);
         if (showErrorTemp) {
             setShowInputErros(true);
             return toast.error("Preencha todos os campos para cada ingresso");
@@ -316,7 +289,6 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     }
 
     const handlePaymentMethod = (value) => {
-        console.log(value);
         setPaymentMethod(value);
         if (value === 'cc') {
             setShowCreditCardFields(true);
@@ -330,13 +302,11 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     }
 
     const handleChangeCreditCardData = ({ value, field }) => {
-        console.log(value, field);
         if (field === 'cvv' && value.length > 3) {
             return;
         } else if (field === 'expirationDate' && value.length > 4) {
             return;
         }
-        console.log(value);
         setCreditCardData(prev => ({
             ...prev,
             [field]: value
@@ -353,7 +323,6 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     async function handlerCep(e) {
         let value = onlyUnsignedNumbers(e.target.value);
         handleChangeBillingData({ value, field: 'cep' });
-        console.log(value)
         if (value.length < 8) {
             return;
         }
@@ -479,8 +448,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
         let eventId = dados?.id;
 
-        console.log(billingData);
-        console.log(ticketsData);
+
         if (!eventId) {
             return toast.error("Não conseguimos identificar o evento!");
         }
@@ -534,30 +502,42 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
         const ticketsDataTemp = [];
         Object.values(ticketsData).map((ticketType, index) => {
-            console.log(ticketType);
             if (ticketType?.length > 0) {
                 ticketType.map(ticket => {
-                    ticketsDataTemp.push(ticket);
+
+                    let cpfTemp = ticket.cpf;
+                    cpfTemp = cpfTemp.replace(".", ""); cpfTemp = cpfTemp.replace(".", ""); cpfTemp = cpfTemp.replace("-", "");
+                    let phoneTemp = ticket.phone;
+
+                    phoneTemp = phoneTemp.replace("(", ""); phoneTemp = phoneTemp.replace(")", "");
+                    phoneTemp = phoneTemp.replace(" ", ""); phoneTemp = phoneTemp.replace("-", "");
+
+                    let vector = {
+                        "description": ticket?.description,
+                        "idIngresso": ticket?.idIngresso,
+                        "name": ticket?.name,
+                        "cpf": cpfTemp,
+                        "phone": phoneTemp,
+                        "email": ticket?.email
+                    }
+                    ticketsDataTemp.push(vector);
                 })
             }
         })
-        console.log(ticketsDataTemp);
         const ticketsQtd = cartItems.map(item => ({
             qtd: item.quantidade,
             ticketId: item.idIngresso
         }))
-        console.log(ticketsQtd);
 
 
         let payments = await generatePayment();
-
+        console.log(ticketsDataTemp);
         let accessToken = window.localStorage.getItem("accessToken");
         const body = {
             couponId, eventId, installmentsNumber, paymentMethod, ticketsData: ticketsDataTemp,
             ticketsQtd, isFree: dados?.is_free, payments
         }
         const response = await checkoutService.purchaseSave({ accessToken, body });
-        console.log(response);
 
         setTextLoading("");
         setIsLoadingCheckout(false);
@@ -589,7 +569,6 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         const response = await shoppingCartService.getCouponId({ couponCode: cupom, eventId: dados?.id, accessToken });
         setIsLoadingCheckout(false);
         setTextLoading("");
-        console.log(response);
         if (response?.status === 200) {
             const data = response?.data?.data;
             if (data?.length > 0) {
@@ -607,7 +586,6 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     }
 
     function handlePaymentFeedBack(feedback, errorPix = false, msgErrorPix = '') {
-        console.log(feedback);
         let success = false;
         let title = '';
         let text = '';
@@ -621,7 +599,6 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             image = ErrorImage;
             link = false;
         } else {
-            console.log("=============")
             if (dados?.is_free) {
                 title = 'Reserva realizada!';
                 text = 'Seus ingressos já foram reservados e você receberá o QR Code em seu email! <br/> Aproveite muito seu evento!';
@@ -859,7 +836,13 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     <div className='container-ticket-responsivo resumo'>
                                         <Row className='pb-2'>
                                             <Col xs={12}>
-                                                <label>{dados?.is_free ? 'Total' : 'Total (com taxas administrativas)'}</label>
+                                                <label>{
+                                                    dados?.is_free ? (
+                                                        'Total'
+                                                    ) : (
+                                                        'Total (com taxas administrativas)'
+                                                    )}
+                                                </label>
                                                 {dados?.is_free ? <h3 className='mb-0 crypto-name'>Gratuito</h3> :
                                                     <h3 className='mb-0 crypto-name'>{paymentMethod === 'pix' ?
                                                         pixValue ? convertMoney(pixValue) : ''
@@ -890,7 +873,6 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     <tbody>
                                         {cartItems && cartItems.length > 0 &&
                                             cartItems.map((cartItem) => {
-                                                console.log(cartItem);
                                                 return (
                                                     <tr key={cartItem.idInShoppingCar}>
                                                         <td>
@@ -943,12 +925,10 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                             <td><h3 className='mb-0 crypto-name'>{dados?.is_free ? 'Total' : 'Total (com taxas administrativas)'}</h3></td>
                                             <td></td>
                                             <td>{totalTickets}</td>
-                                            <td>{dados?.is_free ? 'Gratuito' :
-                                                paymentMethod === 'pix' ?
-                                                    pixValue ? convertMoney(pixValue) : ''
-                                                    : installmentOptions[0]?.value ?
-                                                        `A partir de ${convertMoney(installmentOptions[0]?.totalValue)}`
-                                                        : ''}
+                                            <td>{dados?.is_free ? ('Gratuito') :
+                                                (paymentMethod === 'pix' ?
+                                                    (pixValue ? convertMoney(pixValue) : '')
+                                                    : (installmentOptions[0]?.value ? `A partir de ${convertMoney(installmentOptions[0]?.totalValue)}` : ''))}
                                             </td>
                                             <td></td>
                                         </tr>

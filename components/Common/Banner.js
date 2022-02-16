@@ -288,17 +288,12 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
                 </div>
 
                 <div className="box-button-landing justify-content-center" >
-                  {/* <button type='button'
-                    style={{ backgroundColor: dados?.cor_secundaria ? (dados?.cor_secundaria) : ('#00a79d') }}
-                    onClick={() => { addCar('add') }}
-                  >
-                    <i className='fa fa-plus'></i> Adicionar
-                  </button> */}
-                  <a  className="default-btn"
+
+                  <a className="default-btn"
                     style={{ backgroundColor: dados?.cor_secundaria ? (dados?.cor_secundaria) : ('#00a79d'), marginTop: 25 }}
                     onClick={() => { addCar('comprar') }}
                   >
-                     Finalizar<i className='btn-comprar-agora bx bx-money'></i>
+                    Finalizar<i className='btn-comprar-agora bx bx-money'></i>
                   </a>
                 </div>
               </div>
