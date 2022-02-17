@@ -58,7 +58,7 @@ const Footer = () => {
                     E-mail: <a href='mailto:contato@eventozz.com'>contato@eventozz.com</a>
                   </li>
                   <li>
-                    Whatsapp: <a href='https://wa.me//5594993040161'>(94) 9 9304-0161</a>
+                    Whatsapp: <a href='https://wa.me/5594993040161'>(94) 9 9304-0161</a>
                   </li>
                 </ul>
               </div>
