@@ -1,8 +1,20 @@
 import Link from 'next/link';
 import LoginForm from '../components/Authentication/LoginForm';
 import RegisterForm from '../components/Authentication/RegisterForm';
+import { useRouter } from 'next/router'
+
+import { useEffect, useState } from 'react';
 
 const Authentication = () => {
+  const router = useRouter();
+
+  const [organizador, setOrganizador] = useState(false);
+
+  useEffect(() => {
+    let check = router.query?.organizador;
+    setOrganizador(check ? (true) : (false));
+  })
+
   return (
     <>
       <div className='profile-authentication-area'>
@@ -10,8 +22,8 @@ const Authentication = () => {
           <div className='d-table-cell'>
             <div className='container'>
               <div className='row'>
-                <LoginForm />
-                <RegisterForm />
+                <LoginForm organizador={organizador} />
+                <RegisterForm organizador={organizador} />
               </div>
             </div>
           </div>
