@@ -2,7 +2,7 @@
 const AppDownload = () => {
   return (
     <>
-      <div className='app-download-area'>
+      <div className='app-download-area mt-5'>
         <div className='container'>
           <div className='row align-items-center m-0'>
             <div className='col-lg-6 col-md-12 p-0'>

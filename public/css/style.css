@@ -5941,6 +5941,7 @@ Profile Authentication Area CSS
   height: 100vh;
   position: relative;
   background-color: #f9f9f9;
+  /* margin-bottom:200px */
 }
     
 .back-icon{
@@ -8260,4 +8261,8 @@ width: 100px;
     padding-top: 20px;
     padding-bottom: 20px;
   }
+}
+
+.background-optional{
+  background-color: #dee2e6 !important;
 }
