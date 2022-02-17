@@ -9,11 +9,13 @@ import { AuthContext } from '../../context/auth';
 
 
 
-const RegisterForm = () => {
+const RegisterForm = ({
+  organizador = false,
+}) => {
 
   const authContext = useContext(AuthContext);
 
-  const {setUserToken} = authContext;
+  const { setUserToken } = authContext;
   const [etapa, setEtapa] = useState(1);
 
   const [fullName, setFullName] = useState("");
@@ -100,7 +102,12 @@ const RegisterForm = () => {
           if (response?.data?.token) {
             window.localStorage.setItem("accessToken", response?.data?.token);
             setUserToken(response?.data?.token);
-            window.location.href = "/";
+            if (organizador) {
+              window.location.href = "https://app-eventozz-dev.herokuapp.com/?token=" + response?.data?.token;
+            } else {
+              window.location.href = "/";
+            }
+
           } else {
             toast.error("Falhar no Login", {
               position: "bottom-left",
@@ -326,7 +333,7 @@ const RegisterForm = () => {
               </div>
             )}
           </form>
-          
+
         </div>
       </div>
     </>

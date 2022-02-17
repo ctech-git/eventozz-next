@@ -7,11 +7,13 @@ import GoogleLogin from 'react-google-login';
 import { AuthContext } from '../../context/auth';
 import { useRouter } from 'next/router';
 
-const LoginForm = () => {
+const LoginForm = ({
+  organizador = false,
+}) => {
 
   const router = useRouter();
   const authContext = useContext(AuthContext);
-  const {setUserToken, setUserName} = authContext;
+  const { setUserToken, setUserName } = authContext;
 
   const [emailCPF, setEmailCPF] = useState("");
   const [senha, setSenha] = useState("");
@@ -38,7 +40,11 @@ const LoginForm = () => {
         if (result?.data?.token) {
           window.localStorage.setItem("accessToken", result?.data?.token);
           setUserToken(result?.data?.token);
-          router.back();
+          if (organizador) {
+            window.location.href = "https://app-eventozz-dev.herokuapp.com/?token=" + result?.data?.token;
+          } else {
+            router.back();
+          }
           // window.location.href = "/";
         } else {
           toast.error("Falhar no Login", {
@@ -87,7 +93,11 @@ const LoginForm = () => {
         if (response?.data?.token) {
           window.localStorage.setItem("accessToken", response?.data?.token);
           setUserToken(response?.data?.token);
-          router.back();
+          if (organizador) {
+            window.location.href = "https://app-eventozz-dev.herokuapp.com/?token=" + result?.data?.token;
+          } else {
+            router.back();
+          }
           // window.location.href = "/";
         } else {
           toast.error("Falhar no Login", {
@@ -163,7 +173,7 @@ const LoginForm = () => {
           </form>
 
 
-          
+
 
 
         </div>
