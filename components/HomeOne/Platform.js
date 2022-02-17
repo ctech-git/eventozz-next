@@ -75,7 +75,7 @@ const Platform = ({ events = [] }) => {
         <div id="eventozz-to-participate" className='cryptocurrency-platform-area'>
           <div className='container-fluid'>
             <div className='section-title'>
-              <h2>Eventozz para você participar</h2>
+              <h2>próximos eventos:</h2>
             </div>
             <Row className="box-events">
               {events.map((item, index) => {
