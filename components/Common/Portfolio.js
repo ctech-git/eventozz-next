@@ -38,30 +38,25 @@ const Portfolio = ({ bgColor, contentColor = '', shape }) => {
                   {display ? (
                     <OwlCarousel {...options}>
                       <div className='content'>
-                        <h3>Manage Your Portfolio</h3>
+                        <h3>Acompanhe seus indicadores</h3>
                         <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation ullamco.
+                          Compras realizadas, pendentes e não concluídas.
+                          Além dos dados de seus participantes à disposição.
                         </p>
                       </div>
                       <div className='content'>
-                        <h3>Poerfull API</h3>
+                        <h3>Acompanhe os dados do evento em tempo real</h3>
                         <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation ullamco.
+                          Quantas pessoas já entraram, quantas ainda faltam, o valor recebido de cada pessoa.
+                          Tudo para que você tenha tudo do seu evento na palma da mão.
+
                         </p>
                       </div>
                       <div className='content'>
-                        <h3>Vault Protection</h3>
+                        <h3>Faça remarketing.</h3>
                         <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation ullamco.
+                          Nossa API irá enviar mensagens para seu cliente lembrando dos pagamentos para garantir ao máximo cada compra.
+
                         </p>
                       </div>
                     </OwlCarousel>

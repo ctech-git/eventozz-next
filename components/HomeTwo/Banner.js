@@ -64,7 +64,7 @@ const Banner = () => {
       <div className='banner-area'>
         <div className='container'>
           <div className='banner-content'>
-            <h1>Participe & Organize Eventos, de forma simples e pratica!</h1>
+            <h1>Participe e organize eventozz, de forma simples e prática!</h1>
 
           </div>
           <div className='banner-image'>
