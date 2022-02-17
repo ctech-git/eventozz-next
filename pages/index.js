@@ -13,12 +13,19 @@ import RegisterAreaTwo from '../components/Common/RegisterAreaTwo';
 import servicesEventozz from '../services/events';
 import Head from 'next/head';
 
-const Index = ({events}) => {
+const Index = ({ events }) => {
   console.log('eventos -> ', events);
   return (
     <>
       <Head>
         <meta name="description" content="Não pegue filas. Compre de casa, receba os ingressos no seu WhatsApp e participe de seus eventozz favoritos" />
+        <meta property="og:title" content="Eventozz - ingressos online" />
+        <meta property="og:description" content="Não pegue filas. Compre de casa, receba os ingressos no seu WhatsApp e participe de seus eventozz favoritos" />
+        <meta property="og:url" content="https://eventozz.com/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content='https://www.eventozz.com/images/banner/banner-eventozz-mobile.png' key="ogimage" />
+        <meta property="og:site_name" content='Eventozz' key="ogsitename" />
+
       </Head>
       <Banner />
       <Funfact id="funfact-area-banner" pt100='pt-100' />
@@ -38,17 +45,17 @@ export default Index;
 
 export async function getServerSideProps() {
   const result = await servicesEventozz.getEventzz();
-    console.log(result);
+  console.log(result);
 
-    let response = [];
+  let response = [];
 
-    if (result?.status === 200 && result?.data?.success) {
-      response = result?.data?.data;
-    }
+  if (result?.status === 200 && result?.data?.success) {
+    response = result?.data?.data;
+  }
 
-    return {
-      props: {
-        events: response
-      },
-    }
+  return {
+    props: {
+      events: response
+    },
+  }
 }
