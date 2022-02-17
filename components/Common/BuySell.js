@@ -4,7 +4,7 @@ const BuySell = () => {
       <div className='buy-sell-cryptocurrency-area pt-100 pb-70'>
         <div className='container'>
           <div className='section-title'>
-            <h2>How to Buy and Sell Cryptocurrency</h2>
+            <h2>Crie seu evento online e comece a vender em minutos</h2>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -17,11 +17,9 @@ const BuySell = () => {
                 <div className='icon'>
                   <img src='/images/icon/icon12.png' alt='image' />
                 </div>
-                <h3>Bank Transfers</h3>
+                <h3>Receba online via PIX e cartão de crédito</h3>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut. Lorem ipsum dolor sit amet,
-                  consectetur elit.
+                  O cliente irá fazer sua compra e todo o acompanhamento do status da compra é disponibilizado pelo nosso site.
                 </p>
               </div>
             </div>
@@ -30,11 +28,9 @@ const BuySell = () => {
                 <div className='icon'>
                   <img src='/images/icon/icon13.png' alt='image' />
                 </div>
-                <h3>Online Wallets</h3>
+                <h3>Solicite seu saque quando precisar</h3>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut. Lorem ipsum dolor sit amet,
-                  consectetur elit.
+                  Com seu dashboard, em tempo real você vê qual o seu faturamento liberado. E aí nós podemos transferir conforme sua solicitação.
                 </p>
               </div>
             </div>
@@ -43,37 +39,31 @@ const BuySell = () => {
                 <div className='icon'>
                   <img src='/images/icon/icon14.png' alt='image' />
                 </div>
-                <h3>Cash Payment</h3>
+                <h3>Adicione vendedores para garantir mais vendas</h3>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut. Lorem ipsum dolor sit amet,
-                  consectetur elit.
+                  Controle as comissões para vendedores extras que receberão links próprios para fazerem as vendas.
                 </p>
               </div>
             </div>
             <div className='col-lg-4 col-md-6 col-sm-6'>
               <div className='single-buy-sell-item'>
                 <div className='icon'>
-                  <img src='/images/icon/icon15.png' alt='image' />
+                  <img src='/images/icon/icon19.png' alt='image' />
                 </div>
-                <h3>Debit/Credit Cards</h3>
+                <h3>Mande notificações para seus clientes no Whatsapp</h3>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut. Lorem ipsum dolor sit amet,
-                  consectetur elit.
+                  O cliente receberá TUDO em seu Whatsapp. Desde mensagem na criação da conta, até o QR Code de entrada no evento, facilitando a vida de seu cliente.
                 </p>
               </div>
             </div>
             <div className='col-lg-4 col-md-6 col-sm-6'>
               <div className='single-buy-sell-item'>
                 <div className='icon'>
-                  <img src='/images/icon/icon16.png' alt='image' />
+                  <img src='/images/icon/EVENTOZZ.png' alt='image' />
                 </div>
-                <h3>Discounted Gift Cards</h3>
+                <h3>Não se preocupe com o acompanhamento. A gente faz!</h3>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut. Lorem ipsum dolor sit amet,
-                  consectetur elit.
+                  Nosso dashboard mostrará todas as compras realizadas, pendentes e não concluídas para que você possa acompanhar de perto seus indicadores.
                 </p>
               </div>
             </div>
@@ -82,11 +72,9 @@ const BuySell = () => {
                 <div className='icon'>
                   <img src='/images/icon/icon17.png' alt='image' />
                 </div>
-                <h3>Goods & Services</h3>
+                <h3>Consiga benefícios para seus clientes</h3>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut. Lorem ipsum dolor sit amet,
-                  consectetur elit.
+                  Com nossa rede de contatos, o seu cliente terá descontos em lojas parceiras para melhorar a experiência em seu evento.
                 </p>
               </div>
             </div>

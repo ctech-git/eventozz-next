@@ -1,4 +1,4 @@
-import Banner from '../components/HomeTwo/Banner';
+import Banner from '../components/HomeOne/Banner';
 import AccountCreate from '../components/HomeTwo/AccountCreate';
 import BestSeller from '../components/Common/BestSeller';
 import BuySell from '../components/Common/BuySell';
@@ -14,12 +14,12 @@ const Index = () => {
     <>
       <Banner />
       <BuySell />
-      <BestSeller />
-      <AccountCreate />
-      <FeedBack />
+      {/* <BestSeller /> */}
+      {/* <AccountCreate /> */}
+      {/* <FeedBack /> */}
       <Portfolio bgColor='bg-main-color' contentColor='color-white' />
-      <OurFeature />
-      <AdvisorArea />
+      {/* <OurFeature /> */}
+      {/* <AdvisorArea /> */}
     </>
   );
 };
