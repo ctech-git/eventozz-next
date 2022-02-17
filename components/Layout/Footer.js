@@ -25,7 +25,7 @@ const Footer = () => {
                 <h3>Serviços</h3>
                 <ul className='services-links'>
                   <li>
-                    <Link href='/organizar-evento'>Organizar Eventos</Link>
+                    <Link href='https://wa.me//5594993040161?text=Quero%20organizar%20um%20evento'>Organizar Eventos</Link>
                   </li>
                 </ul>
               </div>
