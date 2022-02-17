@@ -11,11 +11,15 @@ import OurFeature from '../components/Common/OurFeature';
 import AppDownload from '../components/Common/AppDownload';
 import RegisterAreaTwo from '../components/Common/RegisterAreaTwo';
 import servicesEventozz from '../services/events';
+import Head from 'next/head';
 
 const Index = ({events}) => {
   console.log('eventos -> ', events);
   return (
     <>
+      <Head>
+        <meta name="description" content="Não pegue filas. Compre de casa, receba os ingressos no seu WhatsApp e participe de seus eventozz favoritos" />
+      </Head>
       <Banner />
       <Funfact id="funfact-area-banner" pt100='pt-100' />
       {/* <BuySell pt70='pt-70' /> */}
