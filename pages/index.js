@@ -28,10 +28,10 @@ const Index = ({ events }) => {
 
       </Head>
       <Banner />
-      <Funfact id="funfact-area-banner" pt100='pt-100' />
+      {/* <Funfact id="funfact-area-banner" pt100='pt-100' /> */}
       {/* <BuySell pt70='pt-70' /> */}
       <Platform events={events} />
-      {/* <AccountCreate title='Get Started in a Few Minutes' /> */}
+      <AccountCreate title='Organize seu evento em poucos minutos' />
       {/* <Portfolio bgColor='bg-f9f9f9' /> */}
       {/* <OurFeature title='Our Features' /> */}
       <AppDownload />
