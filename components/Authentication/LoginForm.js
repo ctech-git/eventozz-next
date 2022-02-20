@@ -33,7 +33,7 @@ const LoginForm = ({
       let tokenId = response?.tokenId;
       console.log(tokenId)
 
-      const result = await Services.LoginWithGoogle(tokenId);
+      const result = await Services.LoginWithGoogle(tokenId, organizador);
       console.log(result)
       if (result.status == 200) {
 
@@ -87,7 +87,7 @@ const LoginForm = ({
 
     if (!isError) {
       console.log("--------------")
-      const response = await Services.LoginNative(cpfEmail, senha);
+      const response = await Services.LoginNative(cpfEmail, senha, organizador);
       console.log(response);
       if (response.status == 200) {
         if (response?.data?.token) {

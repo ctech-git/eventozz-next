@@ -12,7 +12,7 @@ const Authentication = () => {
 
   useEffect(() => {
     let check = router.query?.organizador;
-    setOrganizador(check ? (true) : (false));
+    setOrganizador(check ? true : false);
   })
 
   return (

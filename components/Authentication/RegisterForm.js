@@ -87,12 +87,12 @@ const RegisterForm = ({
         if (googleId) {
           var response = await Services.CreateLoginGoogle(
             email, cpf, fullName, telefone, password, cep,
-            state, city, district, street, number, nascimento, googleId
+            state, city, district, street, number, nascimento, googleId, organizador
           );
         } else {
           var response = await Services.CreateLoginNative(
             email, cpf, fullName, telefone, password, cep,
-            state, city, district, street, number, nascimento
+            state, city, district, street, number, nascimento, organizador
           );
         }
 
