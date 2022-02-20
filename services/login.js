@@ -2,11 +2,12 @@ import { Axios } from './axios';
 
 
 const Services = {
-  LoginNative: async (cpfEmail, senha) => {
+  LoginNative: async (cpfEmail, senha, organizador) => {
     const response = await Axios.post("/signin",
       {
         cpfEmail: cpfEmail,
-        password: senha
+        password: senha,
+        organizador
       },
       {
         headers: {
@@ -35,7 +36,8 @@ const Services = {
     street,
     number,
     nascimento,
-    googleId
+    googleId,
+    organizador
   ) => {
     const response = await Axios.post("/signup/google",
       {
@@ -51,7 +53,8 @@ const Services = {
         street: street,
         number: number,
         password: password,
-        googleId: googleId
+        googleId: googleId,
+        organizador
       },
       {
         headers: {
@@ -80,6 +83,7 @@ const Services = {
     street,
     number,
     nascimento,
+    organizador
   ) => {
     const response = await Axios.post("/signup",
       {
@@ -95,6 +99,7 @@ const Services = {
         street: street,
         number: number,
         password: password,
+        organizador
       },
       {
         headers: {
@@ -110,10 +115,11 @@ const Services = {
       });
     return response;
   },
-  LoginWithGoogle: async (tokenId) => {
+  LoginWithGoogle: async (tokenId, organizador) => {
     const response = await Axios.post("/signin/google",
       {
-        tokenId: tokenId
+        tokenId: tokenId,
+        organizador
       },
       {
         headers: {
