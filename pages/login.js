@@ -8,11 +8,11 @@ import { useEffect, useState } from 'react';
 const Authentication = () => {
   const router = useRouter();
 
-  const [organizador, setOrganizador] = useState(false);
+  const [organizer, setOrganizer] = useState(false);
 
   useEffect(() => {
     let check = router.query?.organizador;
-    setOrganizador(check ? true : false);
+    setOrganizer(check ? true : false);
   })
 
   return (
@@ -22,8 +22,8 @@ const Authentication = () => {
           <div className='d-table-cell'>
             <div className='container'>
               <div className='row'>
-                <LoginForm organizador={organizador} />
-                <RegisterForm organizador={organizador} />
+                <LoginForm organizer={organizer} />
+                <RegisterForm organizer={organizer} />
               </div>
             </div>
           </div>

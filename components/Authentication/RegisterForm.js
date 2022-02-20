@@ -10,7 +10,7 @@ import { AuthContext } from '../../context/auth';
 
 
 const RegisterForm = ({
-  organizador = false,
+  organizer = false,
 }) => {
 
   const authContext = useContext(AuthContext);
@@ -87,12 +87,12 @@ const RegisterForm = ({
         if (googleId) {
           var response = await Services.CreateLoginGoogle(
             email, cpf, fullName, telefone, password, cep,
-            state, city, district, street, number, nascimento, googleId, organizador
+            state, city, district, street, number, nascimento, googleId, organizer
           );
         } else {
           var response = await Services.CreateLoginNative(
             email, cpf, fullName, telefone, password, cep,
-            state, city, district, street, number, nascimento, organizador
+            state, city, district, street, number, nascimento, organizer
           );
         }
 
@@ -102,7 +102,7 @@ const RegisterForm = ({
           if (response?.data?.token) {
             window.localStorage.setItem("accessToken", response?.data?.token);
             setUserToken(response?.data?.token);
-            if (organizador) {
+            if (organizer) {
               window.location.href = "https://app-eventozz-dev.herokuapp.com/?token=" + response?.data?.token;
             } else {
               window.location.href = "/";

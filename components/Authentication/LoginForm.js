@@ -8,7 +8,7 @@ import { AuthContext } from '../../context/auth';
 import { useRouter } from 'next/router';
 
 const LoginForm = ({
-  organizador = false,
+  organizer = false,
 }) => {
 
   const router = useRouter();
@@ -33,14 +33,14 @@ const LoginForm = ({
       let tokenId = response?.tokenId;
       console.log(tokenId)
 
-      const result = await Services.LoginWithGoogle(tokenId, organizador);
+      const result = await Services.LoginWithGoogle(tokenId, organizer);
       console.log(result)
       if (result.status == 200) {
 
         if (result?.data?.token) {
           window.localStorage.setItem("accessToken", result?.data?.token);
           setUserToken(result?.data?.token);
-          if (organizador) {
+          if (organizer) {
             window.location.href = "https://app-eventozz-dev.herokuapp.com/?token=" + result?.data?.token;
           } else {
             router.back();
@@ -87,13 +87,13 @@ const LoginForm = ({
 
     if (!isError) {
       console.log("--------------")
-      const response = await Services.LoginNative(cpfEmail, senha, organizador);
+      const response = await Services.LoginNative(cpfEmail, senha, organizer);
       console.log(response);
       if (response.status == 200) {
         if (response?.data?.token) {
           window.localStorage.setItem("accessToken", response?.data?.token);
           setUserToken(response?.data?.token);
-          if (organizador) {
+          if (organizer) {
             window.location.href = "https://app-eventozz-dev.herokuapp.com/?token=" + result?.data?.token;
           } else {
             router.back();
