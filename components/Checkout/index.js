@@ -17,7 +17,7 @@ import { scrollToElement } from '../../utils/scrollTo';
 import { useRouter } from 'next/router';
 import { copyToClipboard } from '../../utils/functions';
 
-const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, setHideOnCheckout, hideOnCheckout }) => {
+const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, setHideOnCheckout, hideOnCheckout, seller }) => {
 
     const router = useRouter();
     const isMobile = useMediaQuery({ maxWidth: 768 })
@@ -535,7 +535,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         let accessToken = window.localStorage.getItem("accessToken");
         const body = {
             couponId, eventId, installmentsNumber, paymentMethod, ticketsData: ticketsDataTemp,
-            ticketsQtd, isFree: dados?.is_free, payments
+            ticketsQtd, isFree: dados?.is_free, payments, seller
         }
         const response = await checkoutService.purchaseSave({ accessToken, body });
 
