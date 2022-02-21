@@ -27,7 +27,8 @@ import Checkout from '../../components/Checkout';
 const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate }) => {
 
   const router = useRouter();
-
+  const { query } = useRouter();
+  const seller = query?.vendedor;
   const [eventDay, setEventDay] = useState('');
   const [cartItems, setCartItems] = useState([]);
   const [isLoadingCartItem, setIsLoadingCartItem] = useState(false);
@@ -202,7 +203,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
         {
           showCheckout && <Checkout dados={event} cartItems={cartItems} handleChangeTicketQuantity={handleChangeTicketQuantity}
             handleDeleteItem={handleDeleteItem} isLoadingCartItem={isLoadingCartItem} handleAddCupom={getCartItems} hideOnCheckout={hideOnCheckout}
-            setHideOnCheckout={setHideOnCheckout} />
+            setHideOnCheckout={setHideOnCheckout} seller={seller} />
         }
       </div>
     </>
