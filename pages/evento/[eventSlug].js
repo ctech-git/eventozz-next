@@ -162,7 +162,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
 
         </div>
 
-        {showTicketSale && !hideOnCheckout && (
+        {event?.isContador && (
           <>
             <TokensArea item={event} endTime={eventDay} showTicketSale={showTicketSale} />
           </>
