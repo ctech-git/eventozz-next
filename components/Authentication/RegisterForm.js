@@ -191,6 +191,7 @@ const RegisterForm = ({
             {etapa == 1 && (
               <>
                 <div className='form-group'>
+                  <label>Nome Completo</label>
                   <input
                     type='text'
                     className='form-control'
@@ -200,6 +201,7 @@ const RegisterForm = ({
                   />
                 </div>
                 <div className='form-group'>
+                  <label>Email</label>
                   <input
                     type='email'
                     value={email}
@@ -209,6 +211,7 @@ const RegisterForm = ({
                   />
                 </div>
                 <div className='form-group'>
+                  <label>CPF</label>
                   <input
                     type='text'
                     className='form-control'
@@ -219,6 +222,7 @@ const RegisterForm = ({
                   />
                 </div>
                 <div className='form-group'>
+                  <label>Telefone para contato</label>
                   <input
                     type='tel'
                     className='form-control'
@@ -229,10 +233,11 @@ const RegisterForm = ({
                   />
                 </div>
                 <div className='form-group'>
+                  <label>Data de nascimento</label>
                   <input
                     type='date'
                     className='form-control'
-                    placeholder='Nascimento'
+                    placeholder='Data de Nascimento'
                     value={nascimento}
                     onChange={e => handlerNascimento(e)}
                     maxLength={15}
@@ -240,6 +245,7 @@ const RegisterForm = ({
                 </div>
 
                 <div className='form-group'>
+                  <label>Insira uma senha</label>
                   <input
                     type='password'
                     className='form-control'
@@ -249,6 +255,7 @@ const RegisterForm = ({
                   />
                 </div>
                 <div className='form-group'>
+                  <label>Repita sua senha</label>
                   <input
                     type='password'
                     value={password2}
@@ -262,6 +269,7 @@ const RegisterForm = ({
             {etapa == 2 && (
               <>
                 <div className='form-group'>
+                  <label>CEP</label>
                   <input
                     type='text'
                     className='form-control'
@@ -271,6 +279,7 @@ const RegisterForm = ({
                   />
                 </div>
                 <div className='form-group'>
+                  <label>Estado</label>
                   <input
                     type='text'
                     className='form-control'
@@ -280,6 +289,7 @@ const RegisterForm = ({
                   />
                 </div>
                 <div className='form-group'>
+                  <label>Cidade</label>
                   <input
                     type='text'
                     className='form-control'
@@ -288,6 +298,7 @@ const RegisterForm = ({
                     onChange={e => setCity(e.target.value)}
                   />
                 </div>
+                <label>Bairro</label>
                 <div className='form-group'>
                   <input
                     type='text'
@@ -298,6 +309,7 @@ const RegisterForm = ({
                   />
                 </div>
                 <div className='form-group'>
+                  <label>Logradouro</label>
                   <input
                     type='text'
                     className='form-control'
@@ -307,10 +319,11 @@ const RegisterForm = ({
                   />
                 </div>
                 <div className='form-group'>
+                  <label>Número</label>
                   <input
                     type='text'
                     className='form-control'
-                    placeholder='Numero'
+                    placeholder='Número'
                     value={number}
                     onChange={e => setNumber(e.target.value)}
                   />
