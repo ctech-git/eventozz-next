@@ -120,7 +120,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
                 alt='image'
               />
             </div>
-            {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora bannerinicial justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>}
+            {/* {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora bannerinicial justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>} */}
           </div>
         ) : (
           <>
@@ -130,7 +130,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
                   <div className='col-md-6 p-0 col-left-initial-banner'>
                     <div className='main-banner-content-landing'>
                       <h1 className='text-center text-md-start'>{event.nome_evento}</h1>
-                      {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>}
+                      {/* {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>} */}
                     </div>
                   </div>
                   <div className='col-md-6 p-0 col-right-initial-banner'>

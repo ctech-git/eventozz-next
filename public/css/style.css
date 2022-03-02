@@ -59,7 +59,7 @@ Default CSS
 :root {
   --fontFamily: 'Montserrat', sans-serif;
   --fontFamily2: 'Open Sans', sans-serif;
-  --mainColor: #0083f3;
+  --mainColor: #001d4a;
   --optionalColor: #001d4a;
   --whiteColor: #ffffff;
   --blackColor: #000000;
@@ -223,6 +223,7 @@ p:last-child {
   top: 50%;
   left: 30px;
   position: absolute;
+  background-color: var(--optionalColor);
   font-weight: normal;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
@@ -7849,7 +7850,7 @@ width: 100px;
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 15px;
-  color: rgb(0, 167, 157);
+  color: #001d4a;
 }
 
 .box-ticket.animate{
@@ -7866,7 +7867,7 @@ width: 100px;
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 0;
-  color: rgb(0, 167, 157);
+  color: #001d4a;
 }
 
 .box-tickets-total-value-text{
