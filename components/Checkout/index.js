@@ -82,9 +82,12 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
     useEffect(() => {
         generateInputTicketsData();
-        getAvailablePaymentInfo();
         setShowPayment(false);
-    }, [cartItems, couponId]);
+    }, [cartItems]);
+
+    useEffect(() => {
+        getAvailablePaymentInfo();
+    }, [couponId]);
 
     useEffect(() => {
         setTimeout(() => {
@@ -216,7 +219,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     }
 
     const handleChangeTicketData = ({ value, field, ticketsDataIndex, ticketIndex }) => {
-
+        console.log(value);
         let newTicketsData = {}
         Object.values(ticketsData).map((ticketType, index) => {
             const idIngresso = ticketType[0].idIngresso;
@@ -505,19 +508,19 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             if (ticketType?.length > 0) {
                 ticketType.map(ticket => {
 
-                    let cpfTemp = ticket.cpf;
-                    cpfTemp = cpfTemp.replace(".", ""); cpfTemp = cpfTemp.replace(".", ""); cpfTemp = cpfTemp.replace("-", "");
-                    let phoneTemp = ticket.phone;
+                    // let cpfTemp = ticket.cpf;
+                    // cpfTemp = cpfTemp.replace(".", ""); cpfTemp = cpfTemp.replace(".", ""); cpfTemp = cpfTemp.replace("-", "");
+                    // let phoneTemp = ticket.phone;
 
-                    phoneTemp = phoneTemp.replace("(", ""); phoneTemp = phoneTemp.replace(")", "");
-                    phoneTemp = phoneTemp.replace(" ", ""); phoneTemp = phoneTemp.replace("-", "");
-
+                    // phoneTemp = phoneTemp.replace("(", ""); phoneTemp = phoneTemp.replace(")", "");
+                    // phoneTemp = phoneTemp.replace(" ", ""); phoneTemp = phoneTemp.replace("-", "");
+                    console.log(ticket);
                     let vector = {
                         "description": ticket?.description,
                         "idIngresso": ticket?.idIngresso,
                         "name": ticket?.name,
-                        "cpf": cpfTemp,
-                        "phone": phoneTemp,
+                        "cpf": ticket?.cpf,
+                        "phone": ticket?.phone,
                         "email": ticket?.email
                     }
                     ticketsDataTemp.push(vector);
@@ -537,6 +540,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             couponId, eventId, installmentsNumber, paymentMethod, ticketsData: ticketsDataTemp,
             ticketsQtd, isFree: dados?.is_free, payments, seller
         }
+
         const response = await checkoutService.purchaseSave({ accessToken, body });
 
         setTextLoading("");
@@ -572,6 +576,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         if (response?.status === 200) {
             const data = response?.data?.data;
             if (data?.length > 0) {
+                console.log(data);
                 setCouponId(data[0].couponId);
                 toast.success("Cupom aplicado");
             } else {
@@ -980,11 +985,11 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                                         {showInputErros && ticket.name.length < 2 && <Form.Text className="text-error">Informe o nome completo da pessoa que irá utilizar o ingresso.</Form.Text>}
                                                     </Col>
                                                     <Col className='pb-3' xs={12} md={6}>
-                                                        <Form.Control className={showInputErros && !isValidCpf(ticket.cpf) ? 'input-error' : ''} type="text" value={ticket.cpf} onChange={(e) => handleChangeTicketData({ value: cpfMask(e.target.value), field: 'cpf', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="cpf" placeholder="CPF" maxlength="14" />
+                                                        <Form.Control className={showInputErros && !isValidCpf(ticket.cpf) ? 'input-error' : ''} type="text" value={cpfMask(ticket.cpf)} onChange={(e) => handleChangeTicketData({ value: onlyUnsignedNumbers(e.target.value), field: 'cpf', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="cpf" placeholder="CPF" maxlength="14" />
                                                         {showInputErros && !isValidCpf(ticket.cpf) && <Form.Text className="text-error">Informe o cpf da pessoa que irá utilizar o ingresso.</Form.Text>}
                                                     </Col>
                                                     <Col className='pb-3' xs={12} md={6}>
-                                                        <Form.Control className={showInputErros && ticket.phone.length < 10 ? 'input-error' : ''} type="text" value={ticket.phone} onChange={(e) => handleChangeTicketData({ value: phoneMaskForList(e.target.value), field: 'phone', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="telefone" placeholder="Telefone" id="telefone_2" required="" maxlength="16" />
+                                                        <Form.Control className={showInputErros && ticket.phone.length < 10 ? 'input-error' : ''} type="text" value={phoneMaskForList(ticket.phone)} onChange={(e) => handleChangeTicketData({ value: onlyUnsignedNumbers(e.target.value), field: 'phone', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="telefone" placeholder="Telefone" id="telefone_2" required="" maxlength="16" />
                                                         {showInputErros && ticket.phone.length < 10 && <Form.Text className="text-error">Informe um número válido (Enviaremos o qr code do ingresso por WhatsApp).</Form.Text>}
                                                     </Col>
                                                     <Col className='pb-3' xs={12} md={6}>

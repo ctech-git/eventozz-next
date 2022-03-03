@@ -8078,6 +8078,15 @@ width: 100px;
   top: unset;
 }
 
+.default-btn.checkout-button, .default-btn.tickets-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 0;
+  min-width: 150px;
+}
+
 .container-title-feedback h2{
   font-size: 24px;
   font-weight: 700;
@@ -8263,6 +8272,10 @@ width: 100px;
     padding-top: 20px;
     padding-bottom: 20px;
   }
+
+.responsive-container{
+  flex-direction: column-reverse;
+}
 }
 
 .background-optional{

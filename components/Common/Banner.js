@@ -289,7 +289,7 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
 
                 <div className="box-button-landing justify-content-center" >
 
-                  <a className="default-btn"
+                  <a className="default-btn tickets-button"
                     style={{ backgroundColor: dados?.cor_secundaria ? (dados?.cor_secundaria) : ('#001d4a'), marginTop: 25 }}
                     onClick={() => { addCar('comprar') }}
                   >
