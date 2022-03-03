@@ -168,18 +168,18 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
           </>
         )}
 
-        <Row>
+        <Row className='responsive-container'>
           <Col xs={12}>
             <EventDetails item={event} showTicketSale={showTicketSale} />
           </Col>
+        
+
+          {showTicketSale && !hideOnCheckout && (
+            <Col xs={12}>
+              <Banner item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
+            </Col>
+          )}
         </Row>
-
-        {showTicketSale && !hideOnCheckout && (
-          <>
-            <Banner item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
-          </>
-        )}
-
 
         {
           showEventSoon && (
