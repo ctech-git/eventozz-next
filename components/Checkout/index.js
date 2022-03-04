@@ -83,6 +83,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     useEffect(() => {
         generateInputTicketsData();
         setShowPayment(false);
+        getAvailablePaymentInfo();
     }, [cartItems]);
 
     useEffect(() => {
@@ -1019,8 +1020,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     {/* </div> */}
                                     <Form.Select value={paymentMethod} onChange={(e) => handlePaymentMethod(e.target.value)}>
                                         <option>Selecione uma opção</option>
-                                        <option value="cc">Cartão de crédito - Taxa a partir de 7%</option>
-                                        <option selected value="pix">PIX - Taxa 5%</option>
+                                        <option value="cc">Cartão de crédito - Taxa a partir de 10%</option>
+                                        <option selected value="pix">PIX - Taxa 10%</option>
                                     </Form.Select>
                                 </Col>
 

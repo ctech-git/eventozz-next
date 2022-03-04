@@ -2041,9 +2041,7 @@ box eventos listagem lista events
   margin-bottom: 50px;
   
 }
-.card-events-home:hover{
-  
-}
+
 .card-events-home span{
   padding-left: 10px;
   font-size: 20px;
@@ -7642,9 +7640,6 @@ Go Top CSS
   font-weight: 700;
 }
 
-.cryptocurrency-table td .crypto-image {
-  
-}
 .crypto-image img{
 border-radius: 10px;
 width: 100px;
@@ -7940,10 +7935,6 @@ width: 100px;
 
 .spinner-border{
   color: #fff;
-}
-
-.spinner-border.absolute{
-
 }
 
 .container-spinner{
