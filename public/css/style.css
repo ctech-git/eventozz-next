@@ -8272,3 +8272,11 @@ width: 100px;
 .background-optional{
   background-color: #dee2e6 !important;
 }
+
+.event-empty-tickets{
+  display: flex;
+  justify-content: center;
+  margin-top: 140px;
+  font-size: 30px;
+  font-weight: 800;
+}
