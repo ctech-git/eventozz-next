@@ -7,8 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import servicesEventozz from '../../services/events';
 import { scrollToElement } from '../../utils/scrollTo';
 
-
-
 const Banner = ({ item, handleCheckout, syncCartItems }) => {
   const dados = item;
   const [tickets, setTickets] = useState([]);
@@ -234,68 +232,68 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
                     </div>
                   )
                 }
-                <div className='section-title'>
-                  <h2>Confira nossos ingressos</h2>
-                </div>
-                <div className='d-flex justify-content-evenly row'>
-                  {tickets.map((ticket, index) => {
-                    return (
-                      // <div className='currency-selection'>
-                      //   <label>Quantidade</label>
-                      //   <input
-                      //     type='number' value={tickets[index]?.quantidade ? (tickets[index]?.quantidade) : (0)}
-                      //     onChange={(e) => handlerTicketValue(e.target.value, ticket.id)}
-                      //   />
-                      //   <div className={'width-select dropdown'}>
-                      //     <div className="box-ticket-buy">
-                      //       <img src={image} alt='image' />
-                      //       {ticket.nome}
-                      //     </div>
-                      //   </div>
-                      // </div>
-
-                      <div className="col-lg-3 col-md-6 col-sm-10 ticket-animate">
-                        <div className="box-ticket animate">
-                          <h3>{ticket.nome}</h3>
-                          <div className="price-box-ticket">{dados?.is_free ? 'Gratuito' : convertMoney(ticket.activeValue)}</div>
-                          <ul>
-                          </ul>
-                          <div className="row mt-5 mb-5">
-                            <div className="col-md-4 col-lg-4 col-4 col-xl-4">
-                              <a style={{ fontSize: 40 }} className="btn btn-outline-danger" onClick={() => handleChangeTicketQuantity('minus', ticket.id)}><span><i className="fa fa-minus"></i></span></a>
-                            </div>
-                            <div style={{ margin: 'auto' }} className="col-md-4 col-lg-4 col-4 col-xl-4">
-                              <span id="quantidade_ingressos2">{ticket.quantidade}</span>
-                            </div>
-                            <div className="col-md-4 col-lg-4 col-4 col-xl-4">
-                              <a style={{ fontSize: 40 }} className="btn btn-outline-success" onClick={() => handleChangeTicketQuantity('plus', ticket.id)}><span><i className="fa fa-plus"></i></span></a>
-                            </div>
-                          </div>
-                        </div>
+                {
+                  tickets.length > 0 ? (
+                    <>
+                      <div className='section-title'>
+                        <h2>Confira nossos ingressos</h2>
                       </div>
-                      // <div className="col-lg-3 col-md-6 ticket-animate"></div>
-                    )
-                  })}
-                </div>
-                <div className='d-flex align-items-center justify-content-center'>
-                  <div className='align-items-end d-flex'>
-                    <span className='box-tickets-total-value-title'>
-                      <div className='d-block div-title'>Valor Total</div>
-                      {!dados?.is_free && <small>(Sem taxas inclusas)</small>}
-                    </span>
-                  </div>
-                  <span className='box-tickets-total-value-text'>{dados?.is_free ? 'Gratuito' : convertMoney(valorTotal)}</span>
-                </div>
+                      <div className='d-flex justify-content-evenly row'>
+                        {tickets.map((ticket, index) => {
+                          return (
+                            <div className="col-lg-3 col-md-6 col-sm-10 ticket-animate">
+                              <div className="box-ticket animate">
+                                <h3>{ticket.nome}</h3>
+                                <div className="price-box-ticket">{dados?.is_free ? 'Gratuito' : convertMoney(ticket.activeValue)}</div>
+                                <ul>
+                                </ul>
+                                <div className="row mt-5 mb-5">
+                                  <div className="col-md-4 col-lg-4 col-4 col-xl-4">
+                                    <a style={{ fontSize: 40 }} className="btn btn-outline-danger" onClick={() => handleChangeTicketQuantity('minus', ticket.id)}><span><i className="fa fa-minus"></i></span></a>
+                                  </div>
+                                  <div style={{ margin: 'auto' }} className="col-md-4 col-lg-4 col-4 col-xl-4">
+                                    <span id="quantidade_ingressos2">{ticket.quantidade}</span>
+                                  </div>
+                                  <div className="col-md-4 col-lg-4 col-4 col-xl-4">
+                                    <a style={{ fontSize: 40 }} className="btn btn-outline-success" onClick={() => handleChangeTicketQuantity('plus', ticket.id)}><span><i className="fa fa-plus"></i></span></a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            // <div className="col-lg-3 col-md-6 ticket-animate"></div>
+                          )
+                        })}
+                      </div>
 
-                <div className="box-button-landing justify-content-center" >
+                      <div className='d-flex align-items-center justify-content-center'>
+                        <div className='align-items-end d-flex'>
+                          <span className='box-tickets-total-value-title'>
+                            <div className='d-block div-title'>Valor Total</div>
+                            {!dados?.is_free && <small>(Sem taxas inclusas)</small>}
+                          </span>
+                        </div>
+                        <span className='box-tickets-total-value-text'>{dados?.is_free ? 'Gratuito' : convertMoney(valorTotal)}</span>
+                      </div>
 
-                  <a className="default-btn tickets-button"
-                    style={{ backgroundColor: dados?.cor_secundaria ? (dados?.cor_secundaria) : ('#001d4a'), marginTop: 25 }}
-                    onClick={() => { addCar('comprar') }}
-                  >
-                    Finalizar<i className='btn-comprar-agora bx bx-money'></i>
-                  </a>
-                </div>
+                      <div className="box-button-landing justify-content-center" >
+
+                        <a className="default-btn tickets-button"
+                          style={{ backgroundColor: dados?.cor_secundaria ? (dados?.cor_secundaria) : ('#001d4a'), marginTop: 25 }}
+                          onClick={() => { addCar('comprar') }}
+                        >
+                          Finalizar<i className='btn-comprar-agora bx bx-money'></i>
+                        </a>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="event-empty-tickets">
+                      <span
+                        style={{ color: dados?.cor_secundaria ? (dados?.cor_secundaria) : ('#012970') }}
+                      >NENHUM INGRESSO DISPONÍVEL NO MOMENTO</span>
+                    </div>
+                  )
+                }
+
               </div>
             </div>
           </div>

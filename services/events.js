@@ -47,8 +47,11 @@ const servicesEventozz = {
   },
   getTickets: async (id) => {
 
-    const response = await Axios.get("/list/tickets/?id=" + id,
+    const response = await Axios.get("/list/tickets",
       {
+        params: {
+          eventId: id
+        },
         headers: {
           'Content-Type': 'application/json',
         }

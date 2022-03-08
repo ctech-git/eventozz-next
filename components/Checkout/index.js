@@ -1191,23 +1191,21 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 }
                 {
                     showErrorOnPayment && (
-                        <>
-                            <Row id="container-feedback-error">
-                                <Col className='container-msg-feedback m-auto' xs={12} md={6}>
-                                    <div className='container-title-feedback' xs={12}>
-                                        <h2>{paymentFeedback?.title ? paymentFeedback.title : 'Compra não autorizada!'}</h2>
-                                    </div>
-                                    <Row dangerouslySetInnerHTML={{ __html: paymentFeedback?.message ? paymentFeedback.message : '' }}></Row>
+                        <Row id="container-feedback-error">
+                            <Col className='container-msg-feedback m-auto' xs={12} md={6}>
+                                <div className='container-title-feedback' xs={12}>
+                                    <h2>{paymentFeedback?.title ? paymentFeedback.title : 'Compra não autorizada!'}</h2>
+                                </div>
+                                <Row dangerouslySetInnerHTML={{ __html: paymentFeedback?.message ? paymentFeedback.message : '' }}></Row>
 
-                                    <Col xs={12} sm={6}>
-                                        <a class="default-btn default-outline-btn checkout-button  min-height-45" type="button" onClick={() => handleTryAgain()}>Tentar novamente</a>
-                                    </Col>
+                                <Col xs={12} sm={6}>
+                                    <a class="default-btn default-outline-btn checkout-button  min-height-45" type="button" onClick={() => handleTryAgain()}>Tentar novamente</a>
                                 </Col>
-                                <Col className='container-img-feedback position-relative' xs={12} md={6}>
-                                    <Image src={ErrorImage} layout='fill' alt="Imagem erro" />
-                                </Col>
-                            </Row>
-                        </>
+                            </Col>
+                            <Col className='container-img-feedback position-relative' xs={12} md={6}>
+                                <Image src={ErrorImage} layout='fill' alt="Imagem erro" />
+                            </Col>
+                        </Row>
                     )
                 }
 

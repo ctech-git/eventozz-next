@@ -173,7 +173,6 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
             <EventDetails item={event} showTicketSale={showTicketSale} />
           </Col>
         
-
           {showTicketSale && !hideOnCheckout && (
             <Col xs={12}>
               <Banner item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
