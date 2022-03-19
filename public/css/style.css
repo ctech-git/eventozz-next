@@ -669,6 +669,9 @@ width: 70% !important;
 }
 
 @media only screen and (max-width: 991px) {
+
+
+
   .navbar-area {
     padding-top: 0px;
     padding-bottom: 0px;
@@ -8204,7 +8207,27 @@ width: 100px;
   width: 100%;
 }
 
+.image-logo-mobile{
+  width:120px;
+}
+
+
+.logoCompleta{
+  width: 10rem !important;
+}
+
+.seat{
+  height: 28px !important;
+  width: 28px !important;
+}
+
 @media (max-width: 767px){
+
+  .seat{
+    height: 7px !important;
+    width: 7px !important;
+  }
+
   .col-left-initial-banner{
     position: absolute;
     z-index: 10;
@@ -8262,11 +8285,19 @@ width: 100px;
   .image-logo-mobile{
     padding-top: 20px;
     padding-bottom: 20px;
+    width:10rem;
+  }
+
+  .logoCompleta{
+    width: 120px !important;
   }
 
 .responsive-container{
   flex-direction: column-reverse;
 }
+
+
+
 }
 
 .background-optional{
@@ -8280,3 +8311,4 @@ width: 100px;
   font-size: 30px;
   font-weight: 800;
 }
+
