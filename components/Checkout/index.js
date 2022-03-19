@@ -33,6 +33,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     const [paymentMethod, setPaymentMethod] = useState('pix');
     const [pixValue, setPixValue] = useState(false);
     const [installmentOptions, setInstallmentOptions] = useState([]);
+    const [paymentOptions, setPaymentOptions] = useState([]);
     const [cupom, setCoupon] = useState('');
     const [couponId, setCouponId] = useState('');
     const [couponInfo, setCouponInfo] = useState(false);
@@ -84,6 +85,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         generateInputTicketsData();
         setShowPayment(false);
         getAvailablePaymentInfo();
+        getAvailablePaymentOptions();
     }, [cartItems]);
 
     useEffect(() => {
@@ -176,6 +178,19 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         setIsLoadingCheckout(false);
     }, [couponId, dados])
 
+    const getAvailablePaymentOptions = useCallback(async () => {
+        setIsLoadingCheckout(true);
+        let accessToken = window.localStorage.getItem("accessToken");
+        const response = await checkoutService.getPaymentOptions({ accessToken, params: { eventId: dados?.id ? dados?.id : '' } });
+        if (response?.data?.success && response?.data?.data) {
+            const data = response.data.data;
+            console.log("=======");
+            console.log(data);
+            setPaymentOptions(data ? data : []);
+        }
+        setIsLoadingCheckout(false);
+    }, [couponId, dados])
+    
     const handleUseMyAccountData = async ({ checked, ticketsDataIndex, ticketIndex, idIngresso }) => {
         if (checked) {
             let accessToken = window.localStorage.getItem("accessToken");
@@ -1020,8 +1035,11 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     {/* </div> */}
                                     <Form.Select value={paymentMethod} onChange={(e) => handlePaymentMethod(e.target.value)}>
                                         <option>Selecione uma opção</option>
-                                        <option value="cc">Cartão de crédito - Taxa a partir de 10%</option>
-                                        <option selected value="pix">PIX - Taxa 10%</option>
+                                        {
+                                            paymentOptions.map((item, i) => (
+                                                <option selected={item.value === 'pix' ? true : false} value={item.value}>{item.label}</option>
+                                            ))
+                                        }
                                     </Form.Select>
                                 </Col>
 
