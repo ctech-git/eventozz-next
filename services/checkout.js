@@ -30,6 +30,21 @@ const checkoutService = {
       });
     return response;
   },
+  getPaymentOptions: async ({accessToken, params}) => {
+    const response = await Axios.get("/payment/payment-options",
+    {
+      params: params,
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    })
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+    return response;
+  },
   purchaseSave: async ({accessToken, body}) => {
     const response = await Axios.post("/purchase/save", {
       ...body
