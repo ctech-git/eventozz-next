@@ -23,6 +23,7 @@ import { scrollToElement } from '../../utils/scrollTo';
 import shoppingCartService from '../../services/cart';
 import { toast } from 'react-toastify';
 import Checkout from '../../components/Checkout';
+import SeatAllocationComponent from "./SeatAllocationComponent";
 
 const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate }) => {
 
@@ -162,6 +163,13 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
 
         </div>
 
+        <Row className='responsive-container'>
+          <Col xs={12}>
+            <SeatAllocationComponent />
+          </Col>
+        </Row>
+
+
         {event?.isContador && (
           <>
             <TokensArea item={event} endTime={eventDay} showTicketSale={showTicketSale} />
@@ -172,7 +180,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
           <Col xs={12}>
             <EventDetails item={event} showTicketSale={showTicketSale} />
           </Col>
-        
+
           {showTicketSale && !hideOnCheckout && (
             <Col xs={12}>
               <Banner item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
