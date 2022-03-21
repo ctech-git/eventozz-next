@@ -8221,6 +8221,100 @@ width: 100px;
   width: 28px !important;
 }
 
+.background-optional{
+  background-color: #dee2e6 !important;
+}
+
+.event-empty-tickets{
+  display: flex;
+  justify-content: center;
+  margin-top: 140px;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.container-row-seat-preview{
+  display: grid;
+  grid-template-columns: 1fr 45fr;
+}
+
+.row-seat-preview{
+  display: grid;
+  grid-template-columns: repeat(45, 1fr);
+}
+
+.container-item-seat-preview{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-seat-preview{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.row-indicator-seat-preview{
+  font-size: 1rem;
+}
+
+.vip{
+  color: #c8a2c8;
+}
+
+.gold{
+  color: #daa520;
+}
+
+.silver{
+  color: #bab8b5;
+}
+
+.reserved{
+  color: #f00;
+}
+
+.black{
+  color: #000;
+}
+
+.container-seat-preview{
+  padding-top: 40px;
+}
+
+.container-stage-indicator{
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px gray;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.stage-indicator{
+
+}
+
+.subtitle-container{
+  width: fit-content;    
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 0.5rem 1rem;
+  border: solid 1px gray;
+  padding: 10px;
+}
+
+.subtitle-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  column-gap: .4rem;
+}
+
 @media (max-width: 767px){
 
   .seat{
@@ -8296,19 +8390,31 @@ width: 100px;
   flex-direction: column-reverse;
 }
 
+  .container-item-seat-preview.header-seat-preview{
+    display: none;
+  }
 
+  .container-row-seat-preview{
+    display: grid;
+    grid-template-columns: 2fr 45fr;
+  }
 
+  .row-indicator-seat-preview{
+    font-size: 12px;
+  }
+
+  .item-seat-preview:not(.subtitle){
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+  }
+
+  .subtitle-item span{
+    font-size: 12px;
+  }
+
+  .subtitle-container{
+    width: 100%;
+  }
 }
-
-.background-optional{
-  background-color: #dee2e6 !important;
-}
-
-.event-empty-tickets{
-  display: flex;
-  justify-content: center;
-  margin-top: 140px;
-  font-size: 30px;
-  font-weight: 800;
-}
-
