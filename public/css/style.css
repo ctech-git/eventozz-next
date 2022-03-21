@@ -7959,6 +7959,10 @@ width: 100px;
   padding: 0;
 }
 
+.apply-extra-padding{
+    padding-top: 20px !important;
+}
+
 .cryptocurrency-table.table-responsive{
   position: relative;
   padding: 0;
@@ -8417,4 +8421,5 @@ width: 100px;
   .subtitle-container{
     width: 100%;
   }
+
 }
