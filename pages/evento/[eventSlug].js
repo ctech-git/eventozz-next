@@ -23,10 +23,11 @@ import { scrollToElement } from '../../utils/scrollTo';
 import shoppingCartService from '../../services/cart';
 import { toast } from 'react-toastify';
 import Checkout from '../../components/Checkout';
-import SeatAllocationComponent from "./SeatAllocationComponent";
+import { SeatPreview } from '../../components/seatPreview';
 
-const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate }) => {
+const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate, ticketsSold }) => {
 
+  console.log(ticketsSold);
   const router = useRouter();
   const { query } = useRouter();
   const seller = query?.vendedor;
@@ -163,11 +164,12 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
 
         </div>
 
-        <Row className='responsive-container'>
-          <Col xs={12}>
-            <SeatAllocationComponent />
-          </Col>
-        </Row>
+        {event?.seat_preview && (
+          <>
+            <SeatPreview ticketsSold={ticketsSold} />
+          </>
+        )}
+        
 
 
         {event?.isContador && (
@@ -222,7 +224,8 @@ export default Event;
 export async function getServerSideProps(context) {
   const { params } = context;
   const { eventSlug: slug } = params;
-  const result = await servicesEventozz.getEvent(slug);
+  const { getEvent, getTicketsSoldNumber } = servicesEventozz;
+  const result = await getEvent(slug);
 
   let event = [];
   let showTicketSale = false;
@@ -230,6 +233,7 @@ export async function getServerSideProps(context) {
   let showEventSoon = false;
   let showClosedSales = false;
   let eventDate = '';
+  let ticketsSold = false;
 
   if (result?.status === 200 && result?.data?.success && result?.data?.data?.length > 0) {
     event = result?.data?.data[0];
@@ -255,6 +259,12 @@ export async function getServerSideProps(context) {
 
   }
 
+  const resultTicketsSold = await getTicketsSoldNumber({eventId: event?.id});
+  console.log(resultTicketsSold);
+  if (resultTicketsSold?.data?.success) {
+    ticketsSold = resultTicketsSold?.data?.data
+  }
+
   return {
     props: {
       event,
@@ -262,7 +272,8 @@ export async function getServerSideProps(context) {
       showTicketSale,
       showEventSoon,
       eventDate,
-      showClosedSales
+      showClosedSales,
+      ticketsSold
     },
   }
 }

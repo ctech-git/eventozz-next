@@ -99,6 +99,25 @@ const servicesEventozz = {
       });
     return response;
   },
+  getTicketsSoldNumber:  async ({ eventId }) => {
+
+    const response = await Axios.get("/eventzz/get-tickets-sold-number",
+      {
+        params: {
+          eventId
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+    return response;
+  },
 
 }
 
