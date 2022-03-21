@@ -276,7 +276,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         setShowInputErros(false);
         setShowPayment(true);
         setTimeout(() => {
-            scrollToElement({ id: 'hr-divisor' })
+            scrollToElement({ id: 'apply-extra-padding' })
         }, 500);
     }
 
@@ -968,7 +968,9 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                         </Col>
                     </Row>
                 }
-                <hr id="hr-divisor" className='hr-divisor' />
+                <div id="apply-extra-padding" className={`${showPayment && !hideOnCheckout ? 'apply-extra-padding' : ''}`}>
+                    <hr id="hr-divisor" className="hr-divisor" />
+                </div>
                 {
                     !showPayment && !hideOnCheckout && (
                         <>
