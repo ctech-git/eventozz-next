@@ -19,7 +19,7 @@ export const SeatPreview = ({ ticketsSold }) => {
         if (counterSilverInMap?.current) {
             counterSilverInMap.current = 0
         }
-    }, [ticketsSold])
+    })
 
     return (
         <Container>
@@ -42,7 +42,6 @@ export const SeatPreview = ({ ticketsSold }) => {
                                     vip.cols.map((col, j) => {
                                         if (!col.corridor && i > 0) {
                                             counterVipInMap.current = counterVipInMap.current + 1;
-                                            console.log(counterVipInMap);
                                         }
                                         return (
                                             <div className={`${i === 0 ? 'header-seat-preview' : ''} container-item-seat-preview`}>
@@ -70,7 +69,6 @@ export const SeatPreview = ({ ticketsSold }) => {
                                     gold.cols.map(col => {
                                         if (!col.corridor) {
                                             counterGoldInMap.current = counterGoldInMap.current + 1;
-                                            console.log(counterGoldInMap);
                                         }
                                         return (
                                             <div className='container-item-seat-preview'>
@@ -97,7 +95,6 @@ export const SeatPreview = ({ ticketsSold }) => {
                                     silver.cols.map(col => {
                                         if (!col.corridor) {
                                             counterSilverInMap.current = counterSilverInMap.current + 1;
-                                            console.log(counterSilverInMap);
                                         }
                                         return (
                                             <div className='container-item-seat-preview'>
