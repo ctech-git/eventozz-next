@@ -10,7 +10,8 @@ import { AuthContext } from '../../context/auth';
 
 
 const RegisterForm = ({
-  organizador = false,
+  organizer = false,
+  callback = false
 }) => {
 
   const authContext = useContext(AuthContext);
@@ -102,10 +103,14 @@ const RegisterForm = ({
           if (response?.data?.token) {
             window.localStorage.setItem("accessToken", response?.data?.token);
             setUserToken(response?.data?.token);
-            if (organizador) {
+            if (organizer) {
               window.location.href = "https://app-eventozz-dev.herokuapp.com/?token=" + response?.data?.token;
             } else {
-              window.location.href = "/";
+              if (callback) {
+                router.push(callback);
+              }else{
+                router.push('/');
+              }
             }
 
           } else {

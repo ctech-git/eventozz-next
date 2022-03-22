@@ -8,9 +8,9 @@ import { AuthContext } from '../../context/auth';
 import { useRouter } from 'next/router';
 
 const LoginForm = ({
-  organizador = false,
+  organizer = false,
+  callback = false
 }) => {
-
   const router = useRouter();
   const authContext = useContext(AuthContext);
   const { setUserToken, setUserName } = authContext;
@@ -40,10 +40,14 @@ const LoginForm = ({
         if (result?.data?.token) {
           window.localStorage.setItem("accessToken", result?.data?.token);
           setUserToken(result?.data?.token);
-          if (organizador) {
+          if (organizer) {
             window.location.href = "https://app-eventozz-dev.herokuapp.com/?token=" + result?.data?.token;
           } else {
-            router.back();
+            if (callback) {
+              router.push(callback);
+            }else{
+              router.back();
+            }
           }
           // window.location.href = "/";
         } else {
@@ -93,10 +97,14 @@ const LoginForm = ({
         if (response?.data?.token) {
           window.localStorage.setItem("accessToken", response?.data?.token);
           setUserToken(response?.data?.token);
-          if (organizador) {
+          if (organizer) {
             window.location.href = "https://app-eventozz-dev.herokuapp.com/?token=" + result?.data?.token;
           } else {
-            router.back();
+            if (callback) {
+              router.push(callback);
+            }else{
+              router.back();
+            }
           }
           // window.location.href = "/";
         } else {

@@ -6,8 +6,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import servicesEventozz from '../../services/events';
 import { scrollToElement } from '../../utils/scrollTo';
+import { useRouter } from 'next/router';
 
 const Banner = ({ item, handleCheckout, syncCartItems }) => {
+  const router = useRouter();
   const dados = item;
   const [tickets, setTickets] = useState([]);
   const [valorTotal, setValorTotal] = useState(0);
@@ -151,7 +153,7 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
         autoClose: 2000
       })
       setTimeout(function () {
-        window.location.href = "/login";
+        router.push({pathname:"/login", query: {callback: router.asPath}});
       }, 2000);
     }
   }
