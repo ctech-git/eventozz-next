@@ -47,8 +47,11 @@ const servicesEventozz = {
   },
   getTickets: async (id) => {
 
-    const response = await Axios.get("/list/tickets/?id=" + id,
+    const response = await Axios.get("/list/tickets",
       {
+        params: {
+          eventId: id
+        },
         headers: {
           'Content-Type': 'application/json',
         }
@@ -85,6 +88,25 @@ const servicesEventozz = {
         },
         headers: {
           'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+    return response;
+  },
+  getTicketsSoldNumber:  async ({ eventId }) => {
+
+    const response = await Axios.get("/eventzz/get-tickets-sold-number",
+      {
+        params: {
+          eventId
+        },
+        headers: {
           'Content-Type': 'application/json',
         }
       }

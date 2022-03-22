@@ -8,11 +8,14 @@ import { useEffect, useState } from 'react';
 const Authentication = () => {
   const router = useRouter();
 
-  const [organizador, setOrganizador] = useState(false);
+  const [organizer, setOrganizer] = useState(false);
+  const [callbackUrl, setCallbackUrl] = useState(false);
 
   useEffect(() => {
     let check = router.query?.organizador;
-    setOrganizador(check ? (true) : (false));
+    setOrganizer(check ? true : false);
+    let callback = router.query?.callback;
+    setCallbackUrl(callback ? callback : false);
   })
 
   return (
@@ -22,8 +25,8 @@ const Authentication = () => {
           <div className='d-table-cell'>
             <div className='container'>
               <div className='row'>
-                <LoginForm organizador={organizador} />
-                <RegisterForm organizador={organizador} />
+                <LoginForm organizer={organizer} callback={callbackUrl} />
+                <RegisterForm organizer={organizer} callback={callbackUrl} />
               </div>
             </div>
           </div>

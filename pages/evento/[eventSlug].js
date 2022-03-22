@@ -23,11 +23,14 @@ import { scrollToElement } from '../../utils/scrollTo';
 import shoppingCartService from '../../services/cart';
 import { toast } from 'react-toastify';
 import Checkout from '../../components/Checkout';
+import { SeatPreview } from '../../components/seatPreview';
 
-const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate }) => {
+const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate, ticketsSold }) => {
 
+  console.log(ticketsSold);
   const router = useRouter();
-
+  const { query } = useRouter();
+  const seller = query?.vendedor;
   const [eventDay, setEventDay] = useState('');
   const [cartItems, setCartItems] = useState([]);
   const [isLoadingCartItem, setIsLoadingCartItem] = useState(false);
@@ -119,7 +122,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
                 alt='image'
               />
             </div>
-            {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora bannerinicial justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>}
+            {/* {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora bannerinicial justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>} */}
           </div>
         ) : (
           <>
@@ -129,7 +132,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
                   <div className='col-md-6 p-0 col-left-initial-banner'>
                     <div className='main-banner-content-landing'>
                       <h1 className='text-center text-md-start'>{event.nome_evento}</h1>
-                      {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>}
+                      {/* {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>} */}
                     </div>
                   </div>
                   <div className='col-md-6 p-0 col-right-initial-banner'>
@@ -161,24 +164,31 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
 
         </div>
 
-        {showTicketSale && !hideOnCheckout && (
+        {event?.seat_preview && (
+          <>
+            <SeatPreview ticketsSold={ticketsSold} />
+          </>
+        )}
+        
+
+
+        {event?.isContador && (
           <>
             <TokensArea item={event} endTime={eventDay} showTicketSale={showTicketSale} />
           </>
         )}
 
-        <Row>
+        <Row className='responsive-container'>
           <Col xs={12}>
             <EventDetails item={event} showTicketSale={showTicketSale} />
           </Col>
+
+          {showTicketSale && !hideOnCheckout && (
+            <Col xs={12}>
+              <Banner item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
+            </Col>
+          )}
         </Row>
-
-        {showTicketSale && !hideOnCheckout && (
-          <>
-            <Banner item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
-          </>
-        )}
-
 
         {
           showEventSoon && (
@@ -202,7 +212,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
         {
           showCheckout && <Checkout dados={event} cartItems={cartItems} handleChangeTicketQuantity={handleChangeTicketQuantity}
             handleDeleteItem={handleDeleteItem} isLoadingCartItem={isLoadingCartItem} handleAddCupom={getCartItems} hideOnCheckout={hideOnCheckout}
-            setHideOnCheckout={setHideOnCheckout} />
+            setHideOnCheckout={setHideOnCheckout} seller={seller} />
         }
       </div>
     </>
@@ -214,7 +224,8 @@ export default Event;
 export async function getServerSideProps(context) {
   const { params } = context;
   const { eventSlug: slug } = params;
-  const result = await servicesEventozz.getEvent(slug);
+  const { getEvent, getTicketsSoldNumber } = servicesEventozz;
+  const result = await getEvent(slug);
 
   let event = [];
   let showTicketSale = false;
@@ -222,6 +233,7 @@ export async function getServerSideProps(context) {
   let showEventSoon = false;
   let showClosedSales = false;
   let eventDate = '';
+  let ticketsSold = false;
 
   if (result?.status === 200 && result?.data?.success && result?.data?.data?.length > 0) {
     event = result?.data?.data[0];
@@ -247,6 +259,12 @@ export async function getServerSideProps(context) {
 
   }
 
+  const resultTicketsSold = await getTicketsSoldNumber({eventId: event?.id});
+  console.log(resultTicketsSold);
+  if (resultTicketsSold?.data?.success) {
+    ticketsSold = resultTicketsSold?.data?.data
+  }
+
   return {
     props: {
       event,
@@ -254,7 +272,8 @@ export async function getServerSideProps(context) {
       showTicketSale,
       showEventSoon,
       eventDate,
-      showClosedSales
+      showClosedSales,
+      ticketsSold
     },
   }
 }

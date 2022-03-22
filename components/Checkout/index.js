@@ -17,7 +17,7 @@ import { scrollToElement } from '../../utils/scrollTo';
 import { useRouter } from 'next/router';
 import { copyToClipboard } from '../../utils/functions';
 
-const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, setHideOnCheckout, hideOnCheckout }) => {
+const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, setHideOnCheckout, hideOnCheckout, seller }) => {
 
     const router = useRouter();
     const isMobile = useMediaQuery({ maxWidth: 768 })
@@ -33,6 +33,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     const [paymentMethod, setPaymentMethod] = useState('pix');
     const [pixValue, setPixValue] = useState(false);
     const [installmentOptions, setInstallmentOptions] = useState([]);
+    const [paymentOptions, setPaymentOptions] = useState([]);
     const [cupom, setCoupon] = useState('');
     const [couponId, setCouponId] = useState('');
     const [couponInfo, setCouponInfo] = useState(false);
@@ -82,9 +83,14 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
     useEffect(() => {
         generateInputTicketsData();
-        getAvailablePaymentInfo();
         setShowPayment(false);
-    }, [cartItems, couponId]);
+        getAvailablePaymentInfo();
+        getAvailablePaymentOptions();
+    }, [cartItems]);
+
+    useEffect(() => {
+        getAvailablePaymentInfo();
+    }, [couponId]);
 
     useEffect(() => {
         setTimeout(() => {
@@ -172,6 +178,19 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         setIsLoadingCheckout(false);
     }, [couponId, dados])
 
+    const getAvailablePaymentOptions = useCallback(async () => {
+        setIsLoadingCheckout(true);
+        let accessToken = window.localStorage.getItem("accessToken");
+        const response = await checkoutService.getPaymentOptions({ accessToken, params: { eventId: dados?.id ? dados?.id : '' } });
+        if (response?.data?.success && response?.data?.data) {
+            const data = response.data.data;
+            console.log("=======");
+            console.log(data);
+            setPaymentOptions(data ? data : []);
+        }
+        setIsLoadingCheckout(false);
+    }, [couponId, dados])
+    
     const handleUseMyAccountData = async ({ checked, ticketsDataIndex, ticketIndex, idIngresso }) => {
         if (checked) {
             let accessToken = window.localStorage.getItem("accessToken");
@@ -216,7 +235,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     }
 
     const handleChangeTicketData = ({ value, field, ticketsDataIndex, ticketIndex }) => {
-
+        console.log(value);
         let newTicketsData = {}
         Object.values(ticketsData).map((ticketType, index) => {
             const idIngresso = ticketType[0].idIngresso;
@@ -257,7 +276,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         setShowInputErros(false);
         setShowPayment(true);
         setTimeout(() => {
-            scrollToElement({ id: 'hr-divisor' })
+            scrollToElement({ id: 'apply-extra-padding' })
         }, 500);
     }
 
@@ -505,19 +524,19 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             if (ticketType?.length > 0) {
                 ticketType.map(ticket => {
 
-                    let cpfTemp = ticket.cpf;
-                    cpfTemp = cpfTemp.replace(".", ""); cpfTemp = cpfTemp.replace(".", ""); cpfTemp = cpfTemp.replace("-", "");
-                    let phoneTemp = ticket.phone;
+                    // let cpfTemp = ticket.cpf;
+                    // cpfTemp = cpfTemp.replace(".", ""); cpfTemp = cpfTemp.replace(".", ""); cpfTemp = cpfTemp.replace("-", "");
+                    // let phoneTemp = ticket.phone;
 
-                    phoneTemp = phoneTemp.replace("(", ""); phoneTemp = phoneTemp.replace(")", "");
-                    phoneTemp = phoneTemp.replace(" ", ""); phoneTemp = phoneTemp.replace("-", "");
-
+                    // phoneTemp = phoneTemp.replace("(", ""); phoneTemp = phoneTemp.replace(")", "");
+                    // phoneTemp = phoneTemp.replace(" ", ""); phoneTemp = phoneTemp.replace("-", "");
+                    console.log(ticket);
                     let vector = {
                         "description": ticket?.description,
                         "idIngresso": ticket?.idIngresso,
                         "name": ticket?.name,
-                        "cpf": cpfTemp,
-                        "phone": phoneTemp,
+                        "cpf": ticket?.cpf,
+                        "phone": ticket?.phone,
                         "email": ticket?.email
                     }
                     ticketsDataTemp.push(vector);
@@ -535,8 +554,9 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         let accessToken = window.localStorage.getItem("accessToken");
         const body = {
             couponId, eventId, installmentsNumber, paymentMethod, ticketsData: ticketsDataTemp,
-            ticketsQtd, isFree: dados?.is_free, payments
+            ticketsQtd, isFree: dados?.is_free, payments, seller
         }
+
         const response = await checkoutService.purchaseSave({ accessToken, body });
 
         setTextLoading("");
@@ -572,6 +592,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         if (response?.status === 200) {
             const data = response?.data?.data;
             if (data?.length > 0) {
+                console.log(data);
                 setCouponId(data[0].couponId);
                 toast.success("Cupom aplicado");
             } else {
@@ -947,7 +968,9 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                         </Col>
                     </Row>
                 }
-                <hr id="hr-divisor" className='hr-divisor' />
+                <div id="apply-extra-padding" className={`${showPayment && !hideOnCheckout ? 'apply-extra-padding' : ''}`}>
+                    <hr id="hr-divisor" className="hr-divisor" />
+                </div>
                 {
                     !showPayment && !hideOnCheckout && (
                         <>
@@ -980,11 +1003,11 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                                         {showInputErros && ticket.name.length < 2 && <Form.Text className="text-error">Informe o nome completo da pessoa que irá utilizar o ingresso.</Form.Text>}
                                                     </Col>
                                                     <Col className='pb-3' xs={12} md={6}>
-                                                        <Form.Control className={showInputErros && !isValidCpf(ticket.cpf) ? 'input-error' : ''} type="text" value={ticket.cpf} onChange={(e) => handleChangeTicketData({ value: cpfMask(e.target.value), field: 'cpf', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="cpf" placeholder="CPF" maxlength="14" />
+                                                        <Form.Control className={showInputErros && !isValidCpf(ticket.cpf) ? 'input-error' : ''} type="text" value={cpfMask(ticket.cpf)} onChange={(e) => handleChangeTicketData({ value: onlyUnsignedNumbers(e.target.value), field: 'cpf', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="cpf" placeholder="CPF" maxlength="14" />
                                                         {showInputErros && !isValidCpf(ticket.cpf) && <Form.Text className="text-error">Informe o cpf da pessoa que irá utilizar o ingresso.</Form.Text>}
                                                     </Col>
                                                     <Col className='pb-3' xs={12} md={6}>
-                                                        <Form.Control className={showInputErros && ticket.phone.length < 10 ? 'input-error' : ''} type="text" value={ticket.phone} onChange={(e) => handleChangeTicketData({ value: phoneMaskForList(e.target.value), field: 'phone', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="telefone" placeholder="Telefone" id="telefone_2" required="" maxlength="16" />
+                                                        <Form.Control className={showInputErros && ticket.phone.length < 10 ? 'input-error' : ''} type="text" value={phoneMaskForList(ticket.phone)} onChange={(e) => handleChangeTicketData({ value: onlyUnsignedNumbers(e.target.value), field: 'phone', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="telefone" placeholder="Telefone" id="telefone_2" required="" maxlength="16" />
                                                         {showInputErros && ticket.phone.length < 10 && <Form.Text className="text-error">Informe um número válido (Enviaremos o qr code do ingresso por WhatsApp).</Form.Text>}
                                                     </Col>
                                                     <Col className='pb-3' xs={12} md={6}>
@@ -1014,8 +1037,11 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     {/* </div> */}
                                     <Form.Select value={paymentMethod} onChange={(e) => handlePaymentMethod(e.target.value)}>
                                         <option>Selecione uma opção</option>
-                                        <option value="cc">Cartão de crédito - Taxa a partir de 7%</option>
-                                        <option selected value="pix">PIX - Taxa 5%</option>
+                                        {
+                                            paymentOptions.map((item, i) => (
+                                                <option selected={item.value === 'pix' ? true : false} value={item.value}>{item.label}</option>
+                                            ))
+                                        }
                                     </Form.Select>
                                 </Col>
 
@@ -1185,23 +1211,21 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 }
                 {
                     showErrorOnPayment && (
-                        <>
-                            <Row id="container-feedback-error">
-                                <Col className='container-msg-feedback m-auto' xs={12} md={6}>
-                                    <div className='container-title-feedback' xs={12}>
-                                        <h2>{paymentFeedback?.title ? paymentFeedback.title : 'Compra não autorizada!'}</h2>
-                                    </div>
-                                    <Row dangerouslySetInnerHTML={{ __html: paymentFeedback?.message ? paymentFeedback.message : '' }}></Row>
+                        <Row id="container-feedback-error">
+                            <Col className='container-msg-feedback m-auto' xs={12} md={6}>
+                                <div className='container-title-feedback' xs={12}>
+                                    <h2>{paymentFeedback?.title ? paymentFeedback.title : 'Compra não autorizada!'}</h2>
+                                </div>
+                                <Row dangerouslySetInnerHTML={{ __html: paymentFeedback?.message ? paymentFeedback.message : '' }}></Row>
 
-                                    <Col xs={12} sm={6}>
-                                        <a class="default-btn default-outline-btn checkout-button  min-height-45" type="button" onClick={() => handleTryAgain()}>Tentar novamente</a>
-                                    </Col>
+                                <Col xs={12} sm={6}>
+                                    <a class="default-btn default-outline-btn checkout-button  min-height-45" type="button" onClick={() => handleTryAgain()}>Tentar novamente</a>
                                 </Col>
-                                <Col className='container-img-feedback position-relative' xs={12} md={6}>
-                                    <Image src={ErrorImage} layout='fill' alt="Imagem erro" />
-                                </Col>
-                            </Row>
-                        </>
+                            </Col>
+                            <Col className='container-img-feedback position-relative' xs={12} md={6}>
+                                <Image src={ErrorImage} layout='fill' alt="Imagem erro" />
+                            </Col>
+                        </Row>
                     )
                 }
 

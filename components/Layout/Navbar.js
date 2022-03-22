@@ -55,7 +55,7 @@ const Navbar = () => {
               <div className='logo'>
                 <Link href='/'>
                   <a onClick={() => getTo('/')}>
-                    <img src='/images/logo-eventozz.png' alt='logo' className='image-logo-mobile' />
+                    <img src='/images/logo.svg' alt='logo' className='image-logo-mobile' />
                   </a>
                 </Link>
               </div>
@@ -73,7 +73,7 @@ const Navbar = () => {
           <div className='container'>
             <Link href='/'>
               <a className='navbar-brand' onClick={() => getTo('/')}>
-                <img src='/images/logo-eventozz.png' alt='logo' />
+                <img src='/images/logo.svg' className='logoCompleta' alt='logo' />
               </a>
             </Link>
             <div className='collapse navbar-collapse mean-menu'>

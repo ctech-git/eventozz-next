@@ -59,7 +59,7 @@ Default CSS
 :root {
   --fontFamily: 'Montserrat', sans-serif;
   --fontFamily2: 'Open Sans', sans-serif;
-  --mainColor: #0083f3;
+  --mainColor: #001d4a;
   --optionalColor: #001d4a;
   --whiteColor: #ffffff;
   --blackColor: #000000;
@@ -223,6 +223,7 @@ p:last-child {
   top: 50%;
   left: 30px;
   position: absolute;
+  background-color: var(--optionalColor);
   font-weight: normal;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
@@ -668,6 +669,9 @@ width: 70% !important;
 }
 
 @media only screen and (max-width: 991px) {
+
+
+
   .navbar-area {
     padding-top: 0px;
     padding-bottom: 0px;
@@ -2040,9 +2044,7 @@ box eventos listagem lista events
   margin-bottom: 50px;
   
 }
-.card-events-home:hover{
-  
-}
+
 .card-events-home span{
   padding-left: 10px;
   font-size: 20px;
@@ -5938,10 +5940,11 @@ display: flex;
 Profile Authentication Area CSS
 =================================================*/
 .profile-authentication-area {
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
   background-color: #f9f9f9;
   /* margin-bottom:200px */
+  padding-top: 50px;
 }
     
 .back-icon{
@@ -7640,9 +7643,6 @@ Go Top CSS
   font-weight: 700;
 }
 
-.cryptocurrency-table td .crypto-image {
-  
-}
 .crypto-image img{
 border-radius: 10px;
 width: 100px;
@@ -7848,7 +7848,7 @@ width: 100px;
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 15px;
-  color: rgb(0, 167, 157);
+  color: #001d4a;
 }
 
 .box-ticket.animate{
@@ -7865,7 +7865,7 @@ width: 100px;
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 0;
-  color: rgb(0, 167, 157);
+  color: #001d4a;
 }
 
 .box-tickets-total-value-text{
@@ -7940,10 +7940,6 @@ width: 100px;
   color: #fff;
 }
 
-.spinner-border.absolute{
-
-}
-
 .container-spinner{
   position: absolute;
   width: 100%;
@@ -7961,6 +7957,10 @@ width: 100px;
 .hr-divisor{
   margin: 40px 0;
   padding: 0;
+}
+
+.apply-extra-padding{
+    padding-top: 20px !important;
 }
 
 .cryptocurrency-table.table-responsive{
@@ -8074,6 +8074,15 @@ width: 100px;
 
 .default-btn.checkout-button.cupom-button i{
   top: unset;
+}
+
+.default-btn.checkout-button, .default-btn.tickets-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 0;
+  min-width: 150px;
 }
 
 .container-title-feedback h2{
@@ -8202,7 +8211,121 @@ width: 100px;
   width: 100%;
 }
 
+.image-logo-mobile{
+  width:120px;
+}
+
+
+.logoCompleta{
+  width: 10rem !important;
+}
+
+.seat{
+  height: 28px !important;
+  width: 28px !important;
+}
+
+.background-optional{
+  background-color: #dee2e6 !important;
+}
+
+.event-empty-tickets{
+  display: flex;
+  justify-content: center;
+  margin-top: 140px;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.container-row-seat-preview{
+  display: grid;
+  grid-template-columns: 1fr 45fr;
+}
+
+.row-seat-preview{
+  display: grid;
+  grid-template-columns: repeat(45, 1fr);
+}
+
+.container-item-seat-preview{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-seat-preview{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.row-indicator-seat-preview{
+  font-size: 1rem;
+}
+
+.vip{
+  color: #c8a2c8;
+}
+
+.gold{
+  color: #daa520;
+}
+
+.silver{
+  color: #bab8b5;
+}
+
+.reserved{
+  color: #f00;
+}
+
+.black{
+  color: #000;
+}
+
+.container-seat-preview{
+  padding-top: 40px;
+}
+
+.container-stage-indicator{
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px gray;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.stage-indicator{
+
+}
+
+.subtitle-container{
+  width: fit-content;    
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 0.5rem 1rem;
+  border: solid 1px gray;
+  padding: 10px;
+}
+
+.subtitle-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  column-gap: .4rem;
+}
+
 @media (max-width: 767px){
+
+  .seat{
+    height: 7px !important;
+    width: 7px !important;
+  }
+
   .col-left-initial-banner{
     position: absolute;
     z-index: 10;
@@ -8260,9 +8383,43 @@ width: 100px;
   .image-logo-mobile{
     padding-top: 20px;
     padding-bottom: 20px;
+    width:10rem;
   }
+
+  .logoCompleta{
+    width: 120px !important;
+  }
+
+.responsive-container{
+  flex-direction: column-reverse;
 }
 
-.background-optional{
-  background-color: #dee2e6 !important;
+  .container-item-seat-preview.header-seat-preview{
+    display: none;
+  }
+
+  .container-row-seat-preview{
+    display: grid;
+    grid-template-columns: 2fr 45fr;
+  }
+
+  .row-indicator-seat-preview{
+    font-size: 12px;
+  }
+
+  .item-seat-preview:not(.subtitle){
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+  }
+
+  .subtitle-item span{
+    font-size: 12px;
+  }
+
+  .subtitle-container{
+    width: 100%;
+  }
+
 }

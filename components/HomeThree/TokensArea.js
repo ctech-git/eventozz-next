@@ -8,6 +8,7 @@ const TokensArea = ({ item, endTime, showTicketSale }) => {
   const [hours, setHours] = useState('');
   const [minutes, setMinutes] = useState('');
   const [seconds, setSeconds] = useState('');
+  const [showCounter, setShowCounter] = useState(false);
 
   const comingSoonTime = () => {
     let endTimeParse = Date.parse(endTime) / 1000;
@@ -50,7 +51,21 @@ const TokensArea = ({ item, endTime, showTicketSale }) => {
       setAction({});
     };
   }, [endTime]);
+
+  useEffect( () => {
+    if (days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0) {
+      return setShowCounter(false);
+    }
+    return setShowCounter(true);
+  }, [
+    days,
+    hours,
+    minutes,
+    seconds,
+  ])
+
   return (
+    showCounter &&
     <>
       <div className='tokens-area pt-100 pb-5'>
         <div className='container'>

@@ -8,9 +8,9 @@ import { AuthContext } from '../../context/auth';
 import { useRouter } from 'next/router';
 
 const LoginForm = ({
-  organizador = false,
+  organizer = false,
+  callback = false
 }) => {
-
   const router = useRouter();
   const authContext = useContext(AuthContext);
   const { setUserToken, setUserName } = authContext;
@@ -43,7 +43,11 @@ const LoginForm = ({
           if (organizador) {
             window.location.href = "https://app.eventozz.com/?token=" + result?.data?.token;
           } else {
-            router.back();
+            if (callback) {
+              router.push(callback);
+            } else {
+              router.back();
+            }
           }
           // window.location.href = "/";
         } else {
@@ -96,7 +100,11 @@ const LoginForm = ({
           if (organizador) {
             window.location.href = "https://app.eventozz.com/?token=" + result?.data?.token;
           } else {
-            router.back();
+            if (callback) {
+              router.push(callback);
+            } else {
+              router.back();
+            }
           }
           // window.location.href = "/";
         } else {
