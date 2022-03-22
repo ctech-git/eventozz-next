@@ -24,7 +24,7 @@ function AuthProvider({ children }) {
         localStorage.removeItem("accessToken");
         setUserToken(null);
         setUserName(null);
-        router.push('/');
+        router.push('/', '/');
     }
 
     return (
