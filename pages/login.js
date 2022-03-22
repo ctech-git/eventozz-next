@@ -9,10 +9,13 @@ const Authentication = () => {
   const router = useRouter();
 
   const [organizer, setOrganizer] = useState(false);
+  const [callbackUrl, setCallbackUrl] = useState(false);
 
   useEffect(() => {
     let check = router.query?.organizador;
     setOrganizer(check ? true : false);
+    let callback = router.query?.callback;
+    setCallbackUrl(callback ? callback : false);
   })
 
   return (
@@ -22,8 +25,8 @@ const Authentication = () => {
           <div className='d-table-cell'>
             <div className='container'>
               <div className='row'>
-                <LoginForm organizer={organizer} />
-                <RegisterForm organizer={organizer} />
+                <LoginForm organizer={organizer} callback={callbackUrl} />
+                <RegisterForm organizer={organizer} callback={callbackUrl} />
               </div>
             </div>
           </div>
