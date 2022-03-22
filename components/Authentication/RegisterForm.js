@@ -103,7 +103,7 @@ const RegisterForm = ({
             window.localStorage.setItem("accessToken", response?.data?.token);
             setUserToken(response?.data?.token);
             if (organizador) {
-              window.location.href = "https://app-eventozz-dev.herokuapp.com/?token=" + response?.data?.token;
+              window.location.href = "https://app.eventozz.com/?token=" + response?.data?.token;
             } else {
               window.location.href = "/";
             }
