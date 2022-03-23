@@ -6,14 +6,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GoogleLogin from 'react-google-login';
 import { AuthContext } from '../../context/auth';
-
-
+import { useRouter } from 'next/router';
 
 const RegisterForm = ({
   organizer = false,
   callback = false
 }) => {
 
+  const router = useRouter();
   const authContext = useContext(AuthContext);
 
   const { setUserToken } = authContext;
