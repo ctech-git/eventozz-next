@@ -139,7 +139,7 @@ export const cpfMask = (cpfCnpj) => {
 };
 export const cpfCnpjMask = (cpfCnpj) => {
   if (cpfCnpj === null || cpfCnpj === undefined) return;
-  if (String(cpfCnpj).length === 11) {
+  if (String(cpfCnpj).length <= 11) {
     return String(cpfCnpj)
       .replace(/\D/g, "")
       .replace(/(\d{3})(\d)/, "$1.$2")
@@ -147,7 +147,7 @@ export const cpfCnpjMask = (cpfCnpj) => {
       .replace(/(\d{3})(\d{1,2})/, "$1-$2")
       .replace(/(-\d{2})\d+?$/, "$1");
   }
-  if (String(cpfCnpj).length === 14) {
+  if (String(cpfCnpj).length > 11 && String(cpfCnpj).length <= 14) {
     return String(cpfCnpj)
       .replace(/\D/g, "")
       .replace(/(\d{2})(\d)/, "$1.$2")
