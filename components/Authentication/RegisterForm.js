@@ -256,6 +256,7 @@ const RegisterForm = ({
                     value={dateMask(nascimento)}
                     onChange={e => handlerNascimento(e)}
                     maxLength={15}
+                    inputMode='numeric'
                   />
                 </div>
 
