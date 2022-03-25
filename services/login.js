@@ -2,11 +2,12 @@ import { Axios } from './axios';
 
 
 const Services = {
-  LoginNative: async (cpfEmail, senha) => {
+  LoginNative: async (cpfEmail, senha, organizer) => {
     const response = await Axios.post("/signin",
       {
         cpfEmail: cpfEmail,
-        password: senha
+        password: senha,
+        organizer
       },
       {
         headers: {
@@ -110,10 +111,11 @@ const Services = {
       });
     return response;
   },
-  LoginWithGoogle: async (tokenId) => {
+  LoginWithGoogle: async (tokenId, organizer) => {
     const response = await Axios.post("/signin/google",
       {
-        tokenId: tokenId
+        tokenId: tokenId,
+        organizer
       },
       {
         headers: {
