@@ -102,7 +102,7 @@ const LoginForm = ({
           window.localStorage.setItem("accessToken", response?.data?.token);
           setUserToken(response?.data?.token);
           if (organizer) {
-            window.location.href = "https://app.eventozz.com/?token=" + result?.data?.token;
+            window.location.href = "https://app.eventozz.com/?token=" + response?.data?.token;
           } else {
             if (callback) {
               router.push(callback);
