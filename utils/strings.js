@@ -137,6 +137,20 @@ export const cpfMask = (cpfCnpj) => {
   //}
 
 };
+
+export const dateMask = (date) => {
+  if (date === null || date === undefined) return;
+  //if (String(date).length === 11) {
+  return String(date)
+    .replace(/\D/g, "")
+    .replace(/(\d{2})(\d)/, "$1/$2")
+    .replace(/(\d{2})(\d)/, "$1/$2")
+    // .replace(/(\d{3})(\d{1,2})/, "$1-$2")
+    .replace(/(-\d{4})\d+?$/, "$1");
+  //}
+
+};
+
 export const cpfCnpjMask = (cpfCnpj) => {
   if (cpfCnpj === null || cpfCnpj === undefined) return;
   if (String(cpfCnpj).length <= 11) {
@@ -219,4 +233,46 @@ export function isValidEmail(email) {
   } else {
     return false;
   }
+}
+
+export const isValidDate = (data) => {
+  try {
+      data = data.split('/');
+      let dia = parseInt(data[0]);
+      let mes = parseInt(data[1]);
+      let ano = parseInt(data[2]);
+
+      if (mes > 12 || mes < 1) {
+          return false;
+      }
+
+      if ((mes === 4 || mes === 6 || mes === 9 || mes === 11) && (dia > 30 || dia < 0)) {
+          return false;
+      }
+
+      if ((mes === 1 || mes === 2 || mes === 5 || mes === 7 || mes === 8 || mes === 10 || mes === 12) && (dia > 31 || dia < 0)) {
+          return false;
+      }
+
+      if ((mes === 2) && (dia > 28 || dia < 0)) {
+          return false;
+      }
+
+      if (ano < 1900) {
+          return false;
+      }
+
+      return true;
+  } catch (error) {
+      return false;
+  }
+}
+
+export const formatDate = (date) => {
+  const splitDate = date.split('/');
+  if (splitDate.length === 3) {
+    const formattedDate = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`
+    return formattedDate
+  }
+  return '01-01-2000';
 }

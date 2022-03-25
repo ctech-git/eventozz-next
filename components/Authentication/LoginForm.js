@@ -17,7 +17,7 @@ const LoginForm = ({
 
   const [emailCPF, setEmailCPF] = useState("");
   const [senha, setSenha] = useState("");
-
+  const [loading, setLoading] = useState(false);
 
   async function responseGoogle(response) {
     console.log("========");
@@ -33,7 +33,9 @@ const LoginForm = ({
       let tokenId = response?.tokenId;
       console.log(tokenId)
 
+      setLoading(true);
       const result = await Services.LoginWithGoogle(tokenId, organizer);
+      setLoading(false);
       console.log(result)
       if (result.status == 200) {
 
@@ -91,7 +93,9 @@ const LoginForm = ({
 
     if (!isError) {
       console.log("--------------")
+      setLoading(true);
       const response = await Services.LoginNative(cpfEmail, senha, organizer);
+      setLoading(false);
       console.log(response);
       if (response.status == 200) {
         if (response?.data?.token) {
@@ -127,6 +131,12 @@ const LoginForm = ({
       })
     }
   }
+  
+  const Loading = () => (
+    <div class="spinner-border loading-button" role="status">
+      <span class="sr-only"></span>
+    </div>
+  )
 
   return (
     <>
@@ -175,7 +185,7 @@ const LoginForm = ({
 
 
             <button type='button' onClick={() => loginEmail()}>
-              Entrar
+              {loading ? <Loading /> : 'Entrar'}
             </button>
 
           </form>
