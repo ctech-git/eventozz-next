@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { isValidCpf, cpfMask, phoneMaskForList, onlyUnsignedNumbers } from '../../utils/strings';
+import { isValidCpf, cpfMask, phoneMaskForList, onlyUnsignedNumbers, dateMask, isValidDate, formatDate } from '../../utils/strings';
 import Services from '../../services/login';
 import ServicesExternal from '../../services/externalRequest';
 import { ToastContainer, toast } from 'react-toastify';
@@ -23,6 +23,7 @@ const RegisterForm = ({
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
   const [nascimento, setNascimento] = useState("");
+  const [loading, setLoading] = useState(false);
   const [telefone, setTelefone] = useState("");
   const [password, setpassword] = useState("");
   const [password2, setpassword2] = useState("");
@@ -55,14 +56,14 @@ const RegisterForm = ({
       console.log(password)
       console.log(password2)
       if (!verificaCPF) { isError = true; Error = "CPF Invalido"; }
-      if (fullName == "" && fullName == null && fullName == undefined) { isError = true; Error = "Campo 'Nome' é Obrigatorio"; }
-      if (email == "" && email == null && email == undefined) { isError = true; Error = "Campo 'E-mail' é Obrigatorio"; }
-      if (nascimento == "" && nascimento == null && nascimento == undefined) { isError = true; Error = "Campo 'Nascimento' é Obrigatorio"; }
-      if (telefone == "" && telefone == null && telefone == undefined) { isError = true; Error = "Campo 'Telefone' é Obrigatorio"; }
-      if (password == "" && password == null && password == undefined) { isError = true; Error = "Campo 'Senha' é Obrigatorio"; }
-      if (password2 == "" && password2 == null && password2 == undefined) { isError = true; Error = "Campo 'Senha' é Obrigatorio"; }
-      if (password != password2) { isError = true; Error = "Senha diferente"; }
-
+      if (fullName == "" || fullName == null || fullName == undefined) { isError = true; Error = "Campo 'Nome' é Obrigatorio"; }
+      if (email == "" || email == null || email == undefined) { isError = true; Error = "Campo 'E-mail' é Obrigatorio"; }
+      if (nascimento == "" || nascimento == null || nascimento == undefined) { isError = true; Error = "Campo 'Nascimento' é Obrigatorio"; }
+      if (telefone == "" || telefone == null || telefone == undefined) { isError = true; Error = "Campo 'Telefone' é Obrigatorio"; }
+      if (password == "" || password == null || password == undefined) { isError = true; Error = "Campo 'Senha' é Obrigatorio"; }
+      if (password2 == "" || password2 == null || password2 == undefined) { isError = true; Error = "Campo 'Senha' é Obrigatorio"; }
+      if (password != password2) { isError = true; Error = "As senhas são diferentes"; }
+      if (!isValidDate(nascimento)) { isError = true; Error = "Data de nascimento inválida"; }
       if (!isError) {
         setEtapa(2)
       } else {
@@ -76,27 +77,28 @@ const RegisterForm = ({
       let isError = false;
       let Error = '';
 
-      if (cep == "" && cep == null && cep == undefined) { isError = true; Error = "Campo 'Cep' é Obrigatorio"; }
-      if (state == "" && state == null && state == undefined) { isError = true; Error = "Campo 'Estado' é Obrigatorio"; }
-      if (city == "" && city == null && city == undefined) { isError = true; Error = "Campo 'Cidade' é Obrigatorio"; }
-      if (district == "" && district == null && district == undefined) { isError = true; Error = "Campo 'Bairro' é Obrigatorio"; }
-      if (street == "" && street == null && street == undefined) { isError = true; Error = "Campo 'Logradouro' é Obrigatorio"; }
-      if (number == "" && number == null && number == undefined) { isError = true; Error = "Campo 'Number' é Obrigatorio"; }
+      if (cep == "" || cep == null || cep == undefined) { isError = true; Error = "Campo 'Cep' é Obrigatorio"; }
+      if (state == "" || state == null || state == undefined) { isError = true; Error = "Campo 'Estado' é Obrigatorio"; }
+      if (city == "" || city == null || city == undefined) { isError = true; Error = "Campo 'Cidade' é Obrigatorio"; }
+      if (district == "" || district == null || district == undefined) { isError = true; Error = "Campo 'Bairro' é Obrigatorio"; }
+      if (street == "" || street == null || street == undefined) { isError = true; Error = "Campo 'Logradouro' é Obrigatorio"; }
+      if (number == "" || number == null || number == undefined) { isError = true; Error = "Campo 'Número' é Obrigatorio"; }
 
       if (!isError) {
         console.log(googleId)
+        setLoading(true);
         if (googleId) {
           var response = await Services.CreateLoginGoogle(
             email, cpf, fullName, telefone, password, cep,
-            state, city, district, street, number, nascimento, googleId
+            state, city, district, street, number, nascimento=formatDate(nascimento), googleId, organizer
           );
         } else {
           var response = await Services.CreateLoginNative(
             email, cpf, fullName, telefone, password, cep,
-            state, city, district, street, number, nascimento
+            state, city, district, street, number, nascimento=formatDate(nascimento), organizer
           );
         }
-
+        setLoading(false);
 
         console.log(response)
         if (response.status == 200) {
@@ -148,6 +150,9 @@ const RegisterForm = ({
 
   const handlerNascimento = (e) => {
     let value = e.target.value;
+    if (value?.length > 10) {
+      return;
+    }
     setNascimento(value)
   }
 
@@ -175,6 +180,12 @@ const RegisterForm = ({
     }
 
   }
+
+  const Loading = () => (
+        <div class="spinner-border loading-button" role="status">
+          <span class="sr-only"></span>
+        </div>
+  )
 
   return (
     <>
@@ -240,10 +251,9 @@ const RegisterForm = ({
                 <div className='form-group'>
                   <label>Data de nascimento</label>
                   <input
-                    type='date'
                     className='form-control'
                     placeholder='Data de Nascimento'
-                    value={nascimento}
+                    value={dateMask(nascimento)}
                     onChange={e => handlerNascimento(e)}
                     maxLength={15}
                   />
@@ -345,9 +355,9 @@ const RegisterForm = ({
             {etapa == 2 && (
               <div className="box-button">
                 <button className="create-account" type='button' onClick={() => setEtapa(1)}
-                >Voltar</button>
+                >{loading ? <Loading /> : 'Voltar'}</button>
                 <button className="create-account" type='button' onClick={() => loginNative()}
-                >Cadastre-se</button>
+                >{loading ? <Loading /> : 'Cadastre-se'}</button>
               </div>
             )}
           </form>
