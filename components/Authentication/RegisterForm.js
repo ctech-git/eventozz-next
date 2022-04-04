@@ -10,7 +10,8 @@ import { useRouter } from 'next/router';
 
 const RegisterForm = ({
   organizer = false,
-  callback = false
+  callback = false,
+  payloadNewAccount = false
 }) => {
 
   const router = useRouter();
@@ -36,7 +37,14 @@ const RegisterForm = ({
 
   const [googleId, setGoogleId] = useState(false);
 
-
+  useEffect(() => {
+    console.log(payloadNewAccount);
+    if (payloadNewAccount) {
+      setEmail(payloadNewAccount?.email);
+      setFullName(payloadNewAccount?.name);
+      setGoogleId(payloadNewAccount?.sub);
+    }
+  }, [payloadNewAccount])
 
   async function responseGoogle(response) {
     console.log("========");
@@ -60,9 +68,9 @@ const RegisterForm = ({
       if (email == "" || email == null || email == undefined) { isError = true; Error = "Campo 'E-mail' é Obrigatorio"; }
       if (nascimento == "" || nascimento == null || nascimento == undefined) { isError = true; Error = "Campo 'Nascimento' é Obrigatorio"; }
       if (telefone == "" || telefone == null || telefone == undefined) { isError = true; Error = "Campo 'Telefone' é Obrigatorio"; }
-      if (password == "" || password == null || password == undefined) { isError = true; Error = "Campo 'Senha' é Obrigatorio"; }
-      if (password2 == "" || password2 == null || password2 == undefined) { isError = true; Error = "Campo 'Senha' é Obrigatorio"; }
-      if (password != password2) { isError = true; Error = "As senhas são diferentes"; }
+      if (!googleId && password == "" || password == null || password == undefined) { isError = true; Error = "Campo 'Senha' é Obrigatorio"; }
+      if (!googleId && (password2 == "" || password2 == null || password2 == undefined)) { isError = true; Error = "Campo 'Senha' é Obrigatorio"; }
+      if (!googleId && password != password2) { isError = true; Error = "As senhas são diferentes"; }
       if (!isValidDate(nascimento)) { isError = true; Error = "Data de nascimento inválida"; }
       if (!isError) {
         setEtapa(2)
@@ -90,12 +98,12 @@ const RegisterForm = ({
         if (googleId) {
           var response = await Services.CreateLoginGoogle(
             email, cpf, fullName, telefone, password, cep,
-            state, city, district, street, number, nascimento=formatDate(nascimento), googleId, organizer
+            state, city, district, street, number, nascimento = formatDate(nascimento), googleId, organizer
           );
         } else {
           var response = await Services.CreateLoginNative(
             email, cpf, fullName, telefone, password, cep,
-            state, city, district, street, number, nascimento=formatDate(nascimento), organizer
+            state, city, district, street, number, nascimento = formatDate(nascimento), organizer
           );
         }
         setLoading(false);
@@ -182,9 +190,9 @@ const RegisterForm = ({
   }
 
   const Loading = () => (
-        <div class="spinner-border loading-button" role="status">
-          <span class="sr-only"></span>
-        </div>
+    <div class="spinner-border loading-button" role="status">
+      <span class="sr-only"></span>
+    </div>
   )
 
   return (
@@ -259,27 +267,33 @@ const RegisterForm = ({
                     inputMode='numeric'
                   />
                 </div>
+                {
+                  !googleId && (
+                    <>
+                      <div className='form-group'>
+                        <label>Insira uma senha</label>
+                        <input
+                          type='password'
+                          className='form-control'
+                          placeholder='Senha'
+                          value={password}
+                          onChange={e => setpassword(e.target.value)}
+                        />
+                      </div>
+                      <div className='form-group'>
+                        <label>Repita sua senha</label>
+                        <input
+                          type='password'
+                          value={password2}
+                          className='form-control'
+                          placeholder='Confirme a Senha'
+                          onChange={e => setpassword2(e.target.value)}
+                        />
+                      </div>
+                    </>
+                  )
+                }
 
-                <div className='form-group'>
-                  <label>Insira uma senha</label>
-                  <input
-                    type='password'
-                    className='form-control'
-                    placeholder='Senha'
-                    value={password}
-                    onChange={e => setpassword(e.target.value)}
-                  />
-                </div>
-                <div className='form-group'>
-                  <label>Repita sua senha</label>
-                  <input
-                    type='password'
-                    value={password2}
-                    className='form-control'
-                    placeholder='Confirme a Senha'
-                    onChange={e => setpassword2(e.target.value)}
-                  />
-                </div>
               </>
             )}
             {etapa == 2 && (
