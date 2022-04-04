@@ -9,7 +9,8 @@ import { useRouter } from 'next/router';
 
 const LoginForm = ({
   organizer = false,
-  callback = false
+  callback = false,
+  setPayloadNewAccount = false
 }) => {
   const router = useRouter();
   const authContext = useContext(AuthContext);
@@ -54,21 +55,25 @@ const LoginForm = ({
           // window.location.href = "/";
         } else {
           toast.error("Falhar no Login", {
-            position: "bottom-left",
             autoClose: 2000
           })
         }
+      } else if(result.status == 201){
+        if (result?.data?.data && setPayloadNewAccount) {
+          setPayloadNewAccount(result?.data?.data)
+          toast.error(result?.response?.data?.msg ? result.response.data.msg : 'Nova conta. Preencha as informações para finalizar a criação da conta', {
+            autoClose: 5000
+          })
+        }
       } else {
-        toast.error(result.response.data.msg, {
-          position: "bottom-left",
-          autoClose: 2000
+        toast.error(result?.response?.data?.msg ? result.response.data.msg : 'Não foi possível criar a conta nomomento', {
+          autoClose: 5000
         })
       }
 
     } else {
       toast.error(Error, {
-        position: "bottom-left",
-        autoClose: 2000
+        autoClose: 5000
       })
     }
   }
@@ -113,20 +118,17 @@ const LoginForm = ({
           // window.location.href = "/";
         } else {
           toast.error("Falhar no Login", {
-            position: "bottom-left",
             autoClose: 2000
           })
         }
       } else {
         toast.error(response.response.data.msg, {
-          position: "bottom-left",
           autoClose: 2000
         })
       }
 
     } else {
       toast.error(Error, {
-        position: "bottom-left",
         autoClose: 2000
       })
     }
