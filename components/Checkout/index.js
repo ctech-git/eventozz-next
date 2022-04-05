@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import checkoutService from '../../services/checkout';
 import servicesExternal from '../../services/externalRequest';
 import { isValidCreditCardNumber, isValidExpirationDate } from '../../utils/fieldValidation';
-import { cepMask, convertMoney, cpfMask, cvvMask, expirationDateMask, isValidCpf, isValidEmail, onlyUnsignedNumbers, phoneMaskForList, stringNormalize } from '../../utils/strings';
+import { cepMask, convertMoney, cpfCnpjMask, cpfMask, cvvMask, expirationDateMask, isValidCnpj, isValidCpf, isValidEmail, onlyUnsignedNumbers, phoneMaskForList, stringNormalize } from '../../utils/strings';
 import PageBanner from '../Common/PageBanner';
 import { useMediaQuery } from 'react-responsive';
 import Image from 'next/image'
@@ -46,7 +46,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         number: '',
         expirationDate: '',
         cvv: '',
-        name: ''
+        name: '',
+        holderDocument: ''
     });
 
     const [billingData, setBillingData] = useState({
@@ -325,6 +326,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             return;
         } else if (field === 'expirationDate' && value.length > 4) {
             return;
+        } else if (field === 'holderDocument' && value.length > 14) {
+            return;
         }
         setCreditCardData(prev => ({
             ...prev,
@@ -396,6 +399,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                 "exp_month": expirationMonth,
                                 "exp_year": expirationYear,
                                 "cvv": creditCardData.cvv,
+                                "holder_document": creditCardData.holderDocument,
                                 "billing_address": {
                                     "line_1": billingData?.address,
                                     "zip_code": billingData?.cep,
@@ -490,6 +494,10 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
             if (creditCardData.name?.split(' ').length < 2) {
                 errors.push("Informe o nome que está escrito no cartão");
+            }
+            console.log(creditCardData.holderDocument);
+            if (!isValidCpf(creditCardData.holderDocument) && !isValidCnpj(creditCardData.holderDocument)) {
+                errors.push("Informe o documento do portador do cartão");
             }
 
             if (billingData.cep.length !== 8) {
@@ -1092,6 +1100,14 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                                     <Form.Label>Nome Impresso</Form.Label>
                                                     <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={creditCardData.name} onChange={(e) => handleChangeCreditCardData({ value: stringNormalize(e.target.value), field: 'name' })} />
                                                     {showCheckoutInputErros && <Form.Text className="text-error">Informe o nome como aparece no cartão.</Form.Text>}
+                                                </Form.Group>
+                                            </Col>
+                                            <Col xs={12} md={6} className='pb-3'>
+                                                <Form.Group>
+                                                    <Form.Label>CPF ou CNPJ do portador do cartão</Form.Label>
+                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={cpfCnpjMask(creditCardData.holderDocument)} onChange={(e) => handleChangeCreditCardData({ value: onlyUnsignedNumbers(e.target.value), field: 'holderDocument' })} 
+                                                        placeholder="00.000.000/0000-00" />
+                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe o documento do portador do cartão.</Form.Text>}
                                                 </Form.Group>
                                             </Col>
                                         </Row>

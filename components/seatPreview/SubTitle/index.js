@@ -24,7 +24,7 @@ export const SubtitleSeatPreview = ({ }) => {
                 </div>
                 <div className='subtitle-item'>
                     <i className='item-seat-preview reserved subtitle fa fa-circle'></i>
-                    <span>Reservado</span>
+                    <span>Vendido</span>
                 </div>
         </div>
     );

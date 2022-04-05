@@ -15,9 +15,14 @@ import cookies from 'next-cookies'
 import { ToastContainer } from 'react-toastify';
 import { AuthContext, AuthProvider } from '../context/auth';
 import { useContext, useEffect } from 'react';
+import TagManager from 'react-gtm-module';
 
 function App({ Component, pageProps }) {
   const store = useStore(pageProps.initialReduxState);
+
+  useEffect(() => {
+    TagManager.initialize({ gtmId: 'G-530SX4GF64' });
+  }, []);
 
   return (
     <AuthProvider>
