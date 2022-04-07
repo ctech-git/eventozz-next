@@ -49,7 +49,7 @@ export const SeatPreview = ({ ticketsSold }) => {
                                                     col.corridor ? (
                                                         <span className={`item-seat-preview corridor`} />
                                                     ) : (
-                                                        i === 0 ? col.number : counterVipInMap.current <= ticketsSold?.vip ? <i className={`item-seat-preview reserved fa fa-circle`}></i> : <i className={`item-seat-preview ${col.className} fa fa-chair`}></i>
+                                                        i === 0 ? col.number : counterVipInMap.current <= 0 ? <i className={`item-seat-preview reserved fa fa-circle`}></i> : <i className={`item-seat-preview ${col.className} fa fa-chair`}></i>
                                                     )
                                                 }
                                             </div>
@@ -76,7 +76,7 @@ export const SeatPreview = ({ ticketsSold }) => {
                                                     col.corridor ? (
                                                         <span className={`item-seat-preview corridor`} />
                                                     ) : (
-                                                        counterGoldInMap.current <= ticketsSold?.gold ? <i className={`item-seat-preview reserved fa fa-circle`}></i> : <i className={`item-seat-preview ${col.className}`}></i>
+                                                        counterGoldInMap.current <= 0 ? <i className={`item-seat-preview reserved fa fa-circle`}></i> : <i className={`item-seat-preview ${col.className}`}></i>
                                                     )}
                                             </div>
                                         )
@@ -102,7 +102,7 @@ export const SeatPreview = ({ ticketsSold }) => {
                                                     col.corridor ? (
                                                         <span className={`item-seat-preview corridor`} />
                                                     ) : (
-                                                        counterSilverInMap.current <= ticketsSold?.silver ? <i className={`item-seat-preview reserved fa fa-circle`}></i> : <i className={`item-seat-preview ${col.className}`}></i>
+                                                        counterSilverInMap.current <= 0 ? <i className={`item-seat-preview reserved fa fa-circle`}></i> : <i className={`item-seat-preview ${col.className}`}></i>
                                                     )}
                                             </div>
                                         )
