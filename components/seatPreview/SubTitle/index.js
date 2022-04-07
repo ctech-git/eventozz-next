@@ -22,10 +22,6 @@ export const SubtitleSeatPreview = ({ }) => {
                     <i className='item-seat-preview black subtitle fa fa-wheelchair'></i>
                     <span>Área PCD</span>
                 </div>
-                <div className='subtitle-item'>
-                    <i className='item-seat-preview reserved subtitle fa fa-circle'></i>
-                    <span>Vendido</span>
-                </div>
         </div>
     );
 }
