@@ -40,6 +40,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
   useEffect(() => {
     if (eventDate != '') {
       const eventDayAux = new Date(eventDate);
+      eventDayAux.setHours(eventDayAux.getHours() + 3)
       setEventDay(eventDayAux)
     }
   }, [eventDate]);
