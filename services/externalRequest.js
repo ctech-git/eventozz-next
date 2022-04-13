@@ -3,7 +3,7 @@ import { ApiCEP } from './axios';
 
 const ServicesExternal = {
   getCep: async (value) => {
-    const response = await ApiCEP.get("/ws/" + value + "/json?callback",
+    const response = await ApiCEP.get("/ws/" + value + "/json",
       {
         headers: {
           'Content-Type': 'application/json',

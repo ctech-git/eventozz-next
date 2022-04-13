@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { isValidCpf, cpfMask, phoneMaskForList, onlyUnsignedNumbers, dateMask, isValidDate, formatDate } from '../../utils/strings';
+import { isValidCpf, cpfMask, phoneMaskForList, onlyUnsignedNumbers, dateMask, isValidDate, formatDate, cepMask } from '../../utils/strings';
 import Services from '../../services/login';
 import ServicesExternal from '../../services/externalRequest';
 import { ToastContainer, toast } from 'react-toastify';
@@ -166,14 +166,15 @@ const RegisterForm = ({
 
   async function handlerCep(e) {
     let value = onlyUnsignedNumbers(e.target.value);
+    if (value.length > 8) {
+      return;
+    }
     setCEP(value)
-    console.log(value)
     if (value.length < 8) {
       return;
     }
 
     const result = await ServicesExternal.getCep(value);
-
     if (result.status == 200) {
       setState(result?.data?.uf);
       setCity(result?.data?.localidade);
@@ -304,7 +305,7 @@ const RegisterForm = ({
                     type='text'
                     className='form-control'
                     placeholder='CEP'
-                    value={cep}
+                    value={cepMask(cep)}
                     onChange={e => handlerCep(e)}
                   />
                 </div>
