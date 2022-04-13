@@ -174,8 +174,7 @@ export const cpfCnpjMask = (cpfCnpj) => {
 
 export const cepMask = (cep) => {
   if (cep === null || cep === undefined) return;
-  const mask = new StringMask("00000-000");
-  return mask.apply(cep);
+  return cep?.replace(/(\d{5})(\d{3})/, "$1-$2")
 };
 
 export const cvvMask = (cvv) => {
