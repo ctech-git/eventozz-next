@@ -139,7 +139,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             } else if (item.quantidade > ticketsDataItem?.length) {
 
                 let initialQuantity = item.quantidade - ticketsDataItem?.length;
-                for (let i = 0;i < initialQuantity;i++) {
+                for (let i = 0; i < initialQuantity; i++) {
 
                     ticketsDataItem.push({
                         description: `${i + 1}º - ${item.nome}`,
@@ -191,7 +191,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         }
         setIsLoadingCheckout(false);
     }, [couponId, dados])
-    
+
     const handleUseMyAccountData = async ({ checked, ticketsDataIndex, ticketIndex, idIngresso }) => {
         if (checked) {
             let accessToken = window.localStorage.getItem("accessToken");
@@ -313,7 +313,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         if (value === 'cc') {
             setShowCreditCardFields(true);
         } else {
-            setShowCreditCardFields(false);
+            setInstallmentsNumber(value);
+            setShowCreditCardFields(1);
         }
     }
 
@@ -731,37 +732,44 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                             break;
                     }
                 } else {
-                    let qrCodeLink = feedback?.qrCode;
-                    let qRCodeImage = feedback?.qrCodeUrl;
-                    success = true;
-                    title = "Seu PIX foi gerado!";
-                    text = `
-                    Agora você já pode efetuar o pagamento para gerarmos o seu código de entrada!</br>
-                    Siga o seguinte passo-a-passo:
-                    <ul style="
-                    margin-top: 10px;
-                ">
-                                    <li><strong>1º passo</strong> - Primeiro selecione e copie o código da conta que deseja pagar no botão COPIAR logo abaixo;</li>
-                                    <li><strong>2º passo</strong> - Depois abra o app do seu banco favorito e vá para a área de Pix;</li>
-                                    <li><strong>3º passo</strong> - Clique em Pix Copia e Cola;</li>
-                                    <li><strong>4º passo</strong> - Onde está escrito Código Pix, cole o código que foi copiado no primeiro passo;</li>
-                                    <li><strong>5º passo</strong> - Confirme os dados da transação;</li>
-                                    <li><strong>6º passo</strong> - Aguarde a confirmação em seu Whatsapp e em seu email;</li>
-                                    </ul>
-                    </br>
+                    if (feedback?.qrCode && feedback?.qrCodeUrl) {
+                        let qrCodeLink = feedback?.qrCode;
+                        let qRCodeImage = feedback?.qrCodeUrl;
+                        success = true;
+                        title = "Seu PIX foi gerado!";
+                        text = `
+                            Agora você já pode efetuar o pagamento para gerarmos o seu código de entrada!</br>
+                            Siga o seguinte passo-a-passo:
+                            <ul style="
+                                margin-top: 10px;
+                            ">
+                                <li><strong>1º passo</strong> - Primeiro selecione e copie o código da conta que deseja pagar no botão COPIAR logo abaixo;</li>
+                                <li><strong>2º passo</strong> - Depois abra o app do seu banco favorito e vá para a área de Pix;</li>
+                                <li><strong>3º passo</strong> - Clique em Pix Copia e Cola;</li>
+                                <li><strong>4º passo</strong> - Onde está escrito Código Pix, cole o código que foi copiado no primeiro passo;</li>
+                                <li><strong>5º passo</strong> - Confirme os dados da transação;</li>
+                                <li><strong>6º passo</strong> - Aguarde a confirmação em seu Whatsapp e em seu email;</li>
+                            </ul>
+                            </br>
                     
-                                <span style="margin-top: 5px;">O QR Code para entrada no evento chegará em seu Whatsapp quando o pagamento for confirmado!</span>
-                                <br>
-                                <span style="margin-top: 5px;">Além disso, seu nome e CPF estarão na lista e você pode acessar aqui para emitir uma segunda via!</span>
-                                <br>
-                                <span style="margin-top: 5px;">Desde já, bom evento em nome da Eventozz!</span>`;
-                    image = qRCodeImage ? qRCodeImage : '';
-                    link = qrCodeLink ? qrCodeLink : false;
+                            <span style="margin-top: 5px;">O QR Code para entrada no evento chegará em seu Whatsapp quando o pagamento for confirmado!</span>
+                            <br>
+                            <span style="margin-top: 5px;">Além disso, seu nome e CPF estarão na lista e você pode acessar aqui para emitir uma segunda via!</span>
+                            <br>
+                            <span style="margin-top: 5px;">Desde já, bom evento em nome da Eventozz!</span>
+                        `;
+                        image = qRCodeImage ? qRCodeImage : '';
+                        link = qrCodeLink ? qrCodeLink : false;
+                    } else {
+                        title = 'Compra não autorizada!';
+                        text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
+                        image = ErrorImage;
+                    }
+
                 }
             }
-
-
         }
+
 
         setPaymentFeedback({
             title,
@@ -773,6 +781,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
 
         if (success) {
+            setShowErrorOnPayment(false);
             setShowConfirmationPayment(true);
             setHideOnCheckout(true);
         } else {
@@ -1105,7 +1114,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                             <Col xs={12} md={6} className='pb-3'>
                                                 <Form.Group>
                                                     <Form.Label>CPF ou CNPJ do portador do cartão</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={cpfCnpjMask(creditCardData.holderDocument)} onChange={(e) => handleChangeCreditCardData({ value: onlyUnsignedNumbers(e.target.value), field: 'holderDocument' })} 
+                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={cpfCnpjMask(creditCardData.holderDocument)} onChange={(e) => handleChangeCreditCardData({ value: onlyUnsignedNumbers(e.target.value), field: 'holderDocument' })}
                                                         placeholder="00.000.000/0000-00" />
                                                     {showCheckoutInputErros && <Form.Text className="text-error">Informe o documento do portador do cartão.</Form.Text>}
                                                 </Form.Group>
