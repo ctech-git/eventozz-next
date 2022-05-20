@@ -42,11 +42,16 @@ const PriceDetails = ({ events = [] }) => {
     console.log(events);
     console.log("----------------");
   }, []);
-  function goToEvents(slug) {
-    console.log(slug)
-    // let link = nome.replaceAll(" ", "-");
-    router.push(`/evento/${slug}`);
+
+
+  function goToEvents(item) {
+    if (item.external_link) {
+      window.location.href = item.external_link;
+    } else {
+      router.push(`/evento/${item.slug}`);
+    }
   }
+
 
 
   return (
@@ -66,7 +71,7 @@ const PriceDetails = ({ events = [] }) => {
                     return (
 
                       <div className='col-lg-4 col-md-4'>
-                        <div className='single-blog-post' onClick={() => goToEvents(item.slug)}>
+                        <div className='single-blog-post' onClick={() => goToEvents(item)}>
                           <div className='post-image'>
                             <a className='d-block'>
                               <img src={item.foto} alt='image' />
