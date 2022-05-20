@@ -56,6 +56,7 @@ Default CSS
 =================================================*/
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap");
+
 :root {
   --fontFamily: 'Montserrat', sans-serif;
   --fontFamily2: 'Open Sans', sans-serif;
@@ -68,9 +69,11 @@ Default CSS
   --transition: .5s;
   --error-color: #e74c3c
 }
-.mt-10{
+
+.mt-10 {
   margin-top: 10px;
 }
+
 body {
   margin: 0;
   padding: 0;
@@ -79,7 +82,18 @@ body {
   font-family: var(--fontFamily);
 }
 
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--blackColor);
   font-family: var(--fontFamily2);
   font-weight: 700;
@@ -141,6 +155,7 @@ p:last-child {
 .pt-100 {
   padding-top: 100px;
 }
+
 .pt-50 {
   padding-top: 50px;
 }
@@ -226,12 +241,12 @@ p:last-child {
   background-color: var(--optionalColor);
   font-weight: normal;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .default-btn:hover {
   -webkit-box-shadow: 0 30px 50px rgba(107, 124, 147, 0.15);
-          box-shadow: 0 30px 50px rgba(107, 124, 147, 0.15);
+  box-shadow: 0 30px 50px rgba(107, 124, 147, 0.15);
   background-color: var(--optionalColor);
   color: var(--whiteColor);
 }
@@ -241,7 +256,7 @@ p:last-child {
   border-radius: 0;
   background-color: #f9f9f9 !important;
   -webkit-box-shadow: unset !important;
-          box-shadow: unset !important;
+  box-shadow: unset !important;
   -webkit-transition: var(--transition);
   transition: var(--transition);
   border: none !important;
@@ -322,9 +337,9 @@ Navbar Area CSS
   position: fixed;
   background-color: var(--whiteColor) !important;
   -webkit-box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.09);
-          box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.09);
+  box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.09);
   -webkit-animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
-          animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
+  animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
 }
 
 .navbar-area .navbar {
@@ -360,16 +375,21 @@ Navbar Area CSS
   padding-top: 30px;
   padding-bottom: 30px;
 }
-.VersionWeb{
+
+.VersionWeb {
   display: block;
 }
-.VersionMobile{
+
+.VersionMobile {
   display: none;
 }
+
 .navbar-nav {
   align-items: center !important;
 }
-.navbar-area .navbar .navbar-nav .nav-item a:hover, .navbar-area .navbar .navbar-nav .nav-item a.active {
+
+.navbar-area .navbar .navbar-nav .nav-item a:hover,
+.navbar-area .navbar .navbar-nav .nav-item a.active {
   color: var(--mainColor);
 }
 
@@ -420,7 +440,7 @@ Navbar Area CSS
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
-          box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-area .navbar .navbar-nav .nav-item .dropdown-menu li {
@@ -447,7 +467,7 @@ Navbar Area CSS
   top: 50%;
   right: 10px;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .navbar-area .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu {
@@ -540,7 +560,7 @@ Navbar Area CSS
 
 .navbar-area .navbar .navbar-nav .nav-item.megamenu .dropdown-menu .nav-item .nav-link img {
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   position: absolute;
   max-width: 36px;
   left: 19px;
@@ -549,7 +569,7 @@ Navbar Area CSS
 
 .navbar-area .navbar .navbar-nav .nav-item.megamenu .dropdown-menu .nav-item .nav-link i {
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   position: absolute;
   margin-top: -1px;
   font-size: 35px;
@@ -568,8 +588,9 @@ Navbar Area CSS
 .navbar-area .navbar .others-option .option-item {
   margin-left: 30px;
 }
-.width-select{
-width: 70% !important;
+
+.width-select {
+  width: 70% !important;
 }
 
 .navbar-area .navbar .others-option .option-item .login-btn {
@@ -587,13 +608,14 @@ width: 70% !important;
   font-size: 35px;
   left: -5px;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
-.whitout-arrow::before{
+.whitout-arrow::before {
   display: none !important;
 }
-.whitout-arrow{
+
+.whitout-arrow {
   font-size: 25px !important;
 }
 
@@ -617,7 +639,7 @@ width: 70% !important;
   border: none;
   cursor: pointer;
   -webkit-box-shadow: unset;
-          box-shadow: unset;
+  box-shadow: unset;
   color: var(--blackColor);
   background-position: right 0rem center;
   padding-top: 0;
@@ -644,7 +666,7 @@ width: 70% !important;
   font-size: 20px;
   left: -3px;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .navbar-area .navbar .others-option .option-item .register-btn:hover {
@@ -676,6 +698,7 @@ width: 70% !important;
     padding-top: 0px;
     padding-bottom: 0px;
   }
+
   .navbar-area.is-sticky {
     top: 0;
     left: 0;
@@ -684,36 +707,44 @@ width: 70% !important;
     position: fixed;
     background-color: var(--whiteColor) !important;
     -webkit-box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.09);
-            box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.09);
+    box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.09);
     -webkit-animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
-            animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
+    animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
   }
+
   .navbar-area .navbar {
     display: none;
   }
+
   .raimo-responsive-nav {
     display: block;
   }
+
   .raimo-responsive-nav .raimo-responsive-menu {
     position: relative;
   }
+
   .raimo-responsive-nav .raimo-responsive-menu.mean-container .mean-nav {
     margin-top: 58px;
     background-color: var(--whiteColor);
   }
+
   .raimo-responsive-nav .raimo-responsive-menu.mean-container .mean-nav ul {
     font-size: 15px;
     border: none !important;
   }
+
   .raimo-responsive-nav .raimo-responsive-menu.mean-container .mean-nav ul li a {
     border-top-color: #DBEEFD;
     color: var(--blackColor);
     text-transform: unset;
     font-weight: 600;
   }
+
   .raimo-responsive-nav .raimo-responsive-menu.mean-container .mean-nav ul li a i {
     display: none;
   }
+
   .raimo-responsive-nav .raimo-responsive-menu.mean-container .mean-nav ul li a.mean-expand {
     width: 50%;
     height: 28px;
@@ -723,22 +754,27 @@ width: 70% !important;
     border-left: none !important;
     border-bottom: none !important;
   }
+
   .raimo-responsive-nav .raimo-responsive-menu.mean-container .mean-nav ul li a.active {
     color: var(--mainColor);
   }
+
   .raimo-responsive-nav .raimo-responsive-menu.mean-container .mean-nav ul li li a {
     font-size: 14px;
   }
+
   .raimo-responsive-nav .raimo-responsive-menu.mean-container .mean-nav ul li.megamenu li a {
     padding-left: 75px;
   }
+
   .raimo-responsive-nav .raimo-responsive-menu.mean-container .mean-nav ul li.megamenu li a img {
     top: 50%;
     left: 29px;
     position: absolute;
     -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
+    transform: translateY(-50%);
   }
+
   .raimo-responsive-nav .raimo-responsive-menu.mean-container .mean-nav ul li.megamenu li a i {
     display: inline-block;
     font-size: 35px;
@@ -748,15 +784,17 @@ width: 70% !important;
     left: 29px;
     position: absolute;
     -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
+    transform: translateY(-50%);
   }
+
   .raimo-responsive-nav .raimo-responsive-menu.mean-container .navbar-nav {
     max-height: 70vh;
     overflow-y: scroll;
     overflow-x: hidden;
     -webkit-box-shadow: 0 7px 13px 0 rgba(0, 0, 0, 0.1);
-            box-shadow: 0 7px 13px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 7px 13px 0 rgba(0, 0, 0, 0.1);
   }
+
   .raimo-responsive-nav .mean-container a.meanmenu-reveal {
     top: 0;
     padding: 0;
@@ -765,6 +803,7 @@ width: 70% !important;
     padding-top: 9px;
     color: var(--blackColor);
   }
+
   .raimo-responsive-nav .mean-container a.meanmenu-reveal span {
     top: 8px;
     height: 4px;
@@ -773,29 +812,36 @@ width: 70% !important;
     position: relative;
     background: var(--blackColor);
   }
+
   .raimo-responsive-nav .mean-container .mean-bar {
     background: transparent;
     position: absolute;
     z-index: 999;
     padding: 0;
   }
+
   .raimo-responsive-nav .dropdown-toggle::after {
     display: none !important;
   }
+
   .raimo-responsive-nav .others-option {
     position: absolute;
     right: 55px;
     top: 9px;
   }
+
   .raimo-responsive-nav .others-option .option-item {
     margin-left: 7px;
   }
+
   .raimo-responsive-nav .others-option .option-item:first-child {
     margin-left: 0;
   }
+
   .raimo-responsive-nav .others-option .default-btn {
     display: none;
   }
+
   .raimo-responsive-nav .others-option .login-btn {
     top: 2px;
     font-size: 0;
@@ -803,17 +849,20 @@ width: 70% !important;
     display: inline-block;
     color: var(--mainColor);
   }
+
   .raimo-responsive-nav .others-option .login-btn i {
     font-size: 20px;
   }
+
   .raimo-responsive-nav .others-option .login-btn:hover {
     color: var(--blackColor);
   }
+
   .raimo-responsive-nav .others-option .form-select {
     border: none;
     cursor: pointer;
     -webkit-box-shadow: unset;
-            box-shadow: unset;
+    box-shadow: unset;
     color: var(--blackColor);
     background-size: 14px 10px;
     background-color: transparent;
@@ -826,9 +875,11 @@ width: 70% !important;
     font-size: 14px;
     font-weight: 600;
   }
+
   .raimo-responsive-nav .others-option .register-btn {
     display: none;
   }
+
   .raimo-responsive-nav .logo {
     position: relative;
     z-index: 999;
@@ -839,11 +890,12 @@ width: 70% !important;
 /*================================================
 Main Banner Area CSS
 =================================================*/
-.main-banner-image-landing span img{
+.main-banner-image-landing span img {
   max-height: 500px !important;
 }
 
-div.shape, div.shape span{
+div.shape,
+div.shape span {
   overflow: visible !important;
 }
 
@@ -852,10 +904,12 @@ div.shape, div.shape span{
   line-height: 1.4;
   font-size: 32px;
 }
+
 .main-banner-content-landing {
   position: relative;
   margin-left: 40px;
 }
+
 .main-banner-area-landing {
   background-color: #f9f9f9;
   position: relative;
@@ -883,6 +937,7 @@ div.shape, div.shape span{
   right: 15%;
   width: 100px;
 }
+
 .main-banner-area {
   background-color: #f9f9f9;
   position: relative;
@@ -977,7 +1032,7 @@ div.shape, div.shape span{
   left: 30px;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .main-banner-box .currency-selection .dropdown .dropdown-toggle::after {
@@ -990,7 +1045,7 @@ div.shape, div.shape span{
 
 .main-banner-box .currency-selection .dropdown .dropdown-toggle.show::before {
   -webkit-transform: translateY(-50%) rotate(180deg);
-          transform: translateY(-50%) rotate(180deg);
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .main-banner-box .currency-selection .dropdown .dropdown-menu {
@@ -998,11 +1053,11 @@ div.shape, div.shape span{
   display: block;
   width: 100%;
   -webkit-box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
-          box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
+  box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
   border-radius: 0;
   padding: 0;
   -webkit-transform: unset !important;
-          transform: unset !important;
+  transform: unset !important;
   overflow-x: hidden;
   border: none;
   background-color: var(--whiteColor);
@@ -1052,7 +1107,7 @@ div.shape, div.shape span{
   left: 0;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .main-banner-box .currency-selection .dropdown .dropdown-menu .dropdown-item:hover {
@@ -1144,7 +1199,7 @@ div.shape, div.shape span{
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   line-height: 1;
 }
 
@@ -1177,7 +1232,7 @@ div.shape, div.shape span{
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   line-height: 1;
 }
 
@@ -1231,7 +1286,7 @@ div.shape, div.shape span{
   width: 100%;
   position: absolute;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .banner-content h1 {
@@ -1302,7 +1357,7 @@ div.shape, div.shape span{
   left: 30px;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .banner-content .cryptocurrency-search-box .currency-selection .dropdown .dropdown-toggle::after {
@@ -1315,7 +1370,7 @@ div.shape, div.shape span{
 
 .banner-content .cryptocurrency-search-box .currency-selection .dropdown .dropdown-toggle.show::before {
   -webkit-transform: translateY(-50%) rotate(180deg);
-          transform: translateY(-50%) rotate(180deg);
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .banner-content .cryptocurrency-search-box .currency-selection .dropdown .dropdown-menu {
@@ -1323,11 +1378,11 @@ div.shape, div.shape span{
   display: block;
   width: 100%;
   -webkit-box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
-          box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
+  box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
   border-radius: 0;
   padding: 0;
   -webkit-transform: unset !important;
-          transform: unset !important;
+  transform: unset !important;
   border: none;
   background-color: var(--whiteColor);
   overflow-y: scroll;
@@ -1377,7 +1432,7 @@ div.shape, div.shape span{
   left: 0;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .banner-content .cryptocurrency-search-box .currency-selection .dropdown .dropdown-menu .dropdown-item:hover {
@@ -1424,7 +1479,7 @@ div.shape, div.shape span{
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   line-height: 1;
   left: 55px;
 }
@@ -1552,7 +1607,7 @@ div.shape, div.shape span{
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   right: 20px;
   font-size: 25px;
 }
@@ -1570,7 +1625,7 @@ div.shape, div.shape span{
 
 .shape1 img {
   -webkit-animation: moveleftbounce 5s linear infinite;
-          animation: moveleftbounce 5s linear infinite;
+  animation: moveleftbounce 5s linear infinite;
 }
 
 .shape2 {
@@ -1582,7 +1637,7 @@ div.shape, div.shape span{
 
 .shape2 img {
   -webkit-animation: movescale 3s linear infinite;
-          animation: movescale 3s linear infinite;
+  animation: movescale 3s linear infinite;
 }
 
 .shape3 {
@@ -1594,7 +1649,7 @@ div.shape, div.shape span{
 
 .shape3 img {
   -webkit-animation: movebounce 5s linear infinite;
-          animation: movebounce 5s linear infinite;
+  animation: movebounce 5s linear infinite;
 }
 
 .shape4 {
@@ -1658,7 +1713,7 @@ About Area CSS
   position: relative;
   border-radius: 5px;
   -ms-flex-item-align: center;
-      align-self: center;
+  align-self: center;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1667,8 +1722,8 @@ About Area CSS
 .history-timeline.timeline .timeline-event:nth-child(2n+1) {
   -webkit-box-orient: horizontal;
   -webkit-box-direction: reverse;
-      -ms-flex-direction: row-reverse;
-          flex-direction: row-reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
 }
 
 .history-timeline.timeline .timeline-event:nth-child(2n+1) .timeline-event-icon {
@@ -1720,11 +1775,11 @@ About Area CSS
   text-align: center;
   position: relative;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   border-radius: 5px 0 0 5px;
   background-color: var(--mainColor);
   background-position: center center;
@@ -1774,16 +1829,16 @@ About Area CSS
   padding: 40px;
   font-size: 35px;
   -ms-flex-item-align: center;
-      align-self: center;
+  align-self: center;
   position: relative;
   margin: 0 20px 0 0;
   border-radius: 100%;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   color: var(--whiteColor);
   background: var(--optionalColor);
 }
@@ -1798,7 +1853,7 @@ About Area CSS
   position: absolute;
   background: #eeeeee;
   -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
+  transform: translateX(-50%);
 }
 
 .history-timeline.timeline .timeline-event-icon:after {
@@ -1811,7 +1866,7 @@ About Area CSS
   position: absolute;
   background: #eeeeee;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 /*================================================
@@ -1834,7 +1889,7 @@ Funfacts Area CSS
   top: 50%;
   position: absolute;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   margin-left: auto;
   margin-right: auto;
 }
@@ -1865,7 +1920,7 @@ Funfacts Area CSS
   position: absolute;
   border-radius: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   background-color: var(--whiteColor);
   margin-left: auto;
   margin-right: auto;
@@ -2030,22 +2085,23 @@ Account Create Process Area CSS
 /*================================================
 box eventos listagem lista events
 =================================================*/
-.box-events{
+.box-events {
   max-width: 90%;
   margin-left: 5%;
   margin-bottom: 100px;
 }
-.card-events-home{
+
+.card-events-home {
   cursor: pointer;
   /* width: 23% !important;
   min-width: 23% !important; */
   /* margin-left: 1%;
   margin-right: 1%; */
   margin-bottom: 50px;
-  
+
 }
 
-.card-events-home span{
+.card-events-home span {
   padding-left: 10px;
   font-size: 20px;
   font-weight: 600;
@@ -2057,44 +2113,52 @@ box eventos listagem lista events
   display: -webkit-box;
   -webkit-line-clamp: 2;
 }
-.card-events-home div{
+
+.card-events-home div {
   display: flex;
   align-items: center;
   margin-top: 5px;
   padding-left: 10px;
 }
-.card-events-home label{
+
+.card-events-home label {
   font-size: 13px;
   letter-spacing: 0.18px;
   line-height: 1.33;
   text-transform: uppercase;
   color: rgb(255, 41, 72);
 }
-.legend-events{
+
+.legend-events {
   font-size: 14px !important;
   font-weight: 400 !important;
   margin-top: -5px !important;
 }
-.img-eventozz-buy-page-banner{
+
+.img-eventozz-buy-page-banner {
   height: 100% !important;
   width: 100% !important;
   position: absolute;
-    top: 0;
-    left: 0;
+  top: 0;
+  left: 0;
 }
-.dimension-automatic{
+
+.dimension-automatic {
   position: relative;
   padding-bottom: 56.25%;
   width: 100%;
 }
-.img-eventozz-buy-page{
+
+.img-eventozz-buy-page {
   height: 500px !important;
   max-width: 600px !important;
   border-radius: 20px;
 }
-.img-eventozz{
+
+.img-eventozz {
   height: 260px !important;
   width: 100%;
+  border-radius: 10px;
 }
 
 /*================================================
@@ -2106,6 +2170,7 @@ Cryptocurrency Platform Area CSS
   margin-top: 100px;
   margin-bottom: 100px;
 }
+
 .single-cryptocurrency-platform-box {
   margin-bottom: 30px;
   position: relative;
@@ -2121,7 +2186,7 @@ Cryptocurrency Platform Area CSS
   background-color: var(--mainColor);
   color: var(--whiteColor);
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .single-cryptocurrency-platform-box .content .icon {
@@ -2168,7 +2233,7 @@ Cryptocurrency Platform Area CSS
   margin-top: 1.5px;
   right: -5px;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .single-cryptocurrency-platform-box .content .link-btn:hover {
@@ -2224,7 +2289,7 @@ Cryptocurrency Platform Area CSS
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   max-width: 1230px;
   margin-top: 20px;
   margin-left: auto;
@@ -2233,8 +2298,8 @@ Cryptocurrency Platform Area CSS
 
 .cryptocurrency-platform-slides .owl-dots .owl-dot {
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 0%;
-          flex: 1 0 0%;
+  -ms-flex: 1 0 0%;
+  flex: 1 0 0%;
   width: 100%;
   max-width: 100%;
   display: block;
@@ -2253,7 +2318,8 @@ Cryptocurrency Platform Area CSS
   background-color: #d4d4d4;
 }
 
-.cryptocurrency-platform-slides .owl-dots .owl-dot:hover span, .cryptocurrency-platform-slides .owl-dots .owl-dot.active span {
+.cryptocurrency-platform-slides .owl-dots .owl-dot:hover span,
+.cryptocurrency-platform-slides .owl-dots .owl-dot.active span {
   background-color: var(--mainColor);
 }
 
@@ -2280,7 +2346,7 @@ Cryptocurrency Details Area CSS
   background-color: var(--whiteColor);
   border: 1px solid #eceff1;
   -webkit-box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
-          box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
+  box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
 }
 
 .cryptocurrency-details-header .cryptocurrency-market ul {
@@ -2314,7 +2380,7 @@ Cryptocurrency Details Area CSS
   background-color: var(--whiteColor);
   border: 1px solid #eceff1;
   -webkit-box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
-          box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
+  box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
 }
 
 .cryptocurrency-details-desc h3 {
@@ -2402,7 +2468,7 @@ Cryptocurrency Details Area CSS
   background-color: var(--whiteColor);
   border: 1px solid #eceff1;
   -webkit-box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
-          box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
+  box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
 }
 
 .cryptocurrency-top-stories h2 {
@@ -2420,7 +2486,7 @@ Cryptocurrency Details Area CSS
   background-color: var(--whiteColor);
   border: 1px solid #eceff1;
   -webkit-box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
-          box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
+  box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
 }
 
 .cryptocurrency-details-sidebar .buy-cryptocurrency .currency-selection {
@@ -2475,7 +2541,7 @@ Cryptocurrency Details Area CSS
   left: 20px;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .cryptocurrency-details-sidebar .buy-cryptocurrency .features-list {
@@ -2557,7 +2623,7 @@ Cryptocurrency Details Area CSS
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   line-height: 1;
 }
 
@@ -2573,7 +2639,7 @@ Cryptocurrency Details Area CSS
   background-color: var(--whiteColor);
   border: 1px solid #eceff1;
   -webkit-box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
-          box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
+  box-shadow: rgba(17, 51, 83, 0.05) 0px 4px 12px 0px;
 }
 
 .cryptocurrency-details-sidebar .trending-assets h3 {
@@ -2607,7 +2673,7 @@ Cryptocurrency Details Area CSS
   left: 0;
   position: absolute;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .cryptocurrency-details-sidebar .trending-assets ul li .title .name {
@@ -2696,7 +2762,7 @@ Value Trade Area CSS
 
 .single-value-trade-box p .trending i {
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   position: absolute;
   margin-top: -1.5px;
   font-size: 20px;
@@ -2833,7 +2899,7 @@ Best Seller Cryptocurrency Area CSS
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   max-width: 790px;
   margin-top: 10px;
   margin-left: auto;
@@ -2842,8 +2908,8 @@ Best Seller Cryptocurrency Area CSS
 
 .cryptocurrency-slides .owl-dots .owl-dot {
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 0%;
-          flex: 1 0 0%;
+  -ms-flex: 1 0 0%;
+  flex: 1 0 0%;
   width: 100%;
   max-width: 100%;
   display: block;
@@ -2862,7 +2928,8 @@ Best Seller Cryptocurrency Area CSS
   background-color: #D4D4D4;
 }
 
-.cryptocurrency-slides .owl-dots .owl-dot:hover span, .cryptocurrency-slides .owl-dots .owl-dot.active span {
+.cryptocurrency-slides .owl-dots .owl-dot:hover span,
+.cryptocurrency-slides .owl-dots .owl-dot.active span {
   background-color: var(--whiteColor);
 }
 
@@ -2945,7 +3012,7 @@ Best Seller Cryptocurrency Area CSS
 
 .single-cryptocurrency-item {
   -webkit-box-shadow: 0 7px 30px -10px rgba(133, 153, 162, 0.3);
-          box-shadow: 0 7px 30px -10px rgba(133, 153, 162, 0.3);
+  box-shadow: 0 7px 30px -10px rgba(133, 153, 162, 0.3);
   background-color: var(--whiteColor);
   margin-bottom: 30px;
   border-radius: 5px;
@@ -3170,7 +3237,7 @@ Feedback Area CSS
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   max-width: 1220px;
   margin-top: 20px;
   margin-left: auto;
@@ -3179,8 +3246,8 @@ Feedback Area CSS
 
 .feedback-slides .owl-dots .owl-dot {
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 0%;
-          flex: 1 0 0%;
+  -ms-flex: 1 0 0%;
+  flex: 1 0 0%;
   width: 100%;
   max-width: 100%;
   display: block;
@@ -3199,7 +3266,8 @@ Feedback Area CSS
   background-color: #d4d4d4;
 }
 
-.feedback-slides .owl-dots .owl-dot:hover span, .feedback-slides .owl-dots .owl-dot.active span {
+.feedback-slides .owl-dots .owl-dot:hover span,
+.feedback-slides .owl-dots .owl-dot.active span {
   background-color: var(--mainColor);
 }
 
@@ -3210,19 +3278,22 @@ Feedback Area CSS
 .feedback-slides .owl-dots .owl-dot:last-child {
   margin-right: 0;
 }
-.event-finish{
+
+.event-finish {
   text-align: center;
   margin-bottom: 100px;
   font-size: 40px;
   font-weight: 800;
 }
+
 /*================================================
 Tokens Area CSS
 =================================================*/
 .tokens-image {
   padding-right: 15px;
 }
-.tokens-image img{
+
+.tokens-image img {
   border-radius: 40px;
 }
 
@@ -3276,7 +3347,7 @@ Tokens Area CSS
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   right: -23px;
   margin-top: -18px;
   color: var(--paragraphColor);
@@ -3376,8 +3447,8 @@ Tokens Area CSS
   display: flex;
   margin-top: 25px;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .tokens-content .payment-methods img {
@@ -3498,7 +3569,8 @@ Portfolio Area CSS
   background-color: #bebebe;
 }
 
-.single-portfolio-item.color-white .content-slides .owl-dots .owl-dot:hover span, .single-portfolio-item.color-white .content-slides .owl-dots .owl-dot.active span {
+.single-portfolio-item.color-white .content-slides .owl-dots .owl-dot:hover span,
+.single-portfolio-item.color-white .content-slides .owl-dots .owl-dot.active span {
   background-color: var(--whiteColor);
 }
 
@@ -3544,7 +3616,7 @@ Portfolio Area CSS
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   max-width: 170px;
   margin-top: 0;
   margin-left: 30px;
@@ -3552,8 +3624,8 @@ Portfolio Area CSS
 
 .content-slides .owl-dots .owl-dot {
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 0%;
-          flex: 1 0 0%;
+  -ms-flex: 1 0 0%;
+  flex: 1 0 0%;
   width: 100%;
   max-width: 100%;
   display: block;
@@ -3572,7 +3644,8 @@ Portfolio Area CSS
   background-color: #d4d4d4;
 }
 
-.content-slides .owl-dots .owl-dot:hover span, .content-slides .owl-dots .owl-dot.active span {
+.content-slides .owl-dots .owl-dot:hover span,
+.content-slides .owl-dots .owl-dot.active span {
   background-color: var(--mainColor);
 }
 
@@ -3597,7 +3670,7 @@ Market Health Area CSS
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   padding-left: 0;
   list-style-type: none;
   background-color: #eeeeee;
@@ -3608,8 +3681,8 @@ Market Health Area CSS
 .market-health-list li {
   background-color: var(--whiteColor);
   -webkit-box-flex: 0;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
   width: 24.94%;
   padding: 30px;
 }
@@ -3629,7 +3702,7 @@ Market Health Area CSS
   left: 0;
   position: absolute;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .market-health-list li .title .name {
@@ -3687,7 +3760,7 @@ Features Area CSS
 
 .single-features-box:hover img {
   -webkit-transform: scale(0.9);
-          transform: scale(0.9);
+  transform: scale(0.9);
 }
 
 .features-box {
@@ -3701,7 +3774,7 @@ Features Area CSS
   position: relative;
   background-color: #ddf9fc;
   -webkit-animation: border-transform 10s linear infinite alternate forwards;
-          animation: border-transform 10s linear infinite alternate forwards;
+  animation: border-transform 10s linear infinite alternate forwards;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
@@ -3713,7 +3786,7 @@ Features Area CSS
   top: 50%;
   position: absolute;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   margin-left: auto;
   margin-right: auto;
 }
@@ -3823,7 +3896,7 @@ App Download Area CSS
 
 .app-download-image img {
   -webkit-animation: movebounce 7s linear infinite;
-          animation: movebounce 7s linear infinite;
+  animation: movebounce 7s linear infinite;
 }
 
 .app-download-content {
@@ -3852,7 +3925,7 @@ App Download Area CSS
   color: var(--blackColor);
   background-color: var(--whiteColor);
   -webkit-box-shadow: 0 7px 18px 0 rgba(107, 124, 147, 0.15);
-          box-shadow: 0 7px 18px 0 rgba(107, 124, 147, 0.15);
+  box-shadow: 0 7px 18px 0 rgba(107, 124, 147, 0.15);
   font-size: 14px;
   font-weight: 500;
   padding-top: 12px;
@@ -3869,7 +3942,7 @@ App Download Area CSS
 
 .app-download-content .btn-box .playstore-btn img {
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   position: absolute;
   left: 20px;
   top: 50%;
@@ -3878,7 +3951,7 @@ App Download Area CSS
 .app-download-content .btn-box .playstore-btn:hover {
   background-color: var(--blackColor);
   -webkit-transform: translateY(-3px);
-          transform: translateY(-3px);
+  transform: translateY(-3px);
   color: var(--whiteColor);
 }
 
@@ -3889,7 +3962,7 @@ App Download Area CSS
   color: var(--blackColor);
   background-color: var(--whiteColor);
   -webkit-box-shadow: 0 7px 18px 0 rgba(107, 124, 147, 0.15);
-          box-shadow: 0 7px 18px 0 rgba(107, 124, 147, 0.15);
+  box-shadow: 0 7px 18px 0 rgba(107, 124, 147, 0.15);
   font-size: 14px;
   font-weight: 500;
   padding-top: 12px;
@@ -3906,7 +3979,7 @@ App Download Area CSS
 
 .app-download-content .btn-box .applestore-btn img {
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   position: absolute;
   left: 20px;
   top: 50%;
@@ -3915,113 +3988,137 @@ App Download Area CSS
 .app-download-content .btn-box .applestore-btn:hover {
   background-color: var(--blackColor);
   -webkit-transform: translateY(-3px);
-          transform: translateY(-3px);
+  transform: translateY(-3px);
   color: var(--whiteColor);
 }
 
 @-webkit-keyframes movebounce {
   0% {
     -webkit-transform: translateY(0px);
-            transform: translateY(0px);
+    transform: translateY(0px);
   }
+
   50% {
     -webkit-transform: translateY(20px);
-            transform: translateY(20px);
+    transform: translateY(20px);
   }
+
   100% {
     -webkit-transform: translateY(0px);
-            transform: translateY(0px);
+    transform: translateY(0px);
   }
 }
 
 @keyframes movebounce {
   0% {
     -webkit-transform: translateY(0px);
-            transform: translateY(0px);
+    transform: translateY(0px);
   }
+
   50% {
     -webkit-transform: translateY(20px);
-            transform: translateY(20px);
+    transform: translateY(20px);
   }
+
   100% {
     -webkit-transform: translateY(0px);
-            transform: translateY(0px);
+    transform: translateY(0px);
   }
 }
 
 @-webkit-keyframes moveleftbounce {
   0% {
     -webkit-transform: translateX(0px);
-            transform: translateX(0px);
+    transform: translateX(0px);
   }
+
   50% {
     -webkit-transform: translateX(20px);
-            transform: translateX(20px);
+    transform: translateX(20px);
   }
+
   100% {
     -webkit-transform: translateX(0px);
-            transform: translateX(0px);
+    transform: translateX(0px);
   }
 }
 
 @keyframes moveleftbounce {
   0% {
     -webkit-transform: translateX(0px);
-            transform: translateX(0px);
+    transform: translateX(0px);
   }
+
   50% {
     -webkit-transform: translateX(20px);
-            transform: translateX(20px);
+    transform: translateX(20px);
   }
+
   100% {
     -webkit-transform: translateX(0px);
-            transform: translateX(0px);
+    transform: translateX(0px);
   }
 }
 
 @-webkit-keyframes border-transform {
-  0%, 100% {
+
+  0%,
+  100% {
     border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
   }
+
   14% {
     border-radius: 40% 60% 54% 46% / 49% 60% 40% 51%;
   }
+
   28% {
     border-radius: 54% 46% 38% 62% / 49% 70% 30% 51%;
   }
+
   42% {
     border-radius: 61% 39% 55% 45% / 61% 38% 62% 39%;
   }
+
   56% {
     border-radius: 61% 39% 67% 33% / 70% 50% 50% 30%;
   }
+
   70% {
     border-radius: 50% 50% 34% 66% / 56% 68% 32% 44%;
   }
+
   84% {
     border-radius: 46% 54% 50% 50% / 35% 61% 39% 65%;
   }
 }
 
 @keyframes border-transform {
-  0%, 100% {
+
+  0%,
+  100% {
     border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
   }
+
   14% {
     border-radius: 40% 60% 54% 46% / 49% 60% 40% 51%;
   }
+
   28% {
     border-radius: 54% 46% 38% 62% / 49% 70% 30% 51%;
   }
+
   42% {
     border-radius: 61% 39% 55% 45% / 61% 38% 62% 39%;
   }
+
   56% {
     border-radius: 61% 39% 67% 33% / 70% 50% 50% 30%;
   }
+
   70% {
     border-radius: 50% 50% 34% 66% / 56% 68% 32% 44%;
   }
+
   84% {
     border-radius: 46% 54% 50% 50% / 35% 61% 39% 65%;
   }
@@ -4030,52 +4127,58 @@ App Download Area CSS
 @-webkit-keyframes rotate3d {
   0% {
     -webkit-transform: rotateY(0deg);
-            transform: rotateY(0deg);
+    transform: rotateY(0deg);
   }
+
   100% {
     -webkit-transform: rotateY(360deg);
-            transform: rotateY(360deg);
+    transform: rotateY(360deg);
   }
 }
 
 @keyframes rotate3d {
   0% {
     -webkit-transform: rotateY(0deg);
-            transform: rotateY(0deg);
+    transform: rotateY(0deg);
   }
+
   100% {
     -webkit-transform: rotateY(360deg);
-            transform: rotateY(360deg);
+    transform: rotateY(360deg);
   }
 }
 
 @-webkit-keyframes movescale {
   0% {
     -webkit-transform: scale(0.6);
-            transform: scale(0.6);
+    transform: scale(0.6);
   }
+
   50% {
     -webkit-transform: scale(0.8);
-            transform: scale(0.8);
+    transform: scale(0.8);
   }
+
   100% {
     -webkit-transform: scale(0.6);
-            transform: scale(0.6);
+    transform: scale(0.6);
   }
 }
 
 @keyframes movescale {
   0% {
     -webkit-transform: scale(0.6);
-            transform: scale(0.6);
+    transform: scale(0.6);
   }
+
   50% {
     -webkit-transform: scale(0.8);
-            transform: scale(0.8);
+    transform: scale(0.8);
   }
+
   100% {
     -webkit-transform: scale(0.6);
-            transform: scale(0.6);
+    transform: scale(0.6);
   }
 }
 
@@ -4132,7 +4235,7 @@ Wallet Area CSS
   left: 0;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -4161,7 +4264,7 @@ Wallet Area CSS
   border-radius: 5px;
   background-color: var(--whiteColor);
   -webkit-box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.09);
-          box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.09);
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.09);
 }
 
 .wallet-tabs .tab-pane .box h3 {
@@ -4240,7 +4343,7 @@ Advisor Area CSS
 
 .single-advisor-box:hover .image img {
   -webkit-transform: scale(1.2);
-          transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 /*================================================
@@ -4280,7 +4383,7 @@ Account Register Area CSS
 
 .shape6 img {
   -webkit-animation: moveleftbounce 5s linear infinite;
-          animation: moveleftbounce 5s linear infinite;
+  animation: moveleftbounce 5s linear infinite;
 }
 
 .shape7 {
@@ -4292,7 +4395,7 @@ Account Register Area CSS
 
 .shape7 img {
   -webkit-animation: rotate3d 4s linear infinite;
-          animation: rotate3d 4s linear infinite;
+  animation: rotate3d 4s linear infinite;
 }
 
 .shape8 {
@@ -4304,7 +4407,7 @@ Account Register Area CSS
 
 .shape8 img {
   -webkit-animation: movescale 3s linear infinite;
-          animation: movescale 3s linear infinite;
+  animation: movescale 3s linear infinite;
 }
 
 .shape9 {
@@ -4316,7 +4419,7 @@ Account Register Area CSS
 
 .shape9 img {
   -webkit-animation: moveleftbounce 5s linear infinite;
-          animation: moveleftbounce 5s linear infinite;
+  animation: moveleftbounce 5s linear infinite;
 }
 
 .shape10 {
@@ -4340,7 +4443,7 @@ Account Register Area CSS
 
 .shape11 img {
   -webkit-animation: moveleftbounce 5s linear infinite;
-          animation: moveleftbounce 5s linear infinite;
+  animation: moveleftbounce 5s linear infinite;
 }
 
 .shape12 {
@@ -4353,7 +4456,7 @@ Account Register Area CSS
 
 .shape12 img {
   -webkit-animation: movebounce 5s linear infinite;
-          animation: movebounce 5s linear infinite;
+  animation: movebounce 5s linear infinite;
 }
 
 .shape13 {
@@ -4375,29 +4478,31 @@ Account Register Area CSS
   top: 50%;
   z-index: -1;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   text-align: center;
 }
 
 @-webkit-keyframes rotateme {
   from {
     -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
+
   to {
     -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
 @keyframes rotateme {
   from {
     -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
+
   to {
     -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
@@ -4505,7 +4610,7 @@ Reigster Area CSS
   margin: auto;
   background-color: var(--blackColor);
   -webkit-animation: border-transform 10s linear infinite alternate forwards;
-          animation: border-transform 10s linear infinite alternate forwards;
+  animation: border-transform 10s linear infinite alternate forwards;
 }
 
 .shape15 {
@@ -4516,24 +4621,32 @@ Reigster Area CSS
 }
 
 @keyframes border-transform {
-  0%, 100% {
+
+  0%,
+  100% {
     border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
   }
+
   14% {
     border-radius: 40% 60% 54% 46% / 49% 60% 40% 51%;
   }
+
   28% {
     border-radius: 54% 46% 38% 62% / 49% 70% 30% 51%;
   }
+
   42% {
     border-radius: 61% 39% 55% 45% / 61% 38% 62% 39%;
   }
+
   56% {
     border-radius: 61% 39% 67% 33% / 70% 50% 50% 30%;
   }
+
   70% {
     border-radius: 50% 50% 34% 66% / 56% 68% 32% 44%;
   }
+
   84% {
     border-radius: 46% 54% 50% 50% / 35% 61% 39% 65%;
   }
@@ -4713,8 +4826,8 @@ Data Table Area CSS
   display: flex;
   padding: 0;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .cryptocurrency-data-table .dataTables_wrapper .dataTables_paginate span {
@@ -4730,7 +4843,7 @@ Data Table Area CSS
   background: transparent;
   border-color: transparent;
   -webkit-box-shadow: unset !important;
-          box-shadow: unset !important;
+  box-shadow: unset !important;
   padding: 0;
   border-radius: 50%;
   transition: var(--transition);
@@ -4786,7 +4899,7 @@ Data Table Area CSS
   right: 0;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .cryptocurrency-data-table .dataTables_wrapper .dataTables_paginate .paginate_button.next {
@@ -4822,7 +4935,7 @@ Data Table Area CSS
   right: 0;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 /*================================================
@@ -4859,11 +4972,11 @@ Earn Money Area CSS
   text-align: center;
   font-size: 26px;
   -webkit-box-shadow: rgba(218, 225, 233, 0.4) 0px 8px 16px;
-          box-shadow: rgba(218, 225, 233, 0.4) 0px 8px 16px;
+  box-shadow: rgba(218, 225, 233, 0.4) 0px 8px 16px;
   top: 50%;
   color: var(--mainColor);
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   background-color: var(--whiteColor);
   border-radius: 50%;
   line-height: 50px;
@@ -4943,11 +5056,11 @@ Page Title Area CSS
   display: block;
   position: absolute;
   -webkit-animation: run 7s 0s infinite;
-          animation: run 7s 0s infinite;
+  animation: run 7s 0s infinite;
   -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
   -webkit-animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
-          animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
+  animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), color-stop(75%, var(--whiteColor)), to(var(--whiteColor)));
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, var(--whiteColor) 75%, var(--whiteColor) 100%);
 }
@@ -4958,7 +5071,7 @@ Page Title Area CSS
 
 .lines .line:nth-child(1)::after {
   -webkit-animation-delay: 2s;
-          animation-delay: 2s;
+  animation-delay: 2s;
 }
 
 .lines .line:nth-child(3) {
@@ -4967,7 +5080,7 @@ Page Title Area CSS
 
 .lines .line:nth-child(3)::after {
   -webkit-animation-delay: 2.5s;
-          animation-delay: 2.5s;
+  animation-delay: 2.5s;
 }
 
 .lines .line:nth-child(4) {
@@ -4976,7 +5089,7 @@ Page Title Area CSS
 
 .lines .line:nth-child(4)::after {
   -webkit-animation-delay: 3s;
-          animation-delay: 3s;
+  animation-delay: 3s;
 }
 
 .lines .line:nth-child(5) {
@@ -4985,13 +5098,14 @@ Page Title Area CSS
 
 .lines .line:nth-child(5)::after {
   -webkit-animation-delay: 3.5s;
-          animation-delay: 3.5s;
+  animation-delay: 3.5s;
 }
 
 @-webkit-keyframes run {
   0% {
     top: -50%;
   }
+
   100% {
     top: 110%;
   }
@@ -5001,6 +5115,7 @@ Page Title Area CSS
   0% {
     top: -50%;
   }
+
   100% {
     top: 110%;
   }
@@ -5053,7 +5168,7 @@ Buy Cryptocurrency Area CSS
   font-size: 20px;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   margin-top: 1px;
 }
 
@@ -5124,7 +5239,7 @@ Buy Cryptocurrency Area CSS
   left: 30px;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .buy-cryptocurrency-box .currency-selection .dropdown .dropdown-toggle::after {
@@ -5140,7 +5255,7 @@ Buy Cryptocurrency Area CSS
   transition: var(--transition);
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   font-weight: normal;
   font-family: 'boxicons';
   font-size: 30px;
@@ -5152,7 +5267,7 @@ Buy Cryptocurrency Area CSS
 
 .buy-cryptocurrency-box .currency-selection .dropdown .dropdown-toggle.show::before {
   -webkit-transform: translateY(-50%) rotate(180deg);
-          transform: translateY(-50%) rotate(180deg);
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .buy-cryptocurrency-box .currency-selection .dropdown .dropdown-menu {
@@ -5160,11 +5275,11 @@ Buy Cryptocurrency Area CSS
   display: block;
   width: 100%;
   -webkit-box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
-          box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
+  box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
   border-radius: 0;
   padding: 0;
   -webkit-transform: unset !important;
-          transform: unset !important;
+  transform: unset !important;
   overflow-x: hidden;
   border: none;
   background-color: var(--whiteColor);
@@ -5214,7 +5329,7 @@ Buy Cryptocurrency Area CSS
   left: 0;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .buy-cryptocurrency-box .currency-selection .dropdown .dropdown-menu .dropdown-item:hover {
@@ -5306,7 +5421,7 @@ Buy Cryptocurrency Area CSS
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   line-height: 1;
 }
 
@@ -5362,7 +5477,7 @@ Sell Cryptocurrency Area CSS
   font-size: 20px;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   margin-top: 1px;
 }
 
@@ -5372,7 +5487,7 @@ Sell Cryptocurrency Area CSS
   border-radius: 10px;
   background-color: var(--whiteColor);
   -webkit-box-shadow: 0 6px 12px 0 rgba(36, 58, 120, 0.08);
-          box-shadow: 0 6px 12px 0 rgba(36, 58, 120, 0.08);
+  box-shadow: 0 6px 12px 0 rgba(36, 58, 120, 0.08);
 }
 
 .sell-cryptocurrency-box .currency-selection {
@@ -5431,7 +5546,7 @@ Sell Cryptocurrency Area CSS
   left: 30px;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .sell-cryptocurrency-box .currency-selection .dropdown .dropdown-toggle::after {
@@ -5444,7 +5559,7 @@ Sell Cryptocurrency Area CSS
 
 .sell-cryptocurrency-box .currency-selection .dropdown .dropdown-toggle.show::before {
   -webkit-transform: translateY(-50%) rotate(180deg);
-          transform: translateY(-50%) rotate(180deg);
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .sell-cryptocurrency-box .currency-selection .dropdown .dropdown-menu {
@@ -5452,11 +5567,11 @@ Sell Cryptocurrency Area CSS
   display: block;
   width: 100%;
   -webkit-box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
-          box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
+  box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
   border-radius: 0;
   padding: 0;
   -webkit-transform: unset !important;
-          transform: unset !important;
+  transform: unset !important;
   overflow-x: hidden;
   border: none;
   background-color: var(--whiteColor);
@@ -5506,7 +5621,7 @@ Sell Cryptocurrency Area CSS
   left: 0;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .sell-cryptocurrency-box .currency-selection .dropdown .dropdown-menu .dropdown-item:hover {
@@ -5598,7 +5713,7 @@ Sell Cryptocurrency Area CSS
   position: absolute;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   line-height: 1;
 }
 
@@ -5654,7 +5769,7 @@ Trade Cryptocurrency Area CSS
   font-size: 20px;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   margin-top: 1px;
 }
 
@@ -5670,38 +5785,43 @@ Trade Cryptocurrency Area CSS
   min-height: 400px;
   position: relative;
 }
-.box-button-landing{
-display: flex;
+
+.box-button-landing {
+  display: flex;
 }
-.box-button-landing button{
+
+.box-button-landing button {
   width: 48% !important;
   margin-left: 1% !important;
   margin-right: 1% !important;
- }
+}
+
 .currency-selection {
   margin-bottom: 5px;
 }
-.box-ticket-buy img{
-  max-height:50px;
+
+.box-ticket-buy img {
+  max-height: 50px;
   margin-right: 30px;
 }
-.box-ticket-buy{
+
+.box-ticket-buy {
   display: flex;
   align-items: center;
-    border: none;
-    margin-top: 0;
-    height: 70px;
-    -webkit-transition: var(--transition);
-    transition: var(--transition);
-    position: relative;
-    color: var(--blackColor);
-    cursor: pointer;
-    border-radius: 0 5px 5px 0;
-    background-color: #eeeeee;
-    padding: 0 50px 0 50px;
-    font-family: var(--fontFamily2);
-    font-weight: 600;
-    font-size: 17px;
+  border: none;
+  margin-top: 0;
+  height: 70px;
+  -webkit-transition: var(--transition);
+  transition: var(--transition);
+  position: relative;
+  color: var(--blackColor);
+  cursor: pointer;
+  border-radius: 0 5px 5px 0;
+  background-color: #eeeeee;
+  padding: 0 50px 0 50px;
+  font-family: var(--fontFamily2);
+  font-weight: 600;
+  font-size: 17px;
 }
 
 .trade-cryptocurrency-box .currency-selection {
@@ -5760,7 +5880,7 @@ display: flex;
   left: 30px;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .trade-cryptocurrency-box .currency-selection .dropdown .dropdown-toggle::after {
@@ -5773,7 +5893,7 @@ display: flex;
 
 .trade-cryptocurrency-box .currency-selection .dropdown .dropdown-toggle.show::before {
   -webkit-transform: translateY(-50%) rotate(180deg);
-          transform: translateY(-50%) rotate(180deg);
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .trade-cryptocurrency-box .currency-selection .dropdown .dropdown-menu {
@@ -5781,11 +5901,11 @@ display: flex;
   display: block;
   width: 100%;
   -webkit-box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
-          box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
+  box-shadow: 5px 5px 70px rgba(0, 0, 0, 0.15);
   border-radius: 0;
   padding: 0;
   -webkit-transform: unset !important;
-          transform: unset !important;
+  transform: unset !important;
   overflow-x: hidden;
   border: none;
   background-color: var(--whiteColor);
@@ -5835,7 +5955,7 @@ display: flex;
   left: 0;
   top: 50%;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .trade-cryptocurrency-box .currency-selection .dropdown .dropdown-menu .dropdown-item:hover {
@@ -5946,10 +6066,11 @@ Profile Authentication Area CSS
   /* margin-bottom:200px */
   padding-top: 50px;
 }
-    
-.back-icon{
+
+.back-icon {
   background-color: linear-gradient(0deg, #0062ff, #081587) !important;
 }
+
 .profile-authentication-area .back-icon {
   position: absolute;
   right: 20px;
@@ -5987,7 +6108,7 @@ Profile Authentication Area CSS
 .login-form form .remember-me-wrap .form-check .form-check-input[type=checkbox] {
   border-radius: 0;
   -webkit-box-shadow: unset;
-          box-shadow: unset;
+  box-shadow: unset;
 }
 
 .login-form form .remember-me-wrap .form-check .form-check-input:checked {
@@ -6096,22 +6217,22 @@ Profile Authentication Area CSS
   margin-top: 2px;
 }
 
-.login-with-google{
-    width: 100%;
-    margin-top: 20px !important;
-    justify-content: center !important;
-    display: block;
-    color: #248BD2 !important;
-    border-radius: 5px !important;
-    border: 1px solid #D2D2D2 !important;
-    background-color: transparent !important;
-    -webkit-transition: var(--transition) !important;
-    transition: var(--transition) !important;
-    padding-top: 5px !important;
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-    padding-bottom: 5px !important;
-    cursor: pointer;
+.login-with-google {
+  width: 100%;
+  margin-top: 20px !important;
+  justify-content: center !important;
+  display: block;
+  color: #248BD2 !important;
+  border-radius: 5px !important;
+  border: 1px solid #D2D2D2 !important;
+  background-color: transparent !important;
+  -webkit-transition: var(--transition) !important;
+  transition: var(--transition) !important;
+  padding-top: 5px !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+  padding-bottom: 5px !important;
+  cursor: pointer;
 }
 
 .login-form .login-with-button button:hover {
@@ -6135,7 +6256,7 @@ Profile Authentication Area CSS
   margin-bottom: 20px;
 }
 
-.create-account{
+.create-account {
   width: 48% !important;
   margin-left: 1% !important;
   margin-right: 1% !important;
@@ -6210,7 +6331,7 @@ Payment Method Area CSS
   display: inline-block;
   background-color: var(--whiteColor);
   -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
   margin-left: 5px;
   margin-right: 5px;
 }
@@ -6219,7 +6340,7 @@ Payment Method Area CSS
 Blog Area CSS
 =================================================*/
 .single-blog-post {
-  cursor:pointer ;
+  cursor: pointer;
 
   margin-bottom: 50px;
 }
@@ -6229,6 +6350,8 @@ Blog Area CSS
   position: relative;
   border-radius: 5px;
   overflow: hidden;
+  max-height: 200px;
+
 }
 
 .single-blog-post .post-image img {
@@ -6242,11 +6365,13 @@ Blog Area CSS
   left: 15px;
   top: 15px;
 }
-.open-button{
+
+.open-button {
   color: var(--optionalColor) !important;
 }
-.close-button{
-  color:#dc3545 !important;
+
+.close-button {
+  color: #dc3545 !important;
 }
 
 
@@ -6330,7 +6455,7 @@ Blog Area CSS
 
 .single-blog-post:hover .post-image img {
   -webkit-transform: scale(1.05);
-          transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .single-blog-post:hover .post-content h3 a {
@@ -6403,7 +6528,7 @@ Blog Details Area CSS
 .blog-details-header .image img {
   border-radius: 5px;
   -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
-          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
 }
 
 .blog-details-desc {
@@ -6554,7 +6679,7 @@ Blog Details Area CSS
   list-style-type: none;
   padding-left: 0;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -6566,8 +6691,8 @@ Blog Details Area CSS
 
 .blog-details-desc .article-content .wp-block-gallery.columns-3 li {
   -webkit-box-flex: 0;
-      -ms-flex: 0 0 33.3333%;
-          flex: 0 0 33.3333%;
+  -ms-flex: 0 0 33.3333%;
+  flex: 0 0 33.3333%;
   max-width: 33.3333%;
   margin-bottom: 0;
   padding-right: 10px;
@@ -6627,7 +6752,7 @@ Blog Details Area CSS
 .blog-details-desc .comment-respond .comment-form .form-check .form-check-input[type=checkbox] {
   border-radius: 0;
   -webkit-box-shadow: unset !important;
-          box-shadow: unset !important;
+  box-shadow: unset !important;
 }
 
 .blog-details-desc .comment-respond .comment-form .form-check .form-check-input[type=checkbox]:checked {
@@ -6639,7 +6764,8 @@ Blog Details Area CSS
   margin-top: 10px;
 }
 
-blockquote, .blockquote {
+blockquote,
+.blockquote {
   overflow: hidden;
   background-color: #fafafa;
   padding: 40px 50px !important;
@@ -6647,7 +6773,8 @@ blockquote, .blockquote {
   margin-top: 30px;
 }
 
-blockquote p, .blockquote p {
+blockquote p,
+.blockquote p {
   line-height: 1.7;
   margin-bottom: 0;
   color: var(--blackColor);
@@ -6656,14 +6783,16 @@ blockquote p, .blockquote p {
   font-size: 20px !important;
 }
 
-blockquote cite, .blockquote cite {
+blockquote cite,
+.blockquote cite {
   padding-left: 30px;
   position: relative;
   font-weight: 600;
   font-family: var(--fontFamily2);
 }
 
-blockquote cite::before, .blockquote cite::before {
+blockquote cite::before,
+.blockquote cite::before {
   left: 0;
   top: 50%;
   width: 20px;
@@ -6671,7 +6800,7 @@ blockquote cite::before, .blockquote cite::before {
   content: '';
   position: absolute;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   background-color: var(--mainColor);
 }
 
@@ -6866,7 +6995,7 @@ FAQ Area CSS
 
 .faq-accordion .nav-tabs .nav-item .nav-link {
   -webkit-box-shadow: 2px 8px 20px 0 rgba(25, 42, 70, 0.13);
-          box-shadow: 2px 8px 20px 0 rgba(25, 42, 70, 0.13);
+  box-shadow: 2px 8px 20px 0 rgba(25, 42, 70, 0.13);
   background-color: var(--whiteColor);
   padding: 20px 25px;
   margin-bottom: 0;
@@ -6885,7 +7014,8 @@ FAQ Area CSS
   margin-bottom: 10px;
 }
 
-.faq-accordion .nav-tabs .nav-item .nav-link.active, .faq-accordion .nav-tabs .nav-item .nav-link:hover {
+.faq-accordion .nav-tabs .nav-item .nav-link.active,
+.faq-accordion .nav-tabs .nav-item .nav-link:hover {
   background-color: var(--mainColor);
   color: var(--whiteColor);
 }
@@ -6896,7 +7026,7 @@ FAQ Area CSS
   display: block;
   border-radius: 0;
   -webkit-box-shadow: unset;
-          box-shadow: unset;
+  box-shadow: unset;
   text-align: start;
   position: relative;
   color: var(--blackColor);
@@ -6994,8 +7124,8 @@ Pagination CSS
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .pagination-area .page-numbers {
@@ -7013,7 +7143,7 @@ Pagination CSS
   background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#eaeef3));
   background: linear-gradient(180deg, #ffffff 0%, #eaeef3 100%);
   -webkit-box-shadow: 0 5px 15px 0 rgba(107, 124, 147, 0.15), 0 2px 4px 0 rgba(107, 124, 147, 0.2), inset 0 -2px 0 0 #c2cfde;
-          box-shadow: 0 5px 15px 0 rgba(107, 124, 147, 0.15), 0 2px 4px 0 rgba(107, 124, 147, 0.2), inset 0 -2px 0 0 #c2cfde;
+  box-shadow: 0 5px 15px 0 rgba(107, 124, 147, 0.15), 0 2px 4px 0 rgba(107, 124, 147, 0.2), inset 0 -2px 0 0 #c2cfde;
   font-size: 16px;
   font-weight: 700;
   margin-left: 5px;
@@ -7062,11 +7192,11 @@ Contact Area CSS
   display: flex;
   padding-left: 0;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   list-style-type: none;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   margin-bottom: 0;
   margin-top: 25px;
   margin-left: -10px;
@@ -7077,8 +7207,8 @@ Contact Area CSS
   margin-bottom: 30px;
   width: 50%;
   -webkit-box-flex: 0;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -7093,7 +7223,7 @@ Contact Area CSS
   transition: var(--transition);
   background-color: var(--whiteColor);
   -webkit-box-shadow: 0 7px 18px 0 rgba(107, 124, 147, 0.1);
-          box-shadow: 0 7px 18px 0 rgba(107, 124, 147, 0.1);
+  box-shadow: 0 7px 18px 0 rgba(107, 124, 147, 0.1);
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
@@ -7151,13 +7281,13 @@ Contact Area CSS
   top: 50%;
   position: absolute;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .contact-info .social-links li a:hover {
   background-color: var(--mainColor);
   -webkit-transform: translateY(-2px);
-          transform: translateY(-2px);
+  transform: translateY(-2px);
   color: var(--whiteColor);
 }
 
@@ -7240,7 +7370,7 @@ Contact Area CSS
 .contact-form .form-check .form-check-input[type=checkbox] {
   border-radius: 0;
   -webkit-box-shadow: unset !important;
-          box-shadow: unset !important;
+  box-shadow: unset !important;
 }
 
 .contact-form .form-check .form-check-input[type=checkbox]:checked {
@@ -7390,7 +7520,7 @@ Footer Area CSS
   font-size: 18px;
   position: absolute;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .single-footer-widget .newsletter-form form button:hover {
@@ -7438,13 +7568,13 @@ Footer Area CSS
   top: 50%;
   position: absolute;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .single-footer-widget .social-links li a:hover {
   background-color: var(--mainColor);
   -webkit-transform: translateY(-2px);
-          transform: translateY(-2px);
+  transform: translateY(-2px);
   color: var(--whiteColor);
 }
 
@@ -7584,7 +7714,7 @@ Go Top CSS
   transition: var(--transition);
   background-color: var(--whiteColor);
   -webkit-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
-          box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
 }
 
 .go-top i {
@@ -7594,7 +7724,7 @@ Go Top CSS
   text-align: center;
   position: absolute;
   -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   margin-left: auto;
   margin-right: auto;
 }
@@ -7607,7 +7737,7 @@ Go Top CSS
 
 .go-top:hover {
   -webkit-transform: translateY(-10px);
-          transform: translateY(-10px);
+  transform: translateY(-10px);
 }
 
 .bx.bx-chevron-down {
@@ -7643,9 +7773,9 @@ Go Top CSS
   font-weight: 700;
 }
 
-.crypto-image img{
-border-radius: 10px;
-width: 100px;
+.crypto-image img {
+  border-radius: 10px;
+  width: 100px;
 }
 
 .price-filter {
@@ -7653,23 +7783,27 @@ width: 100px;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
-.box-button{
+
+.box-button {
   display: flex;
 }
+
 .price-select {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
-.box-ticket{
+
+.box-ticket {
   margin-bottom: 25px;
 }
+
 .dropdown-menu .coin-wrapper {
   width: 30%;
   display: -webkit-box;
@@ -7677,18 +7811,20 @@ width: 100px;
   display: flex;
   cursor: pointer;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
-.bx-check-double{
-  color: #198754 !important;  
+
+.bx-check-double {
+  color: #198754 !important;
 }
-.bx-message-square-x{
+
+.bx-message-square-x {
   color: red !important;
 }
 
 
-.bx-loader-circle{
+.bx-loader-circle {
   color: #ffc107 !important;
 }
 
@@ -7720,8 +7856,8 @@ width: 100px;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
 }
 
 .pagination ul {
@@ -7748,11 +7884,11 @@ width: 100px;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   margin-top: 20px;
 }
 
@@ -7761,8 +7897,8 @@ width: 100px;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .cryptocurrency-table table {
@@ -7824,10 +7960,11 @@ width: 100px;
 .global-cursor {
   cursor: pointer;
 }
+
 /*# sourceMappingURL=style.css.map */
 
 
-.box-ticket{
+.box-ticket {
   padding: 40px 20px;
   background: #fff;
   text-align: center;
@@ -7838,69 +7975,71 @@ width: 100px;
   transition: 0.3s;
 }
 
-.price-box-ticket{
+.price-box-ticket {
   font-size: 36px;
   color: #444444;
   font-weight: 600;
 }
 
-.box-ticket h3{
+.box-ticket h3 {
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 15px;
   color: #001d4a;
 }
 
-.box-ticket.animate{
+.box-ticket.animate {
   transition: transform 0.5s;
 }
 
 .box-ticket.animate:hover {
-  -ms-transform: scale(1.1); /* IE 9 */
-  -webkit-transform: scale(1.1); /* Safari 3-8 */
-  transform: scale(1.1); 
+  -ms-transform: scale(1.1);
+  /* IE 9 */
+  -webkit-transform: scale(1.1);
+  /* Safari 3-8 */
+  transform: scale(1.1);
 }
 
-.box-tickets-total-value-title{
+.box-tickets-total-value-title {
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 0;
   color: #001d4a;
 }
 
-.box-tickets-total-value-text{
+.box-tickets-total-value-text {
   font-size: 36px;
   color: #444444;
   font-weight: 600;
   margin-left: 15px;
 }
 
-.btn-compre-agora a{
+.btn-compre-agora a {
   width: fit-content;
   cursor: pointer;
   display: flex;
   align-items: center;
 }
 
-.btn-compre-agora.absolute{
+.btn-compre-agora.absolute {
   margin: 0;
 }
 
-.absolute.btn-compre-agora.bannerinicial{
+.absolute.btn-compre-agora.bannerinicial {
   position: absolute;
   bottom: 15px;
 }
 
-.box-tickets-total-value-title .div-title{
+.box-tickets-total-value-title .div-title {
   display: block;
   line-height: 15px;
 }
 
-.box-tickets-total-value-title small{
+.box-tickets-total-value-title small {
   font-size: 12px;
 }
 
-.underline{
+.underline {
   text-decoration: underline;
 }
 
@@ -7912,7 +8051,7 @@ width: 100px;
   font-size: 25px;
 }
 
-.container-excluir{
+.container-excluir {
   color: #f00;
   display: flex;
   flex-direction: column;
@@ -7921,60 +8060,60 @@ width: 100px;
   cursor: pointer;
 }
 
-.container-left{
+.container-left {
   margin-right: 20px;
   cursor: pointer;
 }
 
 
-.container-right{
+.container-right {
   margin-left: 20px;
   cursor: pointer;
 }
 
-.texto-excluir{
+.texto-excluir {
   font-size: 15px;
 }
 
-.spinner-border{
+.spinner-border {
   color: #fff;
 }
 
-.container-spinner{
+.container-spinner {
   position: absolute;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
   overflow: hidden;
   top: 0;
   left: 0;
   z-index: 100;
 }
 
-.hr-divisor{
+.hr-divisor {
   margin: 40px 0;
   padding: 0;
 }
 
-.apply-extra-padding{
-    padding-top: 20px !important;
+.apply-extra-padding {
+  padding-top: 20px !important;
 }
 
-.cryptocurrency-table.table-responsive{
+.cryptocurrency-table.table-responsive {
   position: relative;
   padding: 0;
 }
 
-.container-tickets-data{
+.container-tickets-data {
   background: #fafbff;
   padding: 30px;
   height: 100%;
 }
 
-.container-spinner-fixed{
+.container-spinner-fixed {
   position: fixed;
   top: 0;
   left: 0;
@@ -7983,7 +8122,7 @@ width: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   overflow: hidden;
   z-index: 1000;
   flex-direction: column;
@@ -7994,11 +8133,11 @@ width: 100px;
   height: 5rem;
 }
 
-.container-spinner-fixed h2{
+.container-spinner-fixed h2 {
   color: #fff;
 }
 
-.default-btn.checkout-button{
+.default-btn.checkout-button {
   background-color: var(--optionalColor);
   width: 100%;
   text-align: center;
@@ -8007,33 +8146,36 @@ width: 100px;
   min-height: 50px !important;
 }
 
-.default-btn.checkout-button i{
+.default-btn.checkout-button i {
   position: relative;
   transform: none;
   left: 0;
   margin-right: 15px;
-} 
+}
 
-.default-btn.default-outline-btn{
+.default-btn.default-outline-btn {
   background-color: #fff;
   color: var(--optionalColor);
   border: solid 1px var(--optionalColor);
 }
 
-.container-tickets-inputs .form-control.input-error{
+.container-tickets-inputs .form-control.input-error {
   border: 1px solid #d93025 !important;
 }
 
-.text-error{
+.text-error {
   color: #d93025;
 }
 
-.container-checkout .form-control, .container-credit-card-inputs .form-control, .container-tickets-inputs .form-control{
+.container-checkout .form-control,
+.container-credit-card-inputs .form-control,
+.container-tickets-inputs .form-control {
   border: 2px solid #eeeeee !important;
   background-color: #fff !important;
 }
 
-.container-checkout .form-select, .container-credit-card-inputs .form-select{
+.container-checkout .form-select,
+.container-credit-card-inputs .form-select {
   height: 50px;
   border: 2px solid #eeeeee !important;
   background-color: #fff !important;
@@ -8041,11 +8183,11 @@ width: 100px;
   margin-left: 0;
 }
 
-.image-evento-tabela{
+.image-evento-tabela {
   border-radius: 10px;
 }
 
-.container-ticket-responsivo{
+.container-ticket-responsivo {
   margin-inline: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -8058,25 +8200,26 @@ width: 100px;
   transition: 0.3s;
 }
 
-.container-ticket-responsivo h3{
+.container-ticket-responsivo h3 {
   margin-left: 0;
 }
 
-.container-ticket-responsivo.resumo{
+.container-ticket-responsivo.resumo {
   padding-bottom: 20px;
 }
 
-.cupom-button{
+.cupom-button {
   height: 50px;
   margin-top: 0 !important;
   padding-left: 0;
 }
 
-.default-btn.checkout-button.cupom-button i{
+.default-btn.checkout-button.cupom-button i {
   top: unset;
 }
 
-.default-btn.checkout-button, .default-btn.tickets-button{
+.default-btn.checkout-button,
+.default-btn.tickets-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8085,68 +8228,70 @@ width: 100px;
   min-width: 150px;
 }
 
-.container-title-feedback h2{
+.container-title-feedback h2 {
   font-size: 24px;
   font-weight: 700;
   color: var(--error-color);
 }
 
-.container-msg-feedback .row{
+.container-msg-feedback .row {
   margin-left: 0;
 }
 
-.container-msg-feedback .row strong{
+.container-msg-feedback .row strong {
   padding-left: 0;
 }
-.min-height-45{
+
+.min-height-45 {
   min-height: 45px !important;
 }
 
-#container-feedback-error .container-msg-feedback .checkout-button{
+#container-feedback-error .container-msg-feedback .checkout-button {
   padding: 12px 30px;
   color: var(--error-color);
   border: solid 1px var(--error-color);
 }
 
-.container-img-feedback img{
+.container-img-feedback img {
   max-width: 100%;
   height: auto;
 }
 
-#container-feedback-error, #container-feedback-success{
+#container-feedback-error,
+#container-feedback-success {
   padding-top: 100px;
   min-height: 600px;
 }
 
-#container-feedback-success .row{
+#container-feedback-success .row {
   margin-left: 0;
 }
 
-#container-feedback-success .container-title-feedback h2{
+#container-feedback-success .container-title-feedback h2 {
   font-size: 24px;
   font-weight: 700;
   color: var(--optionalColor);
 }
 
-.container-copy-button{
+.container-copy-button {
   margin-left: 0;
   padding-left: 0;
 }
 
-#container-feedback-success .container-msg-feedback .checkout-button{
+#container-feedback-success .container-msg-feedback .checkout-button {
   padding: 12px 30px;
 }
 
-.container-img-feedback.success-feedback{
+.container-img-feedback.success-feedback {
   min-height: 600px;
 }
 
-.container-image-event{
+.container-image-event {
   position: relative;
   padding-bottom: 56.25%;
 }
 
-.container-image-event img{
+.container-image-event img {
   position: absolute;
   top: 0;
   left: 0;
@@ -8154,47 +8299,51 @@ width: 100px;
   height: 100% !important;
 }
 
-.divisor-login-types{
+.divisor-login-types {
   font-size: 18px;
 }
-.container-flexEnd{
+
+.container-flexEnd {
   display: flex;
   justify-content: end;
 }
-.head-event{
+
+.head-event {
   margin-top: 25px;
   justify-content: center;
   text-align: center;
 }
-.linkNavbar{
+
+.linkNavbar {
   background: white;
   border: none;
   cursor: pointer;
 }
-.linkNavbar .bx-x{
+
+.linkNavbar .bx-x {
   color: #081587 !important;
   font-size: 60px;
 }
 
-.container-spinner.minhas-compras{
+.container-spinner.minhas-compras {
   display: flex;
   flex-direction: column;
   min-height: 200px;
 }
 
-.container-spinner.minhas-compras .spinner-border{
+.container-spinner.minhas-compras .spinner-border {
   color: #000;
 }
 
-.container-minhas-compras{
+.container-minhas-compras {
   min-height: 200px;
 }
 
-.btn-comprar-agora{
+.btn-comprar-agora {
   margin-left: 5px;
 }
 
-.default-btn-danger{
+.default-btn-danger {
   border-color: #dc3545 !important;
   color: #dc3545 !important;
   font-size: 13px !important;
@@ -8202,34 +8351,34 @@ width: 100px;
   padding-right: 10px !important;
 }
 
-.btn-compre-agora.absolute.home{
+.btn-compre-agora.absolute.home {
   display: flex;
-  justify-content: flex-start; 
+  justify-content: flex-start;
 }
 
-.img-banner-eventozz{
+.img-banner-eventozz {
   width: 100%;
 }
 
-.image-logo-mobile{
-  width:120px;
+.image-logo-mobile {
+  width: 120px;
 }
 
 
-.logoCompleta{
+.logoCompleta {
   width: 10rem !important;
 }
 
-.seat{
+.seat {
   height: 28px !important;
   width: 28px !important;
 }
 
-.background-optional{
+.background-optional {
   background-color: #dee2e6 !important;
 }
 
-.event-empty-tickets{
+.event-empty-tickets {
   display: flex;
   justify-content: center;
   margin-top: 140px;
@@ -8237,58 +8386,58 @@ width: 100px;
   font-weight: 800;
 }
 
-.container-row-seat-preview{
+.container-row-seat-preview {
   display: grid;
   grid-template-columns: 1fr 45fr;
 }
 
-.row-seat-preview{
+.row-seat-preview {
   display: grid;
   grid-template-columns: repeat(45, 1fr);
 }
 
-.container-item-seat-preview{
+.container-item-seat-preview {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.item-seat-preview{
+.item-seat-preview {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1rem;
 }
 
-.row-indicator-seat-preview{
+.row-indicator-seat-preview {
   font-size: 1rem;
 }
 
-.vip{
+.vip {
   color: #c8a2c8;
 }
 
-.gold{
+.gold {
   color: #daa520;
 }
 
-.silver{
+.silver {
   color: #bab8b5;
 }
 
-.reserved{
+.reserved {
   color: #f00;
 }
 
-.black{
+.black {
   color: #000;
 }
 
-.container-seat-preview{
+.container-seat-preview {
   padding-top: 40px;
 }
 
-.container-stage-indicator{
+.container-stage-indicator {
   height: 50px;
   display: flex;
   justify-content: center;
@@ -8298,12 +8447,10 @@ width: 100px;
   margin-bottom: 10px;
 }
 
-.stage-indicator{
+.stage-indicator {}
 
-}
-
-.subtitle-container{
-  width: fit-content;    
+.subtitle-container {
+  width: fit-content;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 0.5rem 1rem;
@@ -8311,7 +8458,7 @@ width: 100px;
   padding: 10px;
 }
 
-.subtitle-item{
+.subtitle-item {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8319,106 +8466,107 @@ width: 100px;
   column-gap: .4rem;
 }
 
-@media (max-width: 767px){
+@media (max-width: 767px) {
 
-  .seat{
+  .seat {
     height: 7px !important;
     width: 7px !important;
   }
 
-  .col-left-initial-banner{
+  .col-left-initial-banner {
     position: absolute;
     z-index: 10;
   }
 
-  .col-left-initial-banner .main-banner-content-landing{
+  .col-left-initial-banner .main-banner-content-landing {
     margin-left: 0;
   }
 
-  .col-right-initial-banner{
+  .col-right-initial-banner {
     opacity: 0.5;
     display: flex;
     justify-content: center;
   }
 
-  .container-tickets-data{
+  .container-tickets-data {
     background: #fafbff;
     padding: 10px;
     height: 100%;
   }
 
-  .container-tickets-inputs{
+  .container-tickets-inputs {
     padding-left: 0;
     padding-right: 0;
     margin-right: 0;
     margin-left: 0;
   }
 
-  .container-img-feedback.success-feedback{
+  .container-img-feedback.success-feedback {
     min-height: 400px;
   }
 
-  .img-eventozz-buy-page-banner{
+  .img-eventozz-buy-page-banner {
     height: auto !important;
   }
 
-  .container-checkout .cupom-button{
+  .container-checkout .cupom-button {
     padding-left: 0;
     padding-right: 0;
   }
 
-  .trade-cryptocurrency-box{
+  .trade-cryptocurrency-box {
     padding-top: 40px !important;
   }
 
-  .tokens-content{
+  .tokens-content {
     width: 100%;
     padding-right: 0;
   }
-  .btn-compre-agora.absolute.home{
+
+  .btn-compre-agora.absolute.home {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
   }
 
-  .image-logo-mobile{
+  .image-logo-mobile {
     padding-top: 20px;
     padding-bottom: 20px;
-    width:10rem;
+    width: 10rem;
   }
 
-  .logoCompleta{
+  .logoCompleta {
     width: 120px !important;
   }
 
-.responsive-container{
-  flex-direction: column-reverse;
-}
+  .responsive-container {
+    flex-direction: column-reverse;
+  }
 
-  .container-item-seat-preview.header-seat-preview{
+  .container-item-seat-preview.header-seat-preview {
     display: none;
   }
 
-  .container-row-seat-preview{
+  .container-row-seat-preview {
     display: grid;
     grid-template-columns: 2fr 45fr;
   }
 
-  .row-indicator-seat-preview{
+  .row-indicator-seat-preview {
     font-size: 12px;
   }
 
-  .item-seat-preview:not(.subtitle){
+  .item-seat-preview:not(.subtitle) {
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 8px;
   }
 
-  .subtitle-item span{
+  .subtitle-item span {
     font-size: 12px;
   }
 
-  .subtitle-container{
+  .subtitle-container {
     width: 100%;
   }
 
