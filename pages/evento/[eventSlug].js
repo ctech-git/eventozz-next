@@ -108,7 +108,7 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
         <meta property="og:type" content="website" />
         <meta property="og:title" content={`Eventozz | ${event?.nome_evento ? event?.nome_evento : ''}`} />
         <meta property="og:description" content={event?.descricao_seo ? event?.descricao_seo : 'Acesse o link para ver mais detalhes sobre o evento e garantir a sua participação!'} />
-        <meta property="og:image" itemprop="image" content={event?.imagem_banner ? event.imagem_banner : 'https://eventozz-dev.herokuapp.com/images/banner/banner-img1.png'} />
+        <meta property="og:image" itemprop="image" content={event?.imagem_banner ? event.imagem_banner : 'https://www.eventozz.com/images/banner/banner-img1.png'} />
       </Head>
 
       <div className='app-container'>
