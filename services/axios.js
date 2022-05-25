@@ -2,9 +2,7 @@ import axios from 'axios';
 
 export const Axios = axios.create({
 
-  //baseURL: 'https://api-eventozz.herokuapp.com',
-  baseURL: 'https://api-eventozz-prod.herokuapp.com/',
-  // baseURL: 'http://localhost:3333',
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json',
   }

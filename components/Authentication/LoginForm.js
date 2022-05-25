@@ -44,7 +44,7 @@ const LoginForm = ({
           window.localStorage.setItem("accessToken", result?.data?.token);
           setUserToken(result?.data?.token);
           if (organizer) {
-            window.location.href = "https://app.eventozz.com/?token=" + result?.data?.token;
+            window.location.href = `${process.env.NEXT_PUBLIC_APP_URL}?token=${result?.data?.token}`;
           } else {
             if (callback) {
               router.push(callback);
@@ -107,7 +107,7 @@ const LoginForm = ({
           window.localStorage.setItem("accessToken", response?.data?.token);
           setUserToken(response?.data?.token);
           if (organizer) {
-            window.location.href = "https://app.eventozz.com/?token=" + response?.data?.token;
+            window.location.href = `${process.env.NEXT_PUBLIC_APP_URL}?token=${result?.data?.token}`;
           } else {
             if (callback) {
               router.push(callback);
