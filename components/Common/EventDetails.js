@@ -1,19 +1,11 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import shoppingCartService from '../../services/cart';
 import { dateLastAccess } from '../../utils/strings';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import servicesEventozz from '../../services/events';
-import { scrollToElement } from '../../utils/scrollTo';
+import { Col } from 'react-bootstrap';
 
-
-
-const EventDetails = ({ item, showTicketSale }) => {
+export const EventDetails = ({ item }) => {
   const dados = item;
   console.log(dados);
   return (
-    <>
+    <Col xs={12}>
 
       <div className='trade-cryptocurrency-area ptb-100'
         style={{ background: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
@@ -64,7 +56,7 @@ const EventDetails = ({ item, showTicketSale }) => {
                           <i className='bx bx-calendar'
                             style={{ color: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
                           ></i>
-                          Inicio: {dateLastAccess(dados.data_inicio)} <br/>Fim: {dateLastAccess(dados.data_fim)}
+                          Inicio: {dateLastAccess(dados.data_inicio)} <br />Fim: {dateLastAccess(dados.data_fim)}
                         </li>
                         <li>
                           <i className="fa fa-clock" aria-hidden="true"
@@ -98,8 +90,7 @@ const EventDetails = ({ item, showTicketSale }) => {
           <div className='line'></div>
         </div>
       </div>
-    </>
+    </Col>
   );
 };
 
-export default EventDetails;

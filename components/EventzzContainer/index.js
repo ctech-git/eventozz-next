@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row } from 'react-bootstrap';
 import { EventCard } from '../EventCard';
 
-const Platform = ({ events = [] }) => {
+export const EventzzContainer = ({ events = [] }) => {
   const [display, setDisplay] = useState(false);
 
   useEffect(() => {
@@ -30,5 +30,3 @@ const Platform = ({ events = [] }) => {
     </>
   );
 };
-
-export default Platform;

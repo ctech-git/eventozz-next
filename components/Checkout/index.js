@@ -1,6 +1,6 @@
 
 import { useCallback, useEffect, useState } from 'react';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { Col, Form, Modal, Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import checkoutService from '../../services/checkout';
 import servicesExternal from '../../services/externalRequest';
@@ -14,12 +14,10 @@ import ErrorImage from '../../public/images/erro.svg';
 import SuccessImage from '../../public/images/success.svg';
 import WaitingImage from '../../public/images/waiting.svg';
 import { scrollToElement } from '../../utils/scrollTo';
-import { useRouter } from 'next/router';
 import { copyToClipboard } from '../../utils/functions';
 
 const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, setHideOnCheckout, hideOnCheckout, seller }) => {
 
-    const router = useRouter();
     const isMobile = useMediaQuery({ maxWidth: 768 })
     const [deletedTicketId, setDeletedTicketId] = useState(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -415,37 +413,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 ;
         }
 
-        // else if (paymentMethod === 'boleto') {
-        //     var payment =
-        //         [
-        //             {
-        //                 "payment_method": "boleto",
-        //                 "boleto": {
-        //                     "bank": "001",
-        //                     "instructions": "Pagar até o vencimento",
-        //                     "due_at": "2021-12-20T00:00:00Z",
-        //                     "document_number": "123",
-        //                     "nosso_numero": "1",
-        //                     "metadata": {},
-        //                     "type": "DM"
-        //                 }
-        //             }
-        //         ];
-
-        // }
         else if (paymentMethod === 'pix') {
-            let expirationPix = '';
-            let now = new Date();
-            let startDateEvent = new Date(dados?.startDate);
-            let startDateEvent3Days = new Date(dados?.startDate).setDate(startDateEvent.getDate() - 3);
-            let startDateEventLessThan1Days = new Date(dados?.startDate).setDate(startDateEvent.getDate() - 1);
-            if (startDateEventLessThan1Days > now) {
-                expirationPix = 3600;
-            } else if (startDateEvent3Days > now) {
-                expirationPix = 43200;
-            } else {
-                expirationPix = 259200;
-            }
+            let expirationPix = findExpirationTime(dados?.startDate);
             payment =
                 [
                     {
@@ -465,6 +434,29 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
 
         return payment;
+    }
+
+    function findExpirationTime(eventDate) {
+        let days = [0, 1, 3];
+        let expirationTime = [3600, 43200, 259200];
+        let time = 0;
+
+        days.forEach(function (item, index) {
+
+            let eventDateTemp = new Date(eventDate);
+            let today = new Date();
+            let period = eventDateTemp.setDate(eventDateTemp.getDate() - item);
+            period = new Date(period);
+
+            console.log('today -> ', today)
+            console.log('periodo -> ', period)
+            if (period.getTime() > today.getTime()) {
+                time = expirationTime[index];
+            }
+        });
+
+        return time;
+
     }
 
     const handleSubmitSale = async () => {

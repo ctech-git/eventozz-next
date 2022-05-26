@@ -1,34 +1,27 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import Head from 'next/head';
 import { Row, Col } from 'react-bootstrap';
-
-import Banner from '../../components/Common/Banner';
-import Features from '../../components/Trade/Features';
-import PaymentArea from '../../components/Trade/PaymentArea';
-import RegisterArea from '../../components/Common/RegisterArea';
-import servicesEventozz from '../../services/events';
-import TokensArea from '../../components/HomeThree/TokensArea';
-import EventDetails from '../../components/Common/EventDetails';
-
-//Imagens
-import BannerImg1 from '../../public/images/banner/banner-img1.webp';
-import Shape1 from '../../public/images/shape/shape1.png';
-import Shape2 from '../../public/images/shape/shape2.png';
-import Shape3 from '../../public/images/shape/shape3.png';
-import Shape5 from '../../public/images/shape/shape5.png';
-import Shape9 from '../../public/images/shape/shape9.png';
-import { scrollToElement } from '../../utils/scrollTo';
-import shoppingCartService from '../../services/cart';
 import { toast } from 'react-toastify';
+
+import PaymentArea from '../../components/Trade/PaymentArea';
+import servicesEventozz from '../../services/events';
+import { MetaTagsEvent } from '../../components/MetaTagsEvent';
+import { scrollToElement } from '../../utils/scrollTo';
 import Checkout from '../../components/Checkout';
+import shoppingCartService from '../../services/cart';
 import { SeatPreview } from '../../components/seatPreview';
 
-const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate, ticketsSold }) => {
+//Imagens
+import { Counter } from '../../components/Counter';
+import { AvailableTicketsContainer } from '../../components/AvailableTicketsContainer';
+import { EventDetails } from '../../components/EventDetails';
+import { EventWarning } from '../../components/EventWarning';
+import { BannerEvent } from '../../components/BannerEvento';
+
+export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate, ticketsSold }) => {
 
   console.log(ticketsSold);
-  const router = useRouter();
   const { query } = useRouter();
   const seller = query?.vendedor;
   const [eventDay, setEventDay] = useState('');
@@ -68,15 +61,12 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
     if (quantity < 0) {
       return;
     }
-    // return;
     const accessToken = window.localStorage.getItem("accessToken");
     setIsLoadingCartItem(true);
     const result = await shoppingCartService.updateQuantityShoppingCart({ idInShoppingCart, quantity, accessToken });
     var data = result?.data;
     if (data?.success) {
       getCartItems();
-      // setCartItems(data);
-      // setShowCheckout(true);
     } else {
       return toast.info("Não encontramos nenhum ingresso no seu carrinho");
     }
@@ -91,8 +81,6 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
     var data = result?.data;
     if (data?.success) {
       getCartItems();
-      // setCartItems(data);
-      // setShowCheckout(true);
     } else {
       return toast.info("Não encontramos nenhum ingresso no seu carrinho");
     }
@@ -101,119 +89,49 @@ const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales
 
   return (
     <>
-      <Head>
-        <title>{`Eventozz | ${event?.nome_evento ? event?.nome_evento : ''}`}</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta name="description" content={event?.descricao_seo ? event?.descricao_seo : 'Acesse o link para ver mais detalhes sobre o evento e garantir a sua participação!'} />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={`Eventozz | ${event?.nome_evento ? event?.nome_evento : ''}`} />
-        <meta property="og:description" content={event?.descricao_seo ? event?.descricao_seo : 'Acesse o link para ver mais detalhes sobre o evento e garantir a sua participação!'} />
-        <meta property="og:image" itemprop="image" content={event?.imagem_banner ? event.imagem_banner : 'https://www.eventozz.com/images/banner/banner-img1.png'} />
-      </Head>
-
+      <MetaTagsEvent event={event} />
       <div className='app-container'>
-        <div className='trade-cryptocurrency-area'
-          style={{ background: event?.cor_principal ? (event?.cor_principal) : ('#00a79d') }}
-        >{event?.imagem_banner ? (
-          <div className='col-12 d-flex justify-content-center'>
-            <div className='dimension-automatic'>
-              <img
-                className="img-eventozz-buy-page-banner"
-                src={event?.imagem_banner}
-                alt='image'
-              />
-            </div>
-            {/* {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora bannerinicial justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>} */}
-          </div>
-        ) : (
-          <>
-            <div className='main-banner-area-landing'>
-              <div className='container'>
-                <div className='align-items-center m-0 position-relative row'>
-                  <div className='col-md-6 p-0 col-left-initial-banner'>
-                    <div className='main-banner-content-landing'>
-                      <h1 className='text-center text-md-start'>{event.nome_evento}</h1>
-                      {/* {showTicketSale && <div onClick={() => scrollToElement({ id: 'tickets-sale-area' })} className="absolute btn-compre-agora justify-content-center justify-content-md-start pt-4 row"><a className="default-btn">{event?.is_free ? 'Reservar ingresso' : 'Comprar agora'}<i className="btn-comprar-agora bx bx-money"></i></a></div>} */}
-                    </div>
-                  </div>
-                  <div className='col-md-6 p-0 col-right-initial-banner'>
-                    <div className='main-banner-image-landing'>
-                      <Image src={BannerImg1} alt='Banner inicial' />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='shape1 shape'>
-                <Image src={Shape1} alt='image' />
-              </div>
-              <div className='shape2 shape'>
-                <Image src={Shape2} alt='image' />
-              </div>
-              <div className='shape3 shape'>
-                <Image src={Shape3} alt='image' />
-              </div>
-              <div className='shape5 shape'>
-                <Image src={Shape5} alt='image' />
-              </div>
-              <div className='shape9 shape'>
-                <Image src={Shape9} alt='image' />
-              </div>
 
-            </div>
-          </>
-        )}
+        <BannerEvent event={event} />
 
-        </div>
-
-        {event?.seat_preview && (
+        {event?.seat_preview ? (
           <>
             <SeatPreview ticketsSold={ticketsSold} />
           </>
-        )}
-        
+        ) : null}
 
-
-        {event?.isContador && (
+        {event?.isContador ? (
           <>
-            <TokensArea item={event} endTime={eventDay} showTicketSale={showTicketSale} />
+            <Counter item={event} endTime={eventDay} showTicketSale={showTicketSale} />
           </>
-        )}
+        ) : null}
 
         <Row className='responsive-container'>
-          <Col xs={12}>
-            <EventDetails item={event} showTicketSale={showTicketSale} />
-          </Col>
+
+          <EventDetails item={event} showTicketSale={showTicketSale} />
 
           {showTicketSale && !hideOnCheckout && (
-            <Col xs={12}>
-              <Banner item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
-            </Col>
+            <AvailableTicketsContainer item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
           )}
         </Row>
 
         {
-          showEventSoon && (
-            <div className="event-finish pt-100">
-              <span
-                style={{ color: event?.cor_secundaria ? (event?.cor_secundaria) : ('#00a79d') }}
-              >EVENTO EM BREVE</span>
-            </div>
-          )
+          showEventSoon ? (
+            <EventWarning color={event?.cor_secundaria ? event?.cor_secundaria : '#00a79d'} text="EVENTO EM BREVE" />
+          ) : null
         }
         {
-          showClosedSales && (
-            <div className="event-finish pt-100">
-              <span
-                style={{ color: event?.cor_secundaria ? (event?.cor_secundaria) : ('#00a79d') }}
-              >VENDAS ENCERRADAS</span>
-            </div>
-          )
+          showClosedSales ? (
+            <EventWarning color={event?.cor_secundaria ? event?.cor_secundaria : '#00a79d'} text="VENDAS ENCERRADAS" />
+          ) : null
         }
         <PaymentArea />
         {
-          showCheckout && <Checkout dados={event} cartItems={cartItems} handleChangeTicketQuantity={handleChangeTicketQuantity}
-            handleDeleteItem={handleDeleteItem} isLoadingCartItem={isLoadingCartItem} handleAddCupom={getCartItems} hideOnCheckout={hideOnCheckout}
-            setHideOnCheckout={setHideOnCheckout} seller={seller} />
+          showCheckout ? (
+            <Checkout dados={event} cartItems={cartItems} handleChangeTicketQuantity={handleChangeTicketQuantity}
+              handleDeleteItem={handleDeleteItem} isLoadingCartItem={isLoadingCartItem} handleAddCupom={getCartItems} hideOnCheckout={hideOnCheckout}
+              setHideOnCheckout={setHideOnCheckout} seller={seller} />
+          ) : null
         }
       </div>
     </>
@@ -260,7 +178,7 @@ export async function getServerSideProps(context) {
 
   }
 
-  const resultTicketsSold = await getTicketsSoldNumber({eventId: event?.id});
+  const resultTicketsSold = await getTicketsSoldNumber({ eventId: event?.id });
   console.log(resultTicketsSold);
   if (resultTicketsSold?.data?.success) {
     ticketsSold = resultTicketsSold?.data?.data
