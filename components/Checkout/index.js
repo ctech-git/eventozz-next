@@ -422,7 +422,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
     function findExpirationTime(eventDate) {
         let days = [0, 1, 3];
         let expirationTime = [3600, 43200, 259200];
-        let time = 0;
+        let time = 259200;
 
         days.forEach(function (item, index) {
 
