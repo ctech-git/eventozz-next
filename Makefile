@@ -8,3 +8,6 @@ up-dev: ## Start the local server
 
 up-prod: ## Start the prod server
 	@bash ./scripts/up-site-prod.sh
+
+build-dev: ## Start the local server
+	@bash ./scripts/build-site-dev.sh
