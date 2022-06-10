@@ -41,17 +41,22 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
   }, [eventDate]);
 
   const getCartItems = async ({cartIdTemp=false}) => {
-    setIsLoadingCartItem(true);
-    const result = await shoppingCartService.listShoppingCart({eventId: event.id, cartId: cartIdTemp ? cartIdTemp : cartId});
-    var data = result?.data?.data;
-    if (data?.length > 0) {
-      setCartItems(data);
-      setShowCheckout(true);
-      scrollToElement({ id: 'container-checkout' });
-    } else {
-      return toast.info("Não encontramos nenhum ingresso no seu carrinho");
+    try {
+      setIsLoadingCartItem(true);
+      const result = await shoppingCartService.listShoppingCart({eventId: event.id, cartId: cartIdTemp ? cartIdTemp : cartId});
+      var data = result?.data?.data;
+      if (data?.length > 0) {
+        setCartItems(data);
+        setShowCheckout(true);
+        scrollToElement({ id: 'container-checkout' });
+      } else {
+        return toast.info("Não encontramos nenhum ingresso no seu carrinho");
+      }
+      setIsLoadingCartItem(false);
+      
+    } catch (error) {
+      console.log('error getCartItems -> ', error);
     }
-    setIsLoadingCartItem(false);
   };
 
   const handleChangeTicketQuantity = async ({ idInShoppingCart, quantity, cartItem }) => {
@@ -178,7 +183,6 @@ export async function getServerSideProps(context) {
   }
 
   const resultTicketsSold = await getTicketsSoldNumber({ eventId: event?.id });
-  console.log(resultTicketsSold);
   if (resultTicketsSold?.data?.success) {
     ticketsSold = resultTicketsSold?.data?.data
   }

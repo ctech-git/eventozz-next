@@ -23,14 +23,12 @@ export function SimplifiedAuthContainer({}) {
     if (response?.error) { isError = true; Error = response.error }
 
     if (!isError) {
-      console.log(response)
       let tokenId = response?.tokenId;
       console.log(tokenId)
 
       setLoading(true);
       const result = await Services.LoginWithGoogle(tokenId, false);
       setLoading(false);
-      console.log(result)
       if (result.status == 200) {
 
         if (result?.data?.token) {

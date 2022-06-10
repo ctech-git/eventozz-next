@@ -27,14 +27,12 @@ const LoginForm = ({
     if (response?.error) { isError = true; Error = response.error }
 
     if (!isError) {
-      console.log(response)
       let tokenId = response?.tokenId;
       console.log(tokenId)
 
       setLoading(true);
       const result = await Services.LoginWithGoogle(tokenId, organizer);
       setLoading(false);
-      console.log(result)
       if (result.status == 200) {
 
         if (result?.data?.token) {
@@ -99,7 +97,6 @@ const LoginForm = ({
       setLoading(true);
       const response = await Services.LoginNative(cpfEmail, senha, organizer);
       setLoading(false);
-      console.log(response);
       if (response.status == 200) {
         if (response?.data?.token) {
           window.localStorage.setItem("accessToken", response?.data?.token);

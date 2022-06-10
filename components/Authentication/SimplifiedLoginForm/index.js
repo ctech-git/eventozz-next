@@ -38,7 +38,6 @@ const LoginForm = ({
       setLoading(true);
       const response = await Services.LoginNative(cpfEmail, senha);
       setLoading(false);
-      console.log(response);
       if (response.status == 200) {
         if (response?.data?.token) {
           window.localStorage.setItem("accessToken", response?.data?.token);

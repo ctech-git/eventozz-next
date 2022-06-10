@@ -105,43 +105,48 @@ export const AvailableTicketsContainer = ({ item, handleCheckout, syncCartItems 
 
   async function addTicketsToCart() {
 
-    if (!userToken) {
-      setShowSimplifiedLogin(true);
-      return toast.warning("Faça login para finalizar a compra");
-    }
-    const cart = [...tickets];
-    console.log(tickets);
-    console.log(syncCartItems);
-
-    const hasTicketsInCart = tickets.find(ticket => ticket.quantidade > 0);
-
-    if (hasTicketsInCart) {
-
-      setIsLoadingFinish(true);
-      const result = await shoppingCartService.saveShoppingCart({ cart, cartId });
-      setIsLoadingFinish(false);
-      if (result.status == 200 && result?.data?.cartId) {
-        if (!cartId) {
-          handleChangeCartId(result?.data?.cartId);
+    try {
+      if (!userToken) {
+        setShowSimplifiedLogin(true);
+        return toast.warning("Faça login para finalizar a compra");
+      }
+      const cart = [...tickets];
+      // console.log(tickets);
+      // console.log(syncCartItems);
+  
+      const hasTicketsInCart = tickets.find(ticket => ticket.quantidade > 0);
+  
+      if (hasTicketsInCart) {
+  
+        setIsLoadingFinish(true);
+        const result = await shoppingCartService.saveShoppingCart({ cart, cartId });
+        setIsLoadingFinish(false);
+        if (result.status == 200 && result?.data?.cartId) {
+          if (!cartId) {
+            handleChangeCartId(result?.data?.cartId);
+          }
+          toast.success('Ingressos adicionados ao carrinho', {
+            position: "bottom-left",
+            autoClose: 2000
+          })
+  
+          handleCheckout({cartIdTemp: result?.data?.cartId})
+        } else {
+          toast.error('Error ao adicionar ao carrinho', {
+            position: "bottom-left",
+            autoClose: 2000
+          })
         }
-        toast.success('Ingressos adicionados ao carrinho', {
-          position: "bottom-left",
-          autoClose: 2000
-        })
-
-        handleCheckout({cartIdTemp: result?.data?.cartId})
       } else {
-        toast.error('Error ao adicionar ao carrinho', {
+        toast.error('Necessario selecionar ingresso', {
           position: "bottom-left",
           autoClose: 2000
         })
       }
-    } else {
-      toast.error('Necessario selecionar ingresso', {
-        position: "bottom-left",
-        autoClose: 2000
-      })
+    } catch (error) {
+      console.log('error addTicketsToCart -> ', error);
     }
+   
 
   }
 

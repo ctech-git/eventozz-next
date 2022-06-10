@@ -45,8 +45,6 @@ const RegisterForm = ({
   }, [payloadNewAccount])
 
   async function responseGoogle(response) {
-    console.log("========");
-    console.log(response);
     setEmail(response?.profileObj?.email);
     setFullName(response?.profileObj?.name);
     setGoogleId(response?.googleId);
@@ -106,7 +104,6 @@ const RegisterForm = ({
         }
         setLoading(false);
 
-        console.log(response)
         if (response.status == 200) {
           if (response?.data?.token) {
             window.localStorage.setItem("accessToken", response?.data?.token);

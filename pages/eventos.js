@@ -124,9 +124,7 @@ export default PriceDetails;
 
 export async function getServerSideProps() {
   const result = await servicesEventozz.getEventzzGeneral();
-  console.log("----------------");
-  console.log(result);
-  console.log("----------------");
+
 
   let response = [];
 
