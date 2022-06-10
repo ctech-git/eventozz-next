@@ -103,7 +103,7 @@ const LoginForm = ({
           setUserName(response?.data?.user?.name);
           setUserToken(response?.data?.token);
           if (organizer) {
-            window.location.href = `${process.env.NEXT_PUBLIC_APP_URL}?token=${result?.data?.token}`;
+            window.location.href = `${process.env.NEXT_PUBLIC_APP_URL}?token=${response?.data?.token}`;
           } else {
             if (callback) {
               router.push(callback);
