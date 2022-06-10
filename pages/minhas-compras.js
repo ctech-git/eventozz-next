@@ -15,8 +15,7 @@ const Wallet = () => {
   const [showEventDetails, setShowEventDetails] = useState(false);
 
   const getUserEventzz = useCallback(async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const result = await servicesEventozz.getUserEventzz({ accessToken });
+    const result = await servicesEventozz.getUserEventzz();
     setIsLoading(false);
     if (result?.data?.success) {
 

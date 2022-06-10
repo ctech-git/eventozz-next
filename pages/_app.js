@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { useStore } from '../store';
 import '../public/css/animate.min.css';
@@ -8,14 +9,15 @@ import '../public/css/fontawesome.min.css';
 import '../public/css/meanmenu.min.css';
 import '../public/css/style.css';
 import '../public/css/responsive.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Layout from '../components/Layout/Layout';
 import GoTop from '../components/Shared/GoTop';
 import cookies from 'next-cookies'
 import { ToastContainer } from 'react-toastify';
-import { AuthContext, AuthProvider } from '../context/auth';
-import { useContext, useEffect } from 'react';
+import { AuthProvider } from '../context/auth';
 import TagManager from 'react-gtm-module';
+import { CartProvider } from '../context/cart';
 
 function App({ Component, pageProps }) {
   const store = useStore(pageProps.initialReduxState);
@@ -26,13 +28,15 @@ function App({ Component, pageProps }) {
 
   return (
     <AuthProvider>
-      <Provider store={store}>
-        <Layout>
-          <Component {...pageProps} />
-          <GoTop />
-        </Layout>
-        <ToastContainer limit={1} />
-      </Provider>
+      <CartProvider>
+        <Provider store={store}>
+          <Layout>
+            <Component {...pageProps} />
+            <GoTop />
+          </Layout>
+          <ToastContainer limit={1} />
+        </Provider>
+      </CartProvider>
     </AuthProvider>
   );
 }

@@ -1,18 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
-import { AuthContext } from '../../context/auth';
-import { scrollToElement } from '../../utils/scrollTo';
-import { useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
 
 const Banner = () => {
-  const router = useRouter();
-  const authContext = useContext(AuthContext);
-  const { userToken } = authContext;
-  console.log(userToken);
   const [name, setName] = useState('Bitcoin');
-  const [nameTwo, setNameTwo] = useState('USD');
   const isMobile = useMediaQuery({ maxWidth: 768 })
 
   //api data
@@ -32,7 +24,6 @@ const Banner = () => {
 
   const [clicked, setClicked] = useState(false);
   const [toggleState, setToggleState] = useState(false);
-  const [toggleStateTwo, setToggleStateTwo] = useState(false);
 
   const toggleTabOne = () => {
     setToggleState(!toggleState);

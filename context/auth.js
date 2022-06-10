@@ -1,10 +1,10 @@
 
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 const AuthContext = React.createContext();
 
-function AuthProvider({ children }) {
+export function AuthProvider({ children }) {
     const router = useRouter();
     const [userToken, setUserToken] = useState(null);
     const [userName, setUserName] = useState(null);
@@ -20,8 +20,9 @@ function AuthProvider({ children }) {
     }
 
     const logout = () => {
-        console.log('there');
+        // console.log('there');
         localStorage.removeItem("accessToken");
+        localStorage.removeItem("@eventozz::cartId");
         setUserToken(null);
         setUserName(null);
         router.push('/', '/');
@@ -34,4 +35,8 @@ function AuthProvider({ children }) {
     );
   }
   
-  export { AuthContext, AuthProvider };
+  export function useAuth() {
+    const context = useContext(AuthContext);
+
+    return context;
+  }

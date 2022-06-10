@@ -1,37 +1,54 @@
 import { useState, useEffect } from 'react';
 import shoppingCartService from '../../services/cart';
 import { convertMoney } from '../../utils/strings';
-import 'react-toastify/dist/ReactToastify.css';
 import servicesEventozz from '../../services/events';
-import { useRouter } from 'next/router';
 import { Col, Row } from 'react-bootstrap';
 import { ButtonEventozz } from '../ButtonEventozz';
 import { TicketCard } from '../TicketCard';
+import { toast } from 'react-toastify';
+import { useCart } from '../../context/cart';
+import { SimplifiedAuthContainer } from '../Authentication/SimplifiedAuthContainer';
+import { useAuth } from '../../context/auth';
+import { scrollToElement } from '../../utils/scrollTo';
 
 export const AvailableTicketsContainer = ({ item, handleCheckout, syncCartItems }) => {
-  const router = useRouter();
   const dados = item;
   const [tickets, setTickets] = useState([]);
   const [valorTotal, setValorTotal] = useState(0);
+  const [showSimplifiedLogin, setShowSimplifiedLogin] = useState(false);
 
   const [isLoadingFinish, setIsLoadingFinish] = useState(false);
-
+  const { cartId, handleChangeCartId } = useCart();
+  const { userToken } = useAuth()
+  console.log('userToken -> ', userToken);
   useEffect(() => {
     if (dados?.id != undefined) {
       getTickets();
     }
-  }, [dados?.id, syncCartItems]);
+  }, [dados?.id, syncCartItems, cartId]);
+
+  useEffect(() => {
+    console.log(showSimplifiedLogin);
+    console.log(userToken);
+    if (showSimplifiedLogin && userToken) {
+      addTicketsToCart()
+    }else if(showSimplifiedLogin && !userToken){
+      console.log('there');
+      setTimeout(() => {
+        console.log('here');
+        scrollToElement({id: 'icon-botao-finalizar'})
+      }, 1000);
+    }
+  }, [userToken, showSimplifiedLogin])
 
   async function getTickets() {
-    const accessToken = window.localStorage.getItem("accessToken");
 
     const result = await servicesEventozz.getTickets(dados?.id);
     if (result.status == 200) {
       let ticketTypesInfo = result?.data?.data;
       let ingressos = [];
-
-      if (accessToken) {
-        const resultClient = await shoppingCartService.listShoppingCart(dados?.id, accessToken);
+      if (cartId) {
+        const resultClient = await shoppingCartService.listShoppingCart({ eventId: dados?.id, cartId });
         let vectorClient = resultClient?.data?.data;
         if (vectorClient?.length === 0) {
           ticketTypesInfo.map(a => {
@@ -86,58 +103,49 @@ export const AvailableTicketsContainer = ({ item, handleCheckout, syncCartItems 
 
   }
 
-  async function addCar(type) {
-    let accessToken = window.localStorage.getItem("accessToken");
-    if (accessToken) {
-      var car = [];
-      var value = 0;
-      tickets.map((x) => {
-        if (x.quantidade > 0) {
-          car.push(x);
-          value += 1;
-        } else {
-          car.push(x);
+  async function addTicketsToCart() {
+
+    if (!userToken) {
+      setShowSimplifiedLogin(true);
+      return toast.warning("Faça login para finalizar a compra");
+    }
+    const cart = [...tickets];
+    console.log(tickets);
+    console.log(syncCartItems);
+
+    const hasTicketsInCart = tickets.find(ticket => ticket.quantidade > 0);
+
+    if (hasTicketsInCart) {
+
+      setIsLoadingFinish(true);
+      const result = await shoppingCartService.saveShoppingCart({ cart, cartId });
+      setIsLoadingFinish(false);
+      if (result.status == 200 && result?.data?.cartId) {
+        if (!cartId) {
+          handleChangeCartId(result?.data?.cartId);
         }
-      });
+        toast.success('Ingressos adicionados ao carrinho', {
+          position: "bottom-left",
+          autoClose: 2000
+        })
 
-      if (value != 0) {
-
-        setIsLoadingFinish(true);
-        const result = await shoppingCartService.saveShoppingCart(car, accessToken);
-        setIsLoadingFinish(false);
-        if (result.status == 200) {
-          toast.success('Ingressos adicionados ao carrinho', {
-            position: "bottom-left",
-            autoClose: 2000
-          })
-
-          handleCheckout()
-        } else {
-          toast.error('Error ao adicionar ao carrinho', {
-            position: "bottom-left",
-            autoClose: 2000
-          })
-        }
+        handleCheckout({cartIdTemp: result?.data?.cartId})
       } else {
-        toast.error('Necessario selecionar ingresso', {
+        toast.error('Error ao adicionar ao carrinho', {
           position: "bottom-left",
           autoClose: 2000
         })
       }
-
-
     } else {
-      toast.error('É necessário fazer login para continuar', {
+      toast.error('Necessario selecionar ingresso', {
+        position: "bottom-left",
         autoClose: 2000
       })
-      setTimeout(function () {
-        router.push({ pathname: "/login", query: { callback: router.asPath } });
-      }, 2000);
     }
+
   }
 
   const handleChangeTicketQuantity = async (option, ticketId) => {
-    console.log(tickets);
     let errorStatus = {
       negative: false,
       maxQuantity: false
@@ -218,7 +226,7 @@ export const AvailableTicketsContainer = ({ item, handleCheckout, syncCartItems 
                       <Row className='d-flex justify-content-evenly'>
                         {tickets.map(ticket => {
                           return (
-                            <TicketCard onChangeTicketQuantity={handleChangeTicketQuantity} ticket={ticket} isFree={dados?.is_free} />
+                            <TicketCard key={ticket.id} onChangeTicketQuantity={handleChangeTicketQuantity} ticket={ticket} isFree={dados?.is_free} />
                           )
                         })}
                       </Row>
@@ -235,10 +243,13 @@ export const AvailableTicketsContainer = ({ item, handleCheckout, syncCartItems 
 
                       <div className="box-button-landing justify-content-center" >
 
-                        <ButtonEventozz backgroundColor={dados?.cor_secundaria ? dados?.cor_secundaria : '#001d4a'} callback={addCar} marginTop={25}>
-                          Finalizar<i className='btn-comprar-agora bx bx-money'></i>
+                        <ButtonEventozz backgroundColor={dados?.cor_secundaria ? dados?.cor_secundaria : '#001d4a'} callback={addTicketsToCart} marginTop={25}>
+                          Finalizar<i id='icon-botao-finalizar' className='btn-comprar-agora bx bx-money'></i>
                         </ButtonEventozz>
                       </div>
+                      {
+                        showSimplifiedLogin && !userToken ? <SimplifiedAuthContainer /> : null
+                      }
                     </>
                   ) : (
                     <div className="event-empty-tickets">

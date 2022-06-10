@@ -1,12 +1,8 @@
-import { Axios } from './axios';
+import { api } from './api';
 
 const servicesEventozz = {
   getEventzzGeneral: async () => {
-    const response = await Axios.get("/list/eventzzGeneral", {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
+    const response = await api.get("/list/eventzzGeneral")
       .then(({ ...response }) => {
         return response;
       }).catch(({ ...response }) => {
@@ -16,14 +12,12 @@ const servicesEventozz = {
     return response;
   },
   getEventzz: async () => {
-    const response = await Axios.get("/list/eventzz", {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
+    // console.log('there');
+    const response = await api.get("/list/eventzz")
       .then(({ ...response }) => {
         return response;
-      }).catch(({ ...response }) => {
+      }).catch(( response ) => {
+        console.log('catch -> ', response);
         return response;
       });
 
@@ -31,10 +25,10 @@ const servicesEventozz = {
   },
   getEvent: async (slug) => {
 
-    const response = await Axios.get("/list/eventzz/especific?slug=" + slug,
+    const response = await api.get("/list/eventzz/especific",
       {
-        headers: {
-          'Content-Type': 'application/json',
+        params: {
+          slug
         }
       }
     )
@@ -47,13 +41,10 @@ const servicesEventozz = {
   },
   getTickets: async (id) => {
 
-    const response = await Axios.get("/list/tickets",
+    const response = await api.get("/list/tickets",
       {
         params: {
           eventId: id
-        },
-        headers: {
-          'Content-Type': 'application/json',
         }
       }
     )
@@ -64,13 +55,8 @@ const servicesEventozz = {
       });
     return response;
   },
-  getUserEventzz: async ({ accessToken }) => {
-    const response = await Axios.get("/list/user-eventzz", {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      }
-    })
+  getUserEventzz: async () => {
+    const response = await api.get("/list/user-eventzz")
       .then(({ ...response }) => {
         return response;
       }).catch(({ ...response }) => {
@@ -79,16 +65,12 @@ const servicesEventozz = {
 
     return response;
   },
-  findEvent: async ({ accessToken, eventId }) => {
+  findEvent: async ({ eventId }) => {
 
-    const response = await Axios.get("/list/eventzz/find",
+    const response = await api.get("/list/eventzz/find",
       {
         params: {
           eventId
-        },
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
         }
       }
     )
@@ -101,13 +83,10 @@ const servicesEventozz = {
   },
   getTicketsSoldNumber:  async ({ eventId }) => {
 
-    const response = await Axios.get("/eventzz/get-tickets-sold-number",
+    const response = await api.get("/eventzz/get-tickets-sold-number",
       {
         params: {
           eventId
-        },
-        headers: {
-          'Content-Type': 'application/json',
         }
       }
     )

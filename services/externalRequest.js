@@ -1,4 +1,4 @@
-import { ApiCEP } from './axios';
+import { ApiCEP } from './api';
 
 
 const ServicesExternal = {

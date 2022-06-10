@@ -15,9 +15,8 @@ const Checkout = () => {
   const pagesVisited = pageNumber * coinsPerPage;
 
   const getCartItems = useCallback(async () => {
-    let accessToken = window.localStorage.getItem("accessToken");
 
-    const result = await shoppingCartService.listShoppingCartAll(accessToken);
+    const result = await shoppingCartService.listShoppingCartAll();
     console.log("=====")
     var data = result?.data?.data;
     console.log(data)

@@ -1,4 +1,5 @@
 import StringMask from "string-mask";
+import { onlyNumbers, onlyUnsignedNumbers } from "./strings";
 
 export const isValidCnpj = (cnpjString) => {
   cnpjString = onlyNumbers(cnpjString);
@@ -162,7 +163,7 @@ export const isValidExpirationDate = (expirationDate) => {
   if (expirationDateTemp < today) {
     return false;
   }
-  console.log('there');
+  // console.log('there');
   return true;
 };
 

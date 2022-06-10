@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { isValidCpf, cpfMask, phoneMaskForList, onlyUnsignedNumbers, dateMask, isValidDate, formatDate, cepMask } from '../../utils/strings';
 import Services from '../../services/login';
 import ServicesExternal from '../../services/externalRequest';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import GoogleLogin from 'react-google-login';
-import { AuthContext } from '../../context/auth';
+import { useAuth } from '../../context/auth';
 import { useRouter } from 'next/router';
 
 const RegisterForm = ({
@@ -15,9 +14,8 @@ const RegisterForm = ({
 }) => {
 
   const router = useRouter();
-  const authContext = useContext(AuthContext);
 
-  const { setUserToken } = authContext;
+  const { setUserToken, setUserName } = useAuth();
   const [etapa, setEtapa] = useState(1);
 
   const [fullName, setFullName] = useState("");
@@ -96,15 +94,15 @@ const RegisterForm = ({
         console.log(googleId)
         setLoading(true);
         if (googleId) {
-          var response = await Services.CreateLoginGoogle(
-            email, cpf, fullName, telefone, password, cep,
-            state, city, district, street, number, nascimento = formatDate(nascimento), googleId, organizer
-          );
+          var response = await Services.CreateLoginGoogle({
+            email, cpf: onlyUnsignedNumbers(cpf), fullName, telefone: onlyUnsignedNumbers(telefone), password, cep: onlyUnsignedNumbers(cep),
+            state, city, district, street, number, nascimento: formatDate(nascimento), googleId, organizer
+          });
         } else {
-          var response = await Services.CreateLoginNative(
-            email, cpf, fullName, telefone, password, cep,
-            state, city, district, street, number, nascimento = formatDate(nascimento), organizer
-          );
+          var response = await Services.CreateLoginNative({
+            email, cpf: onlyUnsignedNumbers(cpf), fullName, telefone: onlyUnsignedNumbers(telefone), password, cep: onlyUnsignedNumbers(cep),
+            state, city, district, street, number, nascimento: formatDate(nascimento), organizer
+          });
         }
         setLoading(false);
 
@@ -113,6 +111,7 @@ const RegisterForm = ({
           if (response?.data?.token) {
             window.localStorage.setItem("accessToken", response?.data?.token);
             setUserToken(response?.data?.token);
+            setUserName(response?.data?.user?.name);
             if (organizer) {
               window.location.href = `${process.env.NEXT_PUBLIC_APP_URL}?token=${result?.data?.token}`;
             } else {

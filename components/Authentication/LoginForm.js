@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 import { isValidCpf, onlyUnsignedNumbers } from '../../utils/strings';
 import Services from '../../services/login';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import GoogleLogin from 'react-google-login';
-import { AuthContext } from '../../context/auth';
+import { useAuth } from '../../context/auth';
 import { useRouter } from 'next/router';
 
 const LoginForm = ({
@@ -13,16 +12,14 @@ const LoginForm = ({
   setPayloadNewAccount = false
 }) => {
   const router = useRouter();
-  const authContext = useContext(AuthContext);
-  const { setUserToken, setUserName } = authContext;
+  
+  const { setUserToken, setUserName } = useAuth();
 
   const [emailCPF, setEmailCPF] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function responseGoogle(response) {
-    console.log("========");
-    console.log(response);
 
     let isError = false;
     let Error = '';
@@ -43,6 +40,7 @@ const LoginForm = ({
         if (result?.data?.token) {
           window.localStorage.setItem("accessToken", result?.data?.token);
           setUserToken(result?.data?.token);
+          setUserName(result?.data?.user?.name);
           if (organizer) {
             window.location.href = `${process.env.NEXT_PUBLIC_APP_URL}?token=${result?.data?.token}`;
           } else {
@@ -105,6 +103,7 @@ const LoginForm = ({
       if (response.status == 200) {
         if (response?.data?.token) {
           window.localStorage.setItem("accessToken", response?.data?.token);
+          setUserName(response?.data?.user?.name);
           setUserToken(response?.data?.token);
           if (organizer) {
             window.location.href = `${process.env.NEXT_PUBLIC_APP_URL}?token=${result?.data?.token}`;
@@ -133,7 +132,7 @@ const LoginForm = ({
       })
     }
   }
-  
+
   const Loading = () => (
     <div class="spinner-border loading-button" role="status">
       <span class="sr-only"></span>
@@ -141,8 +140,6 @@ const LoginForm = ({
   )
 
   return (
-    <>
-      {/* <ToastContainer /> */}
       <div className='col-lg-6 col-md-12'>
         <div className='login-form'>
           <h2>Já sou cliente</h2>
@@ -192,13 +189,8 @@ const LoginForm = ({
 
           </form>
 
-
-
-
-
         </div>
       </div>
-    </>
   );
 };
 

@@ -1,15 +1,11 @@
-import { Axios } from './axios';
+import { api } from './api';
 
 const shoppingCartService = {
-  saveShoppingCart: async (car, accessToken) => {
-    const response = await Axios.post("/purchase/shopping-cart",
+  saveShoppingCart: async ({cart, cartId}) => {
+    const response = await api.post("/purchase/shopping-cart",
       {
-        car
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`
-        }
+        cart,
+        cartId
       }
     )
       .then(({ ...response }) => {
@@ -19,13 +15,11 @@ const shoppingCartService = {
       });
     return response;
   },
-  listShoppingCart: async (eventId, accessToken) => {
-    const response = await Axios.get("/purchase/list-shopping-cart", {
+  listShoppingCart: async ({eventId, cartId}) => {
+    const response = await api.get("/purchase/list-shopping-cart", {
       params: {
-        eventId
-      },
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
+        eventId,
+        cartId
       }
     })
       .then(({ ...response }) => {
@@ -35,13 +29,8 @@ const shoppingCartService = {
       });
     return response;
   },
-  listShoppingCartAll: async (accessToken) => {
-    const response = await Axios.get("/purchase/list-shopping-cart-all",
-    {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    })
+  listShoppingCartAll: async () => {
+    const response = await api.get("/purchase/list-shopping-cart-all")
       .then(({ ...response }) => {
         return response;
       }).catch(({ ...response }) => {
@@ -49,13 +38,8 @@ const shoppingCartService = {
       });
     return response;
   },
-  updateQuantityShoppingCart: async ({idInShoppingCart, quantity, accessToken}) => {
-    const response = await Axios.put("/purchase/update-quantity-shopping-cart", {idInShoppingCart, quantity},
-    {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    })
+  updateQuantityShoppingCart: async ({idInShoppingCart, quantity}) => {
+    const response = await api.put("/purchase/update-quantity-shopping-cart", {idInShoppingCart, quantity})
       .then(({ ...response }) => {
         return response;
       }).catch(({ ...response }) => {
@@ -63,13 +47,10 @@ const shoppingCartService = {
       });
     return response;
   },
-  deleteShoppingCartItem: async ({idInShoppingCart, accessToken}) => {
-    const response = await Axios.delete("/purchase/delete-shopping-cart-item", {
+  deleteShoppingCartItem: async ({idInShoppingCart}) => {
+    const response = await api.delete("/purchase/delete-shopping-cart-item", {
       data: {
         idInShoppingCart
-      },
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
       }
     })
       .then(({ ...response }) => {
@@ -79,15 +60,12 @@ const shoppingCartService = {
       });
     return response;
   },
-  getCouponId: async ({couponCode, eventId, accessToken}) => {
-    const response = await Axios.get("/purchase/get-coupon-info",
+  getCouponId: async ({couponCode, eventId}) => {
+    const response = await api.get("/purchase/get-coupon-info",
     {
       params: {
         couponCode,
         eventId
-      },
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
       }
     })
       .then(({ ...response }) => {

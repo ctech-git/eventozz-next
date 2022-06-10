@@ -7,7 +7,7 @@ import { EventzzContainer } from '../components/EventzzContainer';
 import { MetaTagsIndex } from '../components/MetaTagsIndex';
 
 const Index = ({ events }) => {
-  console.log('eventos -> ', events);
+  // console.log('eventos -> ', events);
   return (
     <>
       <MetaTagsIndex />
@@ -23,7 +23,7 @@ export default Index;
 
 export async function getServerSideProps() {
   const result = await servicesEventozz.getEventzz();
-  console.log(result);
+  // console.log('result -> ', result);
 
   let response = [];
 

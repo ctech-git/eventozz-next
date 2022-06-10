@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
-import { Row, Col } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
 import PaymentArea from '../../components/Trade/PaymentArea';
@@ -18,6 +17,7 @@ import { AvailableTicketsContainer } from '../../components/AvailableTicketsCont
 import { EventDetails } from '../../components/EventDetails';
 import { EventWarning } from '../../components/EventWarning';
 import { BannerEvent } from '../../components/BannerEvento';
+import { useCart } from '../../context/cart';
 
 export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate, ticketsSold }) => {
 
@@ -30,6 +30,8 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
   const [showCheckout, setShowCheckout] = useState(false);
   const [hideOnCheckout, setHideOnCheckout] = useState(false);
 
+  const { cartId } = useCart();
+
   useEffect(() => {
     if (eventDate != '') {
       const eventDayAux = new Date(eventDate);
@@ -38,10 +40,9 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
     }
   }, [eventDate]);
 
-  const getCartItems = async () => {
+  const getCartItems = async ({cartIdTemp=false}) => {
     setIsLoadingCartItem(true);
-    const accessToken = window.localStorage.getItem("accessToken");
-    const result = await shoppingCartService.listShoppingCart(event.id, accessToken);
+    const result = await shoppingCartService.listShoppingCart({eventId: event.id, cartId: cartIdTemp ? cartIdTemp : cartId});
     var data = result?.data?.data;
     if (data?.length > 0) {
       setCartItems(data);
@@ -61,9 +62,8 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
     if (quantity < 0) {
       return;
     }
-    const accessToken = window.localStorage.getItem("accessToken");
     setIsLoadingCartItem(true);
-    const result = await shoppingCartService.updateQuantityShoppingCart({ idInShoppingCart, quantity, accessToken });
+    const result = await shoppingCartService.updateQuantityShoppingCart({ idInShoppingCart, quantity });
     var data = result?.data;
     if (data?.success) {
       getCartItems();
@@ -75,9 +75,8 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
 
   const handleDeleteItem = async (idInShoppingCart) => {
 
-    const accessToken = window.localStorage.getItem("accessToken");
     setIsLoadingCartItem(true);
-    const result = await shoppingCartService.deleteShoppingCartItem({ idInShoppingCart, accessToken });
+    const result = await shoppingCartService.deleteShoppingCartItem({ idInShoppingCart });
     var data = result?.data;
     if (data?.success) {
       getCartItems();

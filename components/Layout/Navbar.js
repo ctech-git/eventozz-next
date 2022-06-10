@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Button } from 'react-bootstrap';
-import { AuthContext } from '../../context/auth';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../context/auth';
 import Link from '../../utils/ActiveLink';
 import { useRouter } from 'next/router'
 
@@ -8,9 +7,8 @@ import { useRouter } from 'next/router'
 const Navbar = () => {
   const router = useRouter()
 
-  const authContext = useContext(AuthContext);
   const [showMenu, setshowMenu] = useState(false);
-  const { userToken, logout } = authContext;
+  const { userToken, logout } = useAuth();
   const toggleMenu = () => {
     setshowMenu(!showMenu);
   };

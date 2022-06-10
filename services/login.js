@@ -1,19 +1,12 @@
-import { Axios } from './axios';
-
+import { api } from './api';
 
 const Services = {
   LoginNative: async (cpfEmail, senha, organizer) => {
-    const response = await Axios.post("/signin",
+    const response = await api.post("/signin",
       {
         cpfEmail: cpfEmail,
         password: senha,
         organizer
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Authorization': `Bearer ${token}`
-        }
       }
     )
       .then(({ ...response }) => {
@@ -23,7 +16,7 @@ const Services = {
       });
     return response;
   },
-  CreateLoginGoogle: async (
+  CreateLoginGoogle: async ({
     email,
     cpf,
     fullName,
@@ -38,8 +31,8 @@ const Services = {
     nascimento,
     googleId,
     organizer
-  ) => {
-    const response = await Axios.post("/signup/google",
+  }) => {
+    const response = await api.post("/signup/google",
       {
         email: email,
         cpf: cpf,
@@ -55,12 +48,6 @@ const Services = {
         password: password,
         googleId: googleId,
         organizer
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Authorization': `Bearer ${token}`
-        }
       }
     )
       .then(({ ...response }) => {
@@ -70,7 +57,7 @@ const Services = {
       });
     return response;
   },
-  CreateLoginNative: async (
+  CreateLoginNative: async ({
     email,
     cpf,
     fullName,
@@ -84,8 +71,8 @@ const Services = {
     number,
     nascimento,
     organizer
-  ) => {
-    const response = await Axios.post("/signup",
+  }) => {
+    const response = await api.post("/signup",
       {
         email: email,
         cpf: cpf,
@@ -100,12 +87,6 @@ const Services = {
         number: number,
         password: password,
         organizer
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Authorization': `Bearer ${token}`
-        }
       }
     )
       .then(({ ...response }) => {
@@ -116,16 +97,10 @@ const Services = {
     return response;
   },
   LoginWithGoogle: async (tokenId, organizer) => {
-    const response = await Axios.post("/signin/google",
+    const response = await api.post("/signin/google",
       {
         tokenId: tokenId,
         organizer
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Authorization': `Bearer ${token}`
-        }
       }
     )
       .then(({ ...response }) => {

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import checkoutService from '../../services/checkout';
 import servicesExternal from '../../services/externalRequest';
 import { isValidCreditCardNumber, isValidExpirationDate } from '../../utils/fieldValidation';
-import { cepMask, convertMoney, cpfCnpjMask, cpfMask, cvvMask, expirationDateMask, isValidCnpj, isValidCpf, isValidEmail, onlyUnsignedNumbers, phoneMaskForList, stringNormalize } from '../../utils/strings';
+import {  isValidCnpj, isValidCpf, isValidEmail, onlyUnsignedNumbers, stringNormalize } from '../../utils/strings';
 import PageBanner from '../Common/PageBanner';
 import { useMediaQuery } from 'react-responsive';
 import Image from 'next/image'
@@ -15,10 +15,17 @@ import SuccessImage from '../../public/images/success.svg';
 import WaitingImage from '../../public/images/waiting.svg';
 import { scrollToElement } from '../../utils/scrollTo';
 import { copyToClipboard } from '../../utils/functions';
+import { useCart } from '../../context/cart';
+import { TicketDataForm } from '../TicketDataForm';
+import { MobileTicketsTable } from '../TicketsTable/Mobile';
+import { TicketsTable } from '../TicketsTable/Desktop';
+import { CreditCardFields } from '../CreditCardFields';
+import styles from './styles.module.scss';
 
 const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, setHideOnCheckout, hideOnCheckout, seller }) => {
 
     const isMobile = useMediaQuery({ maxWidth: 768 })
+    const {cartId} = useCart(); 
     const [deletedTicketId, setDeletedTicketId] = useState(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [ticketsData, setTicketsData] = useState([]);
@@ -79,27 +86,6 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         setShowConfirmModal(false);
         setDeletedTicketId(null);
     }
-
-    useEffect(() => {
-        generateInputTicketsData();
-        setShowPayment(false);
-        getAvailablePaymentInfo();
-        getAvailablePaymentOptions();
-    }, [cartItems]);
-
-    useEffect(() => {
-        getAvailablePaymentInfo();
-    }, [couponId]);
-
-    useEffect(() => {
-        setTimeout(() => {
-            if (showErrorOnPayment) {
-                scrollToElement({ id: 'container-feedback-error' });
-            } else if (showConfirmationPayment) {
-                scrollToElement({ id: 'container-feedback-success' });
-            }
-        }, 1000);
-    }, [showErrorOnPayment, showConfirmationPayment])
 
     const ConfirmDeleteModal = () => (
         <Modal show={showConfirmModal}>
@@ -164,8 +150,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
     const getAvailablePaymentInfo = useCallback(async () => {
         setIsLoadingCheckout(true);
-        let accessToken = window.localStorage.getItem("accessToken");
-        const response = await checkoutService.getPaymentInfo({ accessToken, params: { eventId: dados?.id ? dados?.id : '', couponId: couponId ? couponId : false } });
+        const response = await checkoutService.getPaymentInfo({ eventId: dados?.id ? dados?.id : '', couponId: couponId ? couponId : false, cartId });
         if (response?.data?.success && response?.data?.data) {
             const data = response.data.data;
             console.log("=======");
@@ -179,8 +164,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
     const getAvailablePaymentOptions = useCallback(async () => {
         setIsLoadingCheckout(true);
-        let accessToken = window.localStorage.getItem("accessToken");
-        const response = await checkoutService.getPaymentOptions({ accessToken, params: { eventId: dados?.id ? dados?.id : '' } });
+        const response = await checkoutService.getPaymentOptions({ params: { eventId: dados?.id ? dados?.id : '' } });
         if (response?.data?.success && response?.data?.data) {
             const data = response.data.data;
             console.log("=======");
@@ -192,10 +176,9 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
     const handleUseMyAccountData = async ({ checked, ticketsDataIndex, ticketIndex, idIngresso }) => {
         if (checked) {
-            let accessToken = window.localStorage.getItem("accessToken");
             setTextLoading("Buscando dados da conta");
             setIsLoadingCheckout(true);
-            const result = await checkoutService.getCustomerForCheckout(accessToken)
+            const result = await checkoutService.getCustomerForCheckout()
             if (result.status === 200) {
                 const data = result.data.data;
 
@@ -260,9 +243,9 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             ticketType.map((ticket, i) => {
                 if (
                     ticket.name.length < 2
-                    || !isValidCpf(ticket.cpf)
+                    || (ticket.cpf?.length > 0 && !isValidCpf(ticket.cpf))
                     || ticket.phone.length < 10
-                    || !isValidEmail(ticket.email)
+                    || (!isValidEmail(ticket.email) && ticket.email?.length > 0)
                 ) {
                     showErrorTemp = true;
                 }
@@ -286,9 +269,9 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             ticketType.map((ticket, i) => {
                 if (
                     ticket.name.length < 2
-                    || !isValidCpf(ticket.cpf)
+                    || (ticket.cpf?.length > 0 && !isValidCpf(ticket.cpf))
                     || ticket.phone.length < 10
-                    || !isValidEmail(ticket.email)
+                    || (!isValidEmail(ticket.email) && ticket.email?.length > 0)
                 ) {
                     showErrorTemp = true;
                 }
@@ -552,13 +535,12 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
 
         let payments = await generatePayment();
         console.log(ticketsDataTemp);
-        let accessToken = window.localStorage.getItem("accessToken");
         const body = {
             couponId, eventId, installmentsNumber, paymentMethod, ticketsData: ticketsDataTemp,
-            ticketsQtd, isFree: dados?.is_free, payments, seller
+            ticketsQtd, isFree: dados?.is_free, payments, seller, cartId
         }
 
-        const response = await checkoutService.purchaseSave({ accessToken, body });
+        const response = await checkoutService.purchaseSave({ body });
 
         setTextLoading("");
         setIsLoadingCheckout(false);
@@ -787,6 +769,28 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         scrollToElement({ id: 'container-checkout' })
     }
 
+
+    useEffect(() => {
+        generateInputTicketsData();
+        setShowPayment(false);
+        getAvailablePaymentInfo();
+        getAvailablePaymentOptions();
+    }, [cartItems]);
+
+    useEffect(() => {
+        getAvailablePaymentInfo();
+    }, [couponId]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            if (showErrorOnPayment) {
+                scrollToElement({ id: 'container-feedback-error' });
+            } else if (showConfirmationPayment) {
+                scrollToElement({ id: 'container-feedback-success' });
+            }
+        }, 1000);
+    }, [showErrorOnPayment, showConfirmationPayment])
+
     return (
         <div className='container' id='container-checkout'>
             <PageBanner
@@ -807,163 +811,13 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                         }
                         {
                             isMobile ? (
-                                <>
-                                    {cartItems && cartItems.length > 0 &&
-                                        cartItems.map((cartItem) => {
-                                            return (
-                                                <div className='container-ticket-responsivo'>
-                                                    <Row className='pb-2'>
-                                                        <Col xs={4}>
-                                                            <Image src={cartItem?.foto} className='image-evento-tabela' alt='image' width={100} height={83} />
-                                                        </Col>
-                                                        <Col xs={8}>
-                                                            <label>Evento</label>
-                                                            <h3 className='mb-0 crypto-name'>{cartItem.nomeEvento}</h3>
-                                                        </Col>
-                                                    </Row>
-                                                    <Row className='pb-2'>
-                                                        <Col xs={12}>
-                                                            <label>Tipo de ingresso</label>
-                                                            <h6>{cartItem.nome}</h6>
-                                                        </Col>
-                                                    </Row>
-                                                    <Row className='pb-2'>
-                                                        <Col xs={6}>
-                                                            <label>Quantidade</label>
-                                                            <h6>{cartItem?.quantidade}</h6>
-                                                        </Col>
-                                                        <Col xs={6}>
-                                                            <label>Valor Total</label>
-                                                            <h6>{dados?.is_free ? 'Gratuito' : convertMoney((cartItem.qtdPromocional > 0 && Number(cartItem.quantidade) >= cartItem.qtdPromocional ? cartItem.valorPromocional : cartItem.valor) * cartItem?.quantidade)}</h6>
-                                                        </Col>
-                                                    </Row>
-                                                    {
-                                                        !showPayment && !hideOnCheckout &&
-                                                        (<Row className='pb-2'>
-                                                            <Col xs={12}>
-                                                                <div className='container-acoes-responsivo d-flex justify-content-center pt-3'>
-
-
-                                                                    <div className='container-left'>
-                                                                        <a class="btn btn-outline-danger" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: cartItem.quantidade - 1, cartItem })}><span><i class="fa fa-minus"></i></span></a>
-                                                                    </div>
-                                                                    <div className='container-excluir' onClick={() => handleShowConfirmDeleteItem(cartItem.idInShoppingCar)}>
-                                                                        <div><span><i className="fa fa-trash"></i></span></div>
-                                                                        <div className='underline texto-excluir'>Excluir</div>
-                                                                    </div>
-                                                                    <div className='container-right'>
-                                                                        <a class="btn btn-outline-success" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: Number(cartItem.quantidade) + 1, cartItem })}><span><i class="fa fa-plus"></i></span></a>
-                                                                    </div>
-
-                                                                </div>
-                                                            </Col>
-                                                        </Row>
-                                                        )}
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                    <div className='container-ticket-responsivo resumo'>
-                                        <Row className='pb-2'>
-                                            <Col xs={12}>
-                                                <label>{
-                                                    dados?.is_free ? (
-                                                        'Total'
-                                                    ) : (
-                                                        'Total (com taxas administrativas)'
-                                                    )}
-                                                </label>
-                                                {dados?.is_free ? <h3 className='mb-0 crypto-name'>Gratuito</h3> :
-                                                    <h3 className='mb-0 crypto-name'>{paymentMethod === 'pix' ?
-                                                        pixValue ? convertMoney(pixValue) : ''
-                                                        : installmentOptions[0]?.value ?
-                                                            `A partir de ${convertMoney(installmentOptions[0]?.totalValue)}`
-                                                            : ''}</h3>}
-                                            </Col>
-                                        </Row>
-                                        <Row className='pb-2'>
-                                            <Col xs={12}>
-                                                <label>Quantidade de ingressos</label>
-                                                <h6>{totalTickets}</h6>
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                </>
+                                <MobileTicketsTable cartItems={cartItems} dados={dados} handleChangeTicketQuantity={handleChangeTicketQuantity} 
+                                    handleShowConfirmDeleteItem={handleShowConfirmDeleteItem} hideOnCheckout={hideOnCheckout} showPayment={showPayment} 
+                                    totalTickets={totalTickets}  />
                             ) : (
-                                <table className='table'>
-                                    <thead>
-                                        <tr>
-                                            <th scope='col'>Evento</th>
-                                            <th scope='col'>Ingresso</th>
-                                            <th scope='col'>Quantidade</th>
-                                            <th scope='col'>Valor</th>
-                                            <th scope='col'></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {cartItems && cartItems.length > 0 &&
-                                            cartItems.map((cartItem) => {
-                                                return (
-                                                    <tr key={cartItem.idInShoppingCar}>
-                                                        <td>
-                                                            <div className='d-flex align-items-center crypto-image'>
-                                                                <Image src={cartItem?.foto} alt='image' width={120} height={90} />
-                                                                <h3 className='mb-0 crypto-name'>{cartItem.nomeEvento}</h3>
-                                                            </div>
-                                                        </td>
-                                                        <td>{cartItem.nome}</td>
-                                                        <td><span className='trending up'>{cartItem?.quantidade}</span></td>
-                                                        <td>{dados?.is_free ? 'Gratuito' : convertMoney((cartItem.qtdPromocional > 0 && Number(cartItem.quantidade) >= cartItem.qtdPromocional ? cartItem.valorPromocional : cartItem.valor) * cartItem?.quantidade)}</td>
-
-                                                        {
-                                                            !showPayment && !hideOnCheckout &&
-                                                            (
-                                                                <td>
-                                                                    <div className='d-flex container-acoes'>
-
-
-                                                                        <div className='container-left'>
-                                                                            <a class="btn btn-outline-danger" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: cartItem.quantidade - 1, cartItem })}><span><i class="fa fa-minus"></i></span></a>
-                                                                        </div>
-                                                                        <div className='container-excluir' onClick={() => handleShowConfirmDeleteItem(cartItem.idInShoppingCar)}>
-                                                                            <div><span><i className="fa fa-trash"></i></span></div>
-                                                                            <div className='underline texto-excluir'>Excluir</div>
-                                                                        </div>
-                                                                        <div className='container-right'>
-                                                                            <a class="btn btn-outline-success" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: Number(cartItem.quantidade) + 1, cartItem })}><span><i class="fa fa-plus"></i></span></a>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </td>
-                                                            )
-                                                        }
-                                                    </tr>
-                                                )
-                                            })}
-                                        {
-                                            couponInfo?.value && couponInfo?.code && (
-                                                <tr>
-                                                    <td><h3 className='mb-0 crypto-name'>Cupom</h3></td>
-                                                    <td>{couponInfo.code}</td>
-                                                    <td></td>
-                                                    <td>{couponInfo.value}</td>
-                                                    <td></td>
-                                                </tr>
-                                            )
-                                        }
-                                        <tr>
-                                            <td><h3 className='mb-0 crypto-name'>{dados?.is_free ? 'Total' : 'Total (com taxas administrativas)'}</h3></td>
-                                            <td></td>
-                                            <td>{totalTickets}</td>
-                                            <td>{dados?.is_free ? ('Gratuito') :
-                                                (paymentMethod === 'pix' ?
-                                                    (pixValue ? convertMoney(pixValue) : '')
-                                                    : (installmentOptions[0]?.value ? `A partir de ${convertMoney(installmentOptions[0]?.totalValue)}` : ''))}
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <TicketsTable cartItems={cartItems} couponInfo={couponInfo} dados={dados} handleChangeTicketQuantity={handleChangeTicketQuantity}
+                                    handleShowConfirmDeleteItem={handleShowConfirmDeleteItem} hideOnCheckout={hideOnCheckout} installmentOptions={installmentOptions}
+                                    paymentMethod={paymentMethod} pixValue={pixValue} showPayment={showPayment} totalTickets={totalTickets} />
                             )
                         }
 
@@ -990,41 +844,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                 Object.values(ticketsData).length > 0 ? (
                                     Object.values(ticketsData).map((ticketType, index) => (
                                         ticketType.map((ticket, i) => (
-                                            <Row className='container-tickets-data'>
-                                                <Col xs={12}>
-                                                    <h4>{ticket.description}</h4>
-                                                </Col>
-                                                <Row className='container-tickets-inputs'>
-                                                    {
-                                                        ((ticket.idIngresso === ticketIdUsingMyAccountData && i === 0)
-                                                            || (!ticketIdUsingMyAccountData && i === 0)) &&
-                                                        <Col className='pb-3 pt-3' xs={12}>
-                                                            <Form.Check
-                                                                type='checkbox'
-                                                                id={`default-checkbox`}
-                                                                label={`Usar os dados da minha conta`}
-                                                                onChange={(e) => handleUseMyAccountData({ checked: e.target.checked, ticketsDataIndex: index, ticketIndex: i, idIngresso: ticket.idIngresso })}
-                                                            />
-                                                        </Col>
-                                                    }
-                                                    <Col className='pb-3' xs={12} md={6}>
-                                                        <Form.Control className={showInputErros && ticket.name.length < 2 ? 'input-error' : ''} type="text" value={ticket.name} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'name', ticketsDataIndex: index, ticketIndex: i })} name="nome_completo" placeholder="Nome Completo" />
-                                                        {showInputErros && ticket.name.length < 2 && <Form.Text className="text-error">Informe o nome completo da pessoa que irá utilizar o ingresso.</Form.Text>}
-                                                    </Col>
-                                                    <Col className='pb-3' xs={12} md={6}>
-                                                        <Form.Control className={showInputErros && !isValidCpf(ticket.cpf) ? 'input-error' : ''} type="text" value={cpfMask(ticket.cpf)} onChange={(e) => handleChangeTicketData({ value: onlyUnsignedNumbers(e.target.value), field: 'cpf', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="cpf" placeholder="CPF" maxlength="14" />
-                                                        {showInputErros && !isValidCpf(ticket.cpf) && <Form.Text className="text-error">Informe o cpf da pessoa que irá utilizar o ingresso.</Form.Text>}
-                                                    </Col>
-                                                    <Col className='pb-3' xs={12} md={6}>
-                                                        <Form.Control className={showInputErros && ticket.phone.length < 10 ? 'input-error' : ''} type="text" value={phoneMaskForList(ticket.phone)} onChange={(e) => handleChangeTicketData({ value: onlyUnsignedNumbers(e.target.value), field: 'phone', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="telefone" placeholder="Telefone" id="telefone_2" required="" maxlength="16" />
-                                                        {showInputErros && ticket.phone.length < 10 && <Form.Text className="text-error">Informe um número válido (Enviaremos o qr code do ingresso por WhatsApp).</Form.Text>}
-                                                    </Col>
-                                                    <Col className='pb-3' xs={12} md={6}>
-                                                        <Form.Control className={showInputErros && !isValidEmail(ticket.email) ? 'input-error' : ''} type="email" value={ticket.email} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'email', ticketsDataIndex: index, ticketIndex: i })} name="email" placeholder="Email" />
-                                                        {showInputErros && !isValidEmail(ticket.email) && <Form.Text className="text-error">Informe um email válido (Enviaremos o qr code do ingresso).</Form.Text>}
-                                                    </Col>
-                                                </Row>
-                                            </Row>
+                                            <TicketDataForm key={ticket.id} ticket={ticket} i={i} index={index} ticketIdUsingMyAccountData={ticketIdUsingMyAccountData} 
+                                               handleUseMyAccountData={handleUseMyAccountData} showInputErros={showInputErros} handleChangeTicketData={handleChangeTicketData} />
                                         ))
                                     ))
                                 ) : (
@@ -1040,10 +861,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     showPayment && !hideOnCheckout && (
                         <>
                             <Row id="container-payment-checkout" className='container-checkout pb-5'>
-                                <Col xs={12} sm={6} className='pt-3'>
-                                    {/* <div className='section-title'> */}
+                                <Col xs={12} sm={6} className={`pt-3 ${styles.inputContainer}`}>
                                     <h3>Escolha a forma de pagamento</h3>
-                                    {/* </div> */}
                                     <Form.Select value={paymentMethod} onChange={(e) => handlePaymentMethod(e.target.value)}>
                                         <option>Selecione uma opção</option>
                                         {
@@ -1054,10 +873,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                     </Form.Select>
                                 </Col>
 
-                                <Col xs={12} sm={6} className='pt-3'>
-                                    {/* <div className='section-title'> */}
+                                <Col xs={12} sm={6} className={`pt-3 ${styles.inputContainer}`}>
                                     <h3>Cupom de desconto</h3>
-                                    {/* </div> */}
                                     <Row>
                                         <Col xs={6} sm={8}>
                                             <Form.Control placeholder='Insira o código aqui' value={cupom} onChange={(e) => setCoupon(stringNormalize(e.target.value))} />
@@ -1070,102 +887,10 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                             </Row>
                             {
                                 showCreditCardFields && (
-                                    <div className='container-credit-card-inputs'>
-                                        <Row className='pb-4'>
-                                            <Col xs={12}>
-                                                <h3>Dados do Cartão</h3>
-                                            </Col>
-                                            <Col xs={12} md={6} className='pb-3'>
-                                                <Form.Group>
-                                                    <Form.Label>Número do Cartão</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros && !isValidCreditCardNumber(creditCardData.number) ? 'input-error' : ''} value={creditCardData.number} onChange={(e) => handleChangeCreditCardData({ value: onlyUnsignedNumbers(e.target.value), field: 'number' })} placeholder="0000 0000 0000 0000" />
-                                                    {showCheckoutInputErros && !isValidCreditCardNumber(creditCardData.number) && <Form.Text className="text-error">Informe um número de cartão válido.</Form.Text>}
-                                                </Form.Group>
-                                            </Col>
-                                            <Col xs={12} md={6} className='pb-3'>
-                                                <Form.Group>
-                                                    <Form.Label>Data de Vencimento</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={expirationDateMask(creditCardData.expirationDate)} onChange={(e) => handleChangeCreditCardData({ value: onlyUnsignedNumbers(e.target.value), field: 'expirationDate' })} placeholder="00/00" />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe uma data de vencimento válida.</Form.Text>}
-                                                </Form.Group>
-                                            </Col>
-                                            <Col xs={12} md={6} className='pb-3'>
-                                                <Form.Group>
-                                                    <Form.Label>Cod. Segurança</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={cvvMask(creditCardData.cvv)} onChange={(e) => handleChangeCreditCardData({ value: e.target.value, field: 'cvv' })} placeholder="000" />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe um código de segurança válido.</Form.Text>}
-                                                </Form.Group>
-                                            </Col>
-                                            <Col xs={12} md={6} className='pb-3'>
-                                                <Form.Group>
-                                                    <Form.Label>Nome Impresso</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={creditCardData.name} onChange={(e) => handleChangeCreditCardData({ value: stringNormalize(e.target.value), field: 'name' })} />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe o nome como aparece no cartão.</Form.Text>}
-                                                </Form.Group>
-                                            </Col>
-                                            <Col xs={12} md={6} className='pb-3'>
-                                                <Form.Group>
-                                                    <Form.Label>CPF ou CNPJ do portador do cartão</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={cpfCnpjMask(creditCardData.holderDocument)} onChange={(e) => handleChangeCreditCardData({ value: onlyUnsignedNumbers(e.target.value), field: 'holderDocument' })}
-                                                        placeholder="00.000.000/0000-00" />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">Informe o documento do portador do cartão.</Form.Text>}
-                                                </Form.Group>
-                                            </Col>
-                                        </Row>
-
-                                        <Row className='pb-4'>
-                                            <Col xs={12}>
-                                                <h3>Dados da Fatura</h3>
-                                            </Col>
-                                            <Col xs={12} md={6} className='pb-3'>
-                                                <Form.Group>
-                                                    <Form.Label>CEP</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={cepMask(billingData.cep)} onChange={(e) => handlerCep(e)} placeholder="00000-000" />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">O campo CEP é obrigatório.</Form.Text>}
-                                                </Form.Group>
-                                            </Col>
-                                            <Col xs={12} md={6} className='pb-3'>
-                                                <Form.Group>
-                                                    <Form.Label>Endereço</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={billingData.address} onChange={(e) => handleChangeBillingData({ value: e.target.value, field: 'address' })} />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">O campo Endereço é obrigatório.</Form.Text>}
-                                                </Form.Group>
-                                            </Col>
-                                            <Col xs={12} md={6} className='pb-3'>
-                                                <Form.Group>
-                                                    <Form.Label>Cidade</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={billingData.city} onChange={(e) => handleChangeBillingData({ value: e.target.value, field: 'city' })} />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">O campo Cidade é obrigatório.</Form.Text>}
-                                                </Form.Group>
-                                            </Col>
-                                            <Col xs={12} md={6} className='pb-3'>
-                                                <Form.Group>
-                                                    <Form.Label>Estado</Form.Label>
-                                                    <Form.Control className={showCheckoutInputErros ? 'input-error' : ''} value={billingData.state} onChange={(e) => handleChangeBillingData({ value: e.target.value, field: 'state' })} />
-                                                    {showCheckoutInputErros && <Form.Text className="text-error">O campo Estado é obrigatório.</Form.Text>}
-                                                </Form.Group>
-                                            </Col>
-                                        </Row>
-
-                                        <Row className='pb-4'>
-                                            <Col xs={12}>
-                                                <h3>Parcelamento</h3>
-                                            </Col>
-                                            <Col xs={12} md={6} className='pb-3'>
-                                                <Form.Group>
-                                                    <Form.Label>Quantas parcelas?</Form.Label>
-                                                    <Form.Select value={installmentsNumber} onChange={(e) => handleChangeInstallmentNumber(e.target.value)}>
-                                                        <option>Selecione uma opção</option>
-                                                        {
-                                                            installmentOptions.map((item, i) => (
-                                                                <option selected={i === 0 ? true : false} value={item.value}>{item.label}</option>
-                                                            ))
-                                                        }
-                                                    </Form.Select>
-                                                </Form.Group>
-                                            </Col>
-                                        </Row>
-                                    </div>
+                                    <CreditCardFields showCheckoutInputErros={showCheckoutInputErros} creditCardData={creditCardData} 
+                                    handleChangeCreditCardData={handleChangeCreditCardData} billingData={billingData} handlerCep={handlerCep}
+                                    handleChangeBillingData={handleChangeBillingData} installmentsNumber={installmentsNumber} 
+                                    handleChangeInstallmentNumber={handleChangeInstallmentNumber} installmentOptions={installmentOptions} />
                                 )
                             }
                         </>
@@ -1216,12 +941,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                 <Image src={paymentFeedback?.image} layout='fill' alt="Imagem sucesso" />
                             </Col>
                             <Col className='m-auto' xs={12}>
-                                {/* <div className='container-title-feedback' xs={12}>
-                                    <h2>Veja os detalhes na página "Minhas compras"</h2>
-                                </div>
-                                <Col className='container-copy-button' xs={12} sm={6}>
-                                    <a class="default-btn checkout-button  min-height-45" type="button" onClick={() => router.push('/minhas-compras')}><i className='bx bxs-hand-right'></i>Ir para Minhas compras</a>
-                                </Col> */}
+                                
                             </Col>
                         </Row>
                     )

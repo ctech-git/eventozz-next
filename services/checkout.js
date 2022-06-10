@@ -1,12 +1,8 @@
-import { Axios } from './axios';
+import { api } from './api';
 
 const checkoutService = {
-  getCustomerForCheckout: async (accessToken) => {
-    const response = await Axios.get("/user/data-customer-for-checkout", {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`
-        }
-      }
+  getCustomerForCheckout: async () => {
+    const response = await api.get("/user/data-customer-for-checkout"
     )
       .then(({ ...response }) => {
         return response;
@@ -15,12 +11,13 @@ const checkoutService = {
       });
     return response;
   },
-  getPaymentInfo: async ({accessToken, params}) => {
-    const response = await Axios.get("/purchase/payment-info",
+  getPaymentInfo: async ({eventId, couponId, cartId}) => {
+    const response = await api.get("/purchase/payment-info",
     {
-      params: params,
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
+      params: {
+        eventId, 
+        couponId, 
+        cartId
       }
     })
       .then(({ ...response }) => {
@@ -30,13 +27,10 @@ const checkoutService = {
       });
     return response;
   },
-  getPaymentOptions: async ({accessToken, params}) => {
-    const response = await Axios.get("/payment/payment-options",
+  getPaymentOptions: async ({params}) => {
+    const response = await api.get("/payment/payment-options",
     {
-      params: params,
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
+      params: params
     })
       .then(({ ...response }) => {
         return response;
@@ -45,14 +39,9 @@ const checkoutService = {
       });
     return response;
   },
-  purchaseSave: async ({accessToken, body}) => {
-    const response = await Axios.post("/purchase/save", {
+  purchaseSave: async ({body}) => {
+    const response = await api.post("/purchase/save", {
       ...body
-    },
-    {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
     })
       .then(({ ...response }) => {
         return response;

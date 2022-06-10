@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { Col } from "react-bootstrap";
 import { dateLastAccess } from "../../utils/strings";
+import styles from "./styles.module.scss";
 
 export const EventCard = ({event}) => {
 
@@ -14,7 +15,7 @@ export const EventCard = ({event}) => {
       }
 
     return (
-        <Col xs={12} md={4}>
+        <Col key={event.slug} xs={12} md={4} className={styles.eventCardContainer}>
             <div className='single-blog-post' onClick={() => goToEvents(event)}>
                 <div className='post-image'>
                     <a className='d-block'>

@@ -1,23 +1,17 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-//top header
-import TopHeader from './TopHeader';
-
 //navbar
 import Navbar from './Navbar';
-import NavbarTwo from './NavbarTwo';
 
 //footer
 import Footer from './Footer';
-import { useContext, useEffect } from 'react';
-import { AuthContext } from '../../context/auth';
+import { useEffect } from 'react';
+import { useAuth } from '../../context/auth';
 
 const Layout = ({ children }) => {
 
-  const authContext = useContext(AuthContext);
-
-  const { checkUserToken } = authContext;
+  const { checkUserToken } = useAuth();
 
   useEffect(() => {
     checkUserToken();

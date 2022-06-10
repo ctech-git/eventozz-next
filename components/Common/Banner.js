@@ -3,10 +3,10 @@ import axios from 'axios';
 import shoppingCartService from '../../services/cart';
 import { convertMoney, dateLastAccess } from '../../utils/strings';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import servicesEventozz from '../../services/events';
 import { scrollToElement } from '../../utils/scrollTo';
 import { useRouter } from 'next/router';
+import { useCart } from '../../context/cart';
 
 const Banner = ({ item, handleCheckout, syncCartItems }) => {
   const router = useRouter();
@@ -17,6 +17,7 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
   //converter hook
   const [image, setImage] = useState('/images/voucher.png');
   const [isLoadingFinish, setIsLoadingFinish] = useState(false);
+  const { cartId } = useCart()
 
   useEffect(() => {
     if (dados?.id != undefined) {
@@ -25,7 +26,6 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
   }, [dados?.id, syncCartItems]);
 
   async function getTickets() {
-    const accessToken = window.localStorage.getItem("accessToken");
 
     const result = await servicesEventozz.getTickets(dados?.id);
     if (result.status == 200) {
@@ -33,7 +33,7 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
       let ingressos = [];
 
       if (accessToken) {
-        const resultClient = await shoppingCartService.listShoppingCart(dados?.id, accessToken);
+        const resultClient = await shoppingCartService.listShoppingCart({eventId: dados?.id, cartId});
         let vectorClient = resultClient?.data?.data;
         if (vectorClient?.length === 0) {
           ticketTypesInfo.map(a => {
@@ -109,7 +109,6 @@ const Banner = ({ item, handleCheckout, syncCartItems }) => {
   }
 
   async function addCar(type) {
-    let accessToken = window.localStorage.getItem("accessToken");
     if (accessToken) {
       var car = [];
       var value = 0;
