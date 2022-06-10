@@ -11,3 +11,6 @@ up-prod: ## Start the prod server
 
 build-dev: ## Start the local server
 	@bash ./scripts/build-site-dev.sh
+
+build-prod: ## Start the local server
+	@bash ./scripts/build-site-prod.sh
