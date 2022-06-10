@@ -1,7 +1,9 @@
 import { Col, Row } from "react-bootstrap"
 import Image from 'next/image'
+import { convertMoney } from "../../../utils/strings"
 
-export function MobileTicketsTable({ cartItems, dados, totalTickets, showPayment, hideOnCheckout, handleChangeTicketQuantity, handleShowConfirmDeleteItem }) {
+export function MobileTicketsTable({ cartItems, dados, totalTickets, showPayment, hideOnCheckout, handleChangeTicketQuantity, handleShowConfirmDeleteItem ,
+    paymentMethod, pixValue, installmentOptions }) {
     return (
         <>
             {cartItems && cartItems.length > 0 &&
@@ -41,14 +43,14 @@ export function MobileTicketsTable({ cartItems, dados, totalTickets, showPayment
 
 
                                             <div className='container-left'>
-                                                <a class="btn btn-outline-danger" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: cartItem.quantidade - 1, cartItem })}><span><i class="fa fa-minus"></i></span></a>
+                                                <a className="btn btn-outline-danger" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: cartItem.quantidade - 1, cartItem })}><span><i className="fa fa-minus"></i></span></a>
                                             </div>
                                             <div className='container-excluir' onClick={() => handleShowConfirmDeleteItem(cartItem.idInShoppingCar)}>
                                                 <div><span><i className="fa fa-trash"></i></span></div>
                                                 <div className='underline texto-excluir'>Excluir</div>
                                             </div>
                                             <div className='container-right'>
-                                                <a class="btn btn-outline-success" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: Number(cartItem.quantidade) + 1, cartItem })}><span><i class="fa fa-plus"></i></span></a>
+                                                <a className="btn btn-outline-success" onClick={() => handleChangeTicketQuantity({ idInShoppingCart: cartItem.idInShoppingCar, quantity: Number(cartItem.quantidade) + 1, cartItem })}><span><i className="fa fa-plus"></i></span></a>
                                             </div>
 
                                         </div>

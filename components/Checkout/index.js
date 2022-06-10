@@ -813,7 +813,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                             isMobile ? (
                                 <MobileTicketsTable cartItems={cartItems} dados={dados} handleChangeTicketQuantity={handleChangeTicketQuantity} 
                                     handleShowConfirmDeleteItem={handleShowConfirmDeleteItem} hideOnCheckout={hideOnCheckout} showPayment={showPayment} 
-                                    totalTickets={totalTickets}  />
+                                    totalTickets={totalTickets} installmentOptions={installmentOptions} paymentMethod={paymentMethod} pixValue={pixValue} />
                             ) : (
                                 <TicketsTable cartItems={cartItems} couponInfo={couponInfo} dados={dados} handleChangeTicketQuantity={handleChangeTicketQuantity}
                                     handleShowConfirmDeleteItem={handleShowConfirmDeleteItem} hideOnCheckout={hideOnCheckout} installmentOptions={installmentOptions}
