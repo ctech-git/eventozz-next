@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { isValidCpf, cpfMask, phoneMaskForList, onlyUnsignedNumbers, isValidEmail } from '../../../utils/strings';
 import { toast } from 'react-toastify';
 import Services from '../../../services/login';
@@ -18,9 +18,12 @@ export const RegisterForm = ({
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
-  const [telefone, setTelefone] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumberConfirmation, setPhoneNumberConfirmation] = useState("");
   const [password, setpassword] = useState("");
   const [password2, setpassword2] = useState("");
+  const [isValidWhatsApp, setIsValidWhatsApp] = useState(false)
+  const { CreateLoginGoogle: createLoginGoogle, CreateLoginNative: createLoginNative, checkPhoneIsWhatsApp } = Services
 
   const [googleId, setGoogleId] = useState(false);
 
@@ -38,7 +41,9 @@ export const RegisterForm = ({
 
     if (!fullName) { errors.push('Informe seu nome completo') }
     if (!isValidCpf(cpf)) { errors.push('Você precisa informar um CPF válido') }
-    if (!telefone || onlyUnsignedNumbers(telefone)?.length < 10) { errors.push('Informe um número de telefone com DDD') }
+    if (!phoneNumber || onlyUnsignedNumbers(phoneNumber)?.length < 10) { errors.push('Informe um número de telefone com DDD') }
+    if (phoneNumber && onlyUnsignedNumbers(phoneNumber)?.length >= 10 && !isValidWhatsApp ) { errors.push('O número de telefone informado precisa ter WhatsApp') }
+    if (phoneNumber !== phoneNumberConfirmation) { errors.push('Os números de telefone informados não são iguais') }
 
     if (errors?.length === 0) {
       setStep(2)
@@ -55,7 +60,7 @@ export const RegisterForm = ({
 
     if (!fullName) { errors.push('Informe seu nome completo') }
     if (!isValidCpf(cpf)) { errors.push('Você precisa informar um CPF válido') }
-    if (!telefone || onlyUnsignedNumbers(telefone)?.length < 10) { errors.push('Informe um número de telefone com DDD') }
+    if (!phoneNumber || onlyUnsignedNumbers(phoneNumber)?.length < 10) { errors.push('Informe um número de telefone com DDD') }
     if (!isValidEmail(email)) { errors.push('Informe um email válido') }
     if (!googleId && !password) { errors.push('Informe uma senha') }
     if (!googleId && password !== password2) { errors.push('As senhas são diferentes') }
@@ -68,12 +73,12 @@ export const RegisterForm = ({
 
     setLoading(true);
     if (googleId) {
-      var response = await Services.CreateLoginGoogle({
-        email, cpf: onlyUnsignedNumbers(cpf), fullName, telefone: onlyUnsignedNumbers(telefone), googleId, organizer: false
+      var response = await createLoginGoogle({
+        email, cpf: onlyUnsignedNumbers(cpf), fullName, telefone: onlyUnsignedNumbers(phoneNumber), googleId, organizer: false
       });
     } else {
-      var response = await Services.CreateLoginNative({
-        email, cpf: onlyUnsignedNumbers(cpf), fullName, telefone: onlyUnsignedNumbers(telefone), password, organizer: false
+      var response = await createLoginNative({
+        email, cpf: onlyUnsignedNumbers(cpf), fullName, telefone: onlyUnsignedNumbers(phoneNumber), password, organizer: false
       });
     }
     setLoading(false);
@@ -99,11 +104,50 @@ export const RegisterForm = ({
     value = cpfMask(e.target.value);
     setCpf(value)
   }
-  const handlerTelefone = (e) => {
+  const handleChangePhoneNumber = (e) => {
+    let value = e.target.value;
+    if (onlyUnsignedNumbers(value)?.length === 11) {
+      checkNumberPhone(onlyUnsignedNumbers(value));
+    }else{
+      setIsValidWhatsApp(false)
+    }
+    value = phoneMaskForList(e.target.value);
+    setPhoneNumber(value)
+  }
+
+  const handleChangePhoneNumberConfirmation = (e) => {
     let value = e.target.value;
     value = phoneMaskForList(e.target.value);
-    setTelefone(value)
+    setPhoneNumberConfirmation(value)
   }
+
+  const checkNumberPhone = useCallback(async (phoneNumber) => {
+    const response = await checkPhoneIsWhatsApp(phoneNumber);
+    console.log(response?.data?.data?.exists);
+    // return;
+    if (response.status === 200) {
+        if (!response?.data?.data?.exists) {
+            setIsValidWhatsApp(false)
+            toast.error('O número de telefone informado não é um número de whatsapp válido')
+        }else{
+            setIsValidWhatsApp(true)
+        }
+        setLoading(false);
+    } else if (response.status === 401) {
+        toast.error("Você não está logado ou sua sessão expirou");
+        setLoading(false);
+        return false;
+    } else if (response.status === 500) {
+        toast.error(response?.response?.data?.msg || "Ocorreu um erro na requisição ao servidor. Entre em contato com o suporte");
+        setLoading(false);
+        return false;
+    } else {
+        toast.error(response?.response?.data?.msg || "Ocorreu um erro ao tentar verificar se o telefone possui WhatsApp");
+        setLoading(false);
+        return false;
+    }
+
+}, [setIsValidWhatsApp, checkPhoneIsWhatsApp, setLoading])
 
   const Loading = () => (
     <div class="spinner-border loading-button" role="status">
@@ -146,8 +190,19 @@ export const RegisterForm = ({
                     type='tel'
                     className='form-control'
                     placeholder='Telefone'
-                    value={telefone}
-                    onChange={e => handlerTelefone(e)}
+                    value={phoneNumber}
+                    onChange={e => handleChangePhoneNumber(e)}
+                    maxLength={15}
+                  />
+                </div>
+                <div className='form-group'>
+                  <label>Confirme seu telefone</label>
+                  <input
+                    type='tel'
+                    className='form-control'
+                    placeholder='Confirme o telefone'
+                    value={phoneNumberConfirmation}
+                    onChange={e => handleChangePhoneNumberConfirmation(e)}
                     maxLength={15}
                   />
                 </div>

@@ -110,6 +110,13 @@ const Services = {
       });
     return response;
   },
+  checkPhoneIsWhatsApp: async (phone) => {
+      const response = await api.get('/customer/check-phone-is-whatsapp', {params: {phone}})
+      .then(({ ...response }) => response)
+      .catch(({ ...response }) => response)
+
+      return response
+  }
 }
 
 export default Services;
