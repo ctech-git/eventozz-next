@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import checkoutService from '../../services/checkout';
 import servicesExternal from '../../services/externalRequest';
 import { isValidCreditCardNumber, isValidExpirationDate } from '../../utils/fieldValidation';
-import {  isValidCnpj, isValidCpf, isValidEmail, onlyUnsignedNumbers, stringNormalize } from '../../utils/strings';
+import { isValidCnpj, isValidCpf, isValidEmail, onlyUnsignedNumbers, stringNormalize } from '../../utils/strings';
 import PageBanner from '../Common/PageBanner';
 import { useMediaQuery } from 'react-responsive';
 import Image from 'next/image'
@@ -21,11 +21,13 @@ import { MobileTicketsTable } from '../TicketsTable/Mobile';
 import { TicketsTable } from '../TicketsTable/Desktop';
 import { CreditCardFields } from '../CreditCardFields';
 import styles from './styles.module.scss';
+import Services from '../../services/login';
 
 const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, setHideOnCheckout, hideOnCheckout, seller }) => {
 
     const isMobile = useMediaQuery({ maxWidth: 768 })
-    const {cartId} = useCart(); 
+    const { checkPhoneIsWhatsApp } = Services
+    const { cartId } = useCart();
     const [deletedTicketId, setDeletedTicketId] = useState(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [ticketsData, setTicketsData] = useState([]);
@@ -216,9 +218,21 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         }
     }
 
-    const handleChangeTicketData = ({ value, field, ticketsDataIndex, ticketIndex }) => {
+    const handleChangeTicketData = async ({ value, field, ticketsDataIndex, ticketIndex }) => {
         console.log(value);
-        let newTicketsData = {}
+        let newTicketsData = {};
+        let isCheckingPhoneNumber = false;
+
+        if (field === 'phone') {
+            if (onlyUnsignedNumbers(value)?.length > 11) {
+                return;
+            } else if (onlyUnsignedNumbers(value)?.length === 11) {
+                isCheckingPhoneNumber = true;
+            } else {
+                isCheckingPhoneNumber = false
+            }
+        }
+
         Object.values(ticketsData).map((ticketType, index) => {
             const idIngresso = ticketType[0].idIngresso;
 
@@ -226,6 +240,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 if (index === ticketsDataIndex && i === ticketIndex) {
                     return {
                         ...ticket,
+                        isValidPhoneNumber: isCheckingPhoneNumber ? false : ticket.isValidPhoneNumber,
+                        isCheckingPhoneNumber,
                         [field]: value
                     }
                 } else {
@@ -234,7 +250,46 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             });
             newTicketsData[idIngresso] = newTicketData;
         });
+        console.log(newTicketsData);
         setTicketsData(newTicketsData)
+
+        if (isCheckingPhoneNumber) {
+            const response = await checkPhoneIsWhatsApp(onlyUnsignedNumbers(value));
+            console.log(response?.data?.data?.exists);
+            // return;
+            if (response.status === 200) {
+                let newTicketsDataChecked = {};
+                Object.values(newTicketsData).map((ticketType, index) => {
+                    const idIngresso = ticketType[0].idIngresso;
+
+                    const newTicketData = ticketType.map((ticket, i) => {
+                        if (index === ticketsDataIndex && i === ticketIndex) {
+                            console.log(ticket);
+                            if (!response?.data?.data?.exists) {
+                                toast.error('O número de telefone informado não é um número de whatsapp válido')
+                                return {
+                                    ...ticket,
+                                    isCheckingPhoneNumber: false,
+                                }
+                            } else {
+                                return {
+                                    ...ticket,
+                                    isValidPhoneNumber: true,
+                                    isCheckingPhoneNumber: false,
+                                }
+                            }
+                        } else {
+                            return ticket;
+                        }
+                    });
+                    newTicketsDataChecked[idIngresso] = newTicketData;
+                });
+                setTicketsData(newTicketsDataChecked)
+            } else {
+                toast.error(response?.response?.data?.msg || "Ocorreu um erro ao tentar verificar se o telefone possui WhatsApp");
+                return false;
+            }
+        }
     }
 
     const handleShowPayment = () => {
@@ -244,7 +299,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 if (
                     ticket.name.length < 2
                     || (ticket.cpf?.length > 0 && !isValidCpf(ticket.cpf))
-                    || ticket.phone.length < 10
+                    || (ticket.phone.length < 10 || !ticket?.isValidPhoneNumber)
                     || (!isValidEmail(ticket.email) && ticket.email?.length > 0)
                 ) {
                     showErrorTemp = true;
@@ -270,7 +325,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 if (
                     ticket.name.length < 2
                     || (ticket.cpf?.length > 0 && !isValidCpf(ticket.cpf))
-                    || ticket.phone.length < 10
+                    || (ticket.phone.length < 10 || !ticket?.isValidPhoneNumber)
                     || (!isValidEmail(ticket.email) && ticket.email?.length > 0)
                 ) {
                     showErrorTemp = true;
@@ -811,8 +866,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                         }
                         {
                             isMobile ? (
-                                <MobileTicketsTable cartItems={cartItems} dados={dados} handleChangeTicketQuantity={handleChangeTicketQuantity} 
-                                    handleShowConfirmDeleteItem={handleShowConfirmDeleteItem} hideOnCheckout={hideOnCheckout} showPayment={showPayment} 
+                                <MobileTicketsTable cartItems={cartItems} dados={dados} handleChangeTicketQuantity={handleChangeTicketQuantity}
+                                    handleShowConfirmDeleteItem={handleShowConfirmDeleteItem} hideOnCheckout={hideOnCheckout} showPayment={showPayment}
                                     totalTickets={totalTickets} installmentOptions={installmentOptions} paymentMethod={paymentMethod} pixValue={pixValue} />
                             ) : (
                                 <TicketsTable cartItems={cartItems} couponInfo={couponInfo} dados={dados} handleChangeTicketQuantity={handleChangeTicketQuantity}
@@ -844,8 +899,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                 Object.values(ticketsData).length > 0 ? (
                                     Object.values(ticketsData).map((ticketType, index) => (
                                         ticketType.map((ticket, i) => (
-                                            <TicketDataForm key={ticket.id} ticket={ticket} i={i} index={index} ticketIdUsingMyAccountData={ticketIdUsingMyAccountData} 
-                                               handleUseMyAccountData={handleUseMyAccountData} showInputErros={showInputErros} handleChangeTicketData={handleChangeTicketData} />
+                                            <TicketDataForm key={ticket.id} ticket={ticket} i={i} index={index} ticketIdUsingMyAccountData={ticketIdUsingMyAccountData}
+                                                handleUseMyAccountData={handleUseMyAccountData} showInputErros={showInputErros} handleChangeTicketData={handleChangeTicketData} />
                                         ))
                                     ))
                                 ) : (
@@ -887,10 +942,10 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                             </Row>
                             {
                                 showCreditCardFields && (
-                                    <CreditCardFields showCheckoutInputErros={showCheckoutInputErros} creditCardData={creditCardData} 
-                                    handleChangeCreditCardData={handleChangeCreditCardData} billingData={billingData} handlerCep={handlerCep}
-                                    handleChangeBillingData={handleChangeBillingData} installmentsNumber={installmentsNumber} 
-                                    handleChangeInstallmentNumber={handleChangeInstallmentNumber} installmentOptions={installmentOptions} />
+                                    <CreditCardFields showCheckoutInputErros={showCheckoutInputErros} creditCardData={creditCardData}
+                                        handleChangeCreditCardData={handleChangeCreditCardData} billingData={billingData} handlerCep={handlerCep}
+                                        handleChangeBillingData={handleChangeBillingData} installmentsNumber={installmentsNumber}
+                                        handleChangeInstallmentNumber={handleChangeInstallmentNumber} installmentOptions={installmentOptions} />
                                 )
                             }
                         </>
@@ -941,7 +996,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                 <Image src={paymentFeedback?.image} layout='fill' alt="Imagem sucesso" />
                             </Col>
                             <Col className='m-auto' xs={12}>
-                                
+
                             </Col>
                         </Row>
                     )
