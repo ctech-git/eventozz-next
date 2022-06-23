@@ -5,6 +5,7 @@ import PageBanner from '../components/Common/PageBanner';
 import servicesEventozz from '../services/events';
 import { dateLastAccess } from '../utils/strings';
 import { useRouter } from 'next/router';
+import { Col, Container, Row } from 'react-bootstrap';
 
 
 const options = {
@@ -62,15 +63,15 @@ const PriceDetails = ({ events = [] }) => {
       />
 
       <div className='cryptocurrency-details-area ptb-100'>
-        <div className='container'>
-          <div className='row'>
-            <div className='col-lg-12 col-md-12'>
+        <Container>
+          <Row>
+            <Col xs={12}>
               <div className='cryptocurrency-top-stories'>
-                <div className='row justify-content-center'>
-                  {events.map((item, index) => {
+                <Row className='justify-content-center'>
+                  {events.map((item) => {
                     return (
 
-                      <div className='col-lg-4 col-md-4'>
+                      <Col xs={12} md={4} className="event-card-container">
                         <div className='single-blog-post' onClick={() => goToEvents(item)}>
                           <div className='post-image'>
                             <a className='d-block'>
@@ -105,16 +106,14 @@ const PriceDetails = ({ events = [] }) => {
                             </h3>
                           </div>
                         </div>
-                      </div>
+                      </Col>
                     )
                   })}
-
-
-                </div>
+                </Row>
               </div>
-            </div>
-          </div>
-        </div>
+            </Col>
+          </Row>
+        </Container>
       </div>
     </>
   );
@@ -122,7 +121,7 @@ const PriceDetails = ({ events = [] }) => {
 
 export default PriceDetails;
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const result = await servicesEventozz.getEventzzGeneral();
 
 
@@ -133,6 +132,7 @@ export async function getServerSideProps() {
   }
 
   return {
+    revalidate: 60,
     props: {
       events: response
     },

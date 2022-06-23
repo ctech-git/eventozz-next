@@ -16,14 +16,14 @@ import WaitingImage from '../../public/images/waiting.svg';
 import { scrollToElement } from '../../utils/scrollTo';
 import { copyToClipboard } from '../../utils/functions';
 import { useCart } from '../../context/cart';
-import { TicketDataForm } from '../TicketDataForm';
 import { MobileTicketsTable } from '../TicketsTable/Mobile';
 import { TicketsTable } from '../TicketsTable/Desktop';
 import { CreditCardFields } from '../CreditCardFields';
 import styles from './styles.module.scss';
 import Services from '../../services/login';
+import { TicketDataFormLeaders } from '../TicketDataFormLeaders';
 
-const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, setHideOnCheckout, hideOnCheckout, seller }) => {
+export const CheckoutLeaders = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteItem, isLoadingCartItem, setHideOnCheckout, hideOnCheckout, seller }) => {
 
     const isMobile = useMediaQuery({ maxWidth: 768 })
     const { checkPhoneIsWhatsApp } = Services
@@ -131,9 +131,11 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                         description: `${i + 1}º - ${item.nome}`,
                         idIngresso: item.idIngresso,
                         name: '',
-                        cpf: '',
                         phone: '',
-                        email: ''
+                        email: '',
+                        position: '',
+                        companyName: '',
+                        shirtSize: ''
                     })
                 }
             }
@@ -183,6 +185,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             const result = await checkoutService.getCustomerForCheckout()
             if (result.status === 200) {
                 const data = result.data.data;
+                console.log(data);
                 
                 let validPhone = data.fone;
                             
@@ -191,27 +194,29 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                 if (response.status !== 200) {
                     validPhone = ''
                 } 
-
                 let newTicketsData = {}
                 Object.values(ticketsData).map((ticketType, index) => {
-                    const idIngresso = ticketType[0].idIngresso;
+                    const currentTicketId = ticketType[0].idIngresso;
 
                     const newTicketData = ticketType.map((ticket, i) => {
                         if (index === ticketsDataIndex && i === ticketIndex) {
+                           
                             return {
                                 ...ticket,
-                                cpf: data.cpf,
                                 name: data.name,
-                                email: data.email,
                                 phone: validPhone,
                                 isValidPhoneNumber: validPhone ? true : false,
+                                position: '',
+                                companyName: '',
+                                shirtSize: ''
                             }
                         } else {
                             return ticket;
                         }
                     });
-                    newTicketsData[idIngresso] = newTicketData;
+                    newTicketsData[currentTicketId] = newTicketData;
                 });
+                console.log(newTicketsData);
                 setTicketsData(newTicketsData);
                 setTicketIdUsingMyAccountData(idIngresso);
 
@@ -307,9 +312,11 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             ticketType.map((ticket, i) => {
                 if (
                     ticket.name.length < 2
-                    || (ticket.cpf?.length > 0 && !isValidCpf(ticket.cpf))
                     || (ticket.phone.length < 10 || !ticket?.isValidPhoneNumber)
-                    || (!isValidEmail(ticket.email) && ticket.email?.length > 0)
+                    || !isValidEmail(ticket.email)
+                    || (!ticket.position || ticket.position?.length < 2)
+                    || (!ticket.companyName || ticket.companyName?.length < 2)
+                    || !ticket.shirtSize
                 ) {
                     showErrorTemp = true;
                 }
@@ -333,9 +340,11 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             ticketType.map((ticket, i) => {
                 if (
                     ticket.name.length < 2
-                    || (ticket.cpf?.length > 0 && !isValidCpf(ticket.cpf))
                     || (ticket.phone.length < 10 || !ticket?.isValidPhoneNumber)
-                    || (!isValidEmail(ticket.email) && ticket.email?.length > 0)
+                    || !isValidEmail(ticket.email)
+                    || (!ticket.position || ticket.position?.length < 2)
+                    || (!ticket.companyName || ticket.companyName?.length < 2)
+                    || !ticket.shirtSize
                 ) {
                     showErrorTemp = true;
                 }
@@ -572,20 +581,20 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             if (ticketType?.length > 0) {
                 ticketType.map(ticket => {
 
-                    // let cpfTemp = ticket.cpf;
-                    // cpfTemp = cpfTemp.replace(".", ""); cpfTemp = cpfTemp.replace(".", ""); cpfTemp = cpfTemp.replace("-", "");
-                    // let phoneTemp = ticket.phone;
+                    const extraFields = {
+                        position: ticket?.position,
+                        companyName: ticket?.companyName,
+                        shirtSize: ticket?.shirtSize
+                    }
 
-                    // phoneTemp = phoneTemp.replace("(", ""); phoneTemp = phoneTemp.replace(")", "");
-                    // phoneTemp = phoneTemp.replace(" ", ""); phoneTemp = phoneTemp.replace("-", "");
                     console.log(ticket);
                     let vector = {
                         "description": ticket?.description,
                         "idIngresso": ticket?.idIngresso,
                         "name": ticket?.name,
-                        "cpf": ticket?.cpf,
                         "phone": ticket?.phone,
-                        "email": ticket?.email
+                        "email": ticket?.email,
+                        "extraFields": JSON.stringify(extraFields)
                     }
                     ticketsDataTemp.push(vector);
                 })
@@ -603,7 +612,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
             couponId, eventId, installmentsNumber, paymentMethod, ticketsData: ticketsDataTemp,
             ticketsQtd, isFree: dados?.is_free, payments, seller, cartId
         }
-
+        // return;
         const response = await checkoutService.purchaseSave({ body });
 
         setTextLoading("");
@@ -908,7 +917,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                                 Object.values(ticketsData).length > 0 ? (
                                     Object.values(ticketsData).map((ticketType, index) => (
                                         ticketType.map((ticket, i) => (
-                                            <TicketDataForm key={ticket.id} ticket={ticket} i={i} index={index} ticketIdUsingMyAccountData={ticketIdUsingMyAccountData}
+                                            <TicketDataFormLeaders key={ticket.id} ticket={ticket} i={i} index={index} ticketIdUsingMyAccountData={ticketIdUsingMyAccountData}
                                                 handleUseMyAccountData={handleUseMyAccountData} showInputErros={showInputErros} handleChangeTicketData={handleChangeTicketData} />
                                         ))
                                     ))
@@ -1029,12 +1038,9 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                         </Row>
                     )
                 }
-
             </div>
             {showConfirmModal && <ConfirmDeleteModal />}
             {isLoadingCheckout && <LoadingCheckout />}
         </div>
     );
 };
-
-export default Checkout;

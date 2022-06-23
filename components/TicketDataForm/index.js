@@ -31,21 +31,25 @@ export function TicketDataForm({ ticket, i, index, handleChangeTicketData, ticke
                     </Col>
                 }
                 <Col className={`pb-3 ${styles.containerInput}`} xs={12} md={6}>
+                    <Form.Label>Nome completo</Form.Label>
                     <Form.Control className={showInputErros && ticket.name.length < 2 ? 'input-error' : ''} type="text" value={ticket.name} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'name', ticketsDataIndex: index, ticketIndex: i })} name="nome_completo" placeholder="Nome Completo*" />
                     {showInputErros && ticket.name.length < 2 && <Form.Text className="text-error">Informe o nome completo da pessoa que irá utilizar o ingresso.</Form.Text>}
                 </Col>
                 <Col className={`pb-3 ${styles.containerInput}`} xs={12} md={6}>
+                    <Form.Label>Cpf</Form.Label>
                     <Form.Control className={showInputErros && (ticket.cpf?.length > 0 && !isValidCpf(ticket.cpf)) ? 'input-error' : ''} type="text" value={cpfMask(ticket.cpf)} onChange={(e) => handleChangeTicketData({ value: onlyUnsignedNumbers(e.target.value), field: 'cpf', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="cpf" placeholder="CPF" maxlength="14" />
                     {showInputErros && (ticket.cpf?.length > 0 && !isValidCpf(ticket.cpf)) && <Form.Text className="text-error">Informe um CPF válido ou deixe o campo em branco.</Form.Text>}
                 </Col>
                 <Col className={`pb-3 ${styles.containerInput}`} xs={12} md={6}>
                     <div className={styles.containerPhoneNumber}>
+                        <Form.Label>Telefone (WhatsApp)*</Form.Label>
                         <Form.Control className={showInputErros && (ticket.phone.length < 10 || !ticket?.isValidPhoneNumber) ? 'input-error' : ''} type="text" value={phoneMaskForList(ticket.phone)} onChange={(e) => handleChangeTicketData({ value: onlyUnsignedNumbers(e.target.value), field: 'phone', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="telefone" placeholder="Telefone (WhatsApp)*" id="telefone_2" required="" maxlength="16" />
                         { ticket?.isCheckingPhoneNumber && <Loading />}
                     </div>
                     {showInputErros && (ticket.phone.length < 10 || !ticket?.isValidPhoneNumber) && <Form.Text className="text-error">Informe um número de WhatsApp válido (Enviaremos o qr code do ingresso por WhatsApp).</Form.Text>}
                 </Col>
                 <Col className={`pb-3 ${styles.containerInput}`} xs={12} md={6}>
+                    <Form.Label>Email</Form.Label>
                     <Form.Control className={showInputErros && (!isValidEmail(ticket.email) && ticket.email?.length > 0) ? 'input-error' : ''} type="email" value={ticket.email} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'email', ticketsDataIndex: index, ticketIndex: i })} name="email" placeholder="Email" />
                     {showInputErros && (!isValidEmail(ticket.email) && ticket.email?.length > 0) && <Form.Text className="text-error">Informe um email válido ou deixe o campo em branco (Enviaremos o qr code do ingresso).</Form.Text>}
                 </Col>

@@ -9,8 +9,10 @@ export const EventCard = ({event}) => {
     const goToEvents = (selectedEvent) => {
         if (selectedEvent?.external_link) {
           window.location.href = selectedEvent.external_link;
+        } else if(selectedEvent?.leaders) {
+          router.push(`/leaders/${selectedEvent.slug}`);
         } else {
-          router.push(`/evento/${selectedEvent.slug}`);
+            router.push(`/evento/${selectedEvent.slug}`);
         }
       }
 

@@ -8159,7 +8159,7 @@ Go Top CSS
   border: solid 1px var(--optionalColor);
 }
 
-.container-tickets-inputs .form-control.input-error {
+.container-tickets-inputs .form-control.input-error, .container-tickets-inputs .form-select.input-error {
   border: 1px solid #d93025 !important;
 }
 
@@ -8575,4 +8575,14 @@ Go Top CSS
 .row{
   --bs-gutter-x: 0;
   --bs-gutter-y: 0;
+}
+
+.event-card-container{
+  padding-inline: 25px;
+}
+
+@media (max-width: 768px) {
+  .event-card-container{
+    padding-inline: 10px;
+  }
 }
