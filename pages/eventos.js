@@ -48,6 +48,8 @@ const PriceDetails = ({ events = [] }) => {
   function goToEvents(item) {
     if (item.external_link) {
       window.location.href = item.external_link;
+    } else if(selectedEvent?.leaders) {
+      router.push(`/leaders/${item.slug}`);
     } else {
       router.push(`/evento/${item.slug}`);
     }
