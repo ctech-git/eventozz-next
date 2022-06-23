@@ -123,7 +123,7 @@ const PriceDetails = ({ events = [] }) => {
 
 export default PriceDetails;
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const result = await servicesEventozz.getEventzzGeneral();
 
 
@@ -134,7 +134,6 @@ export async function getStaticProps() {
   }
 
   return {
-    revalidate: 60,
     props: {
       events: response
     },
