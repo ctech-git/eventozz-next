@@ -49,12 +49,12 @@ export function TicketDataFormLeaders({ ticket, i, index, handleChangeTicketData
                     {showInputErros && !isValidEmail(ticket.email) && <Form.Text className="text-error">Informe um email válido (Enviaremos o qr code do ingresso).</Form.Text>}
                 </Col>
                 <Col className={`pb-3 ${styles.containerInput}`} xs={12} md={6}>
-                    <Form.Label>Cargo do funcionário *</Form.Label>
+                    <Form.Label>Cargo *</Form.Label>
                     <Form.Control className={showInputErros && (ticket.position?.length < 2) ? 'input-error' : ''} type="text" value={ticket.position} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'position', ticketsDataIndex: index, ticketIndex: i })} name="position" placeholder="Cargo do funcionário *" />
                     {showInputErros && (ticket.position?.length < 2) && <Form.Text className="text-error">Informe o cargo do funcionário.</Form.Text>}
                 </Col>
                 <Col className={`pb-3 ${styles.containerInput}`} xs={12} md={6}>
-                    <Form.Label>Nome da empresa *</Form.Label>
+                    <Form.Label>Nome fantasia da empresa *</Form.Label>
                     <Form.Control className={showInputErros && (ticket.companyName?.length < 2) ? 'input-error' : ''} type="text" value={ticket.companyName} onChange={(e) => handleChangeTicketData({ value: e.target.value, field: 'companyName', ticketsDataIndex: index, ticketIndex: i })} name="companyName" placeholder="Nome da empresa *" />
                     {showInputErros && ticket.companyName?.length < 2 && <Form.Text className="text-error">Informe o nome da empresa.</Form.Text>}
                 </Col>
