@@ -56,7 +56,6 @@ const PriceDetails = ({ events = [] }) => {
   }
 
 
-
   return (
     <>
       <PageBanner

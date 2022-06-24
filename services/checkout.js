@@ -50,6 +50,20 @@ const checkoutService = {
       });
     return response;
   },
+  checkPixPayment: async ({purchaseId}) => {
+    const response = await api.get("/purchase/check-payment",
+    {
+      params: {
+        purchaseId
+      }
+    })
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+    return response;
+  },
 
 }
 
