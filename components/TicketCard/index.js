@@ -10,6 +10,9 @@ export const TicketCard = ({ isFree, ticket, onChangeTicketQuantity }) => {
                 <div className="price-box-ticket">{isFree ? 'Gratuito' : convertMoney(ticket.activeValue)}</div>
                 <ul>
                 </ul>
+                {ticket?.descricao ? (<Col style={{ margin: 'auto' }}>
+                    <span style={{ width: '100%', display: 'block' }} dangerouslySetInnerHTML={{ __html: ticket.descricao }}></span>
+                </Col>) : null}
                 <Row className="mt-5 mb-5">
                     <Col xs={4}>
                         <a style={{ fontSize: 40 }} className="btn btn-outline-danger" onClick={() => onChangeTicketQuantity('minus', ticket.id)}><span><i className="fa fa-minus"></i></span></a>
