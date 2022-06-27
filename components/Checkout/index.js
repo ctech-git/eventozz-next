@@ -771,6 +771,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                     }
                 } else {
                     if (feedback?.qrCode && feedback?.qrCodeUrl) {
+                        const purchaseId = feedback?.purchaseId;
                         let qrCodeLink = feedback?.qrCode;
                         let qRCodeImage = feedback?.qrCodeUrl;
                         success = true;
@@ -798,6 +799,7 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
                         `;
                         image = qRCodeImage ? qRCodeImage : '';
                         link = qrCodeLink ? qrCodeLink : false;
+                        checkPayment(purchaseId)
                     } else {
                         title = 'Compra não autorizada!';
                         text = 'Por favor, revise seus dados e tente fazer a compra novamente!<br/><br/><strong>Caso o erro persista</strong> entre em contato com a gente';
@@ -833,6 +835,32 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         scrollToElement({ id: 'container-checkout' })
     }
 
+    async function checkPayment(purchaseId) {
+        try {
+            const controlInterval = setInterval(async () => {
+                const response = await checkoutService.checkPixPayment({purchaseId})
+                if (response?.data?.status === 200 && response?.data?.data) {
+                    clearInterval(controlInterval);
+                    const title = 'Pagamento recebido!';
+                    const text = `Ficamos extremamente felizes em dizer que seu pagamento <strong> foi recebido!✅ </strong><br>
+                        Em alguns minutos você receberá no seu Whatsapp e no email o seu <strong>QR Code de entrada no evento.</strong><br><br>
+                        Você só precisará levar esse comprovante no dia do evento. Tudo bem? <br><br>
+                        Lembre-se: <strong>cada QR é ÚNICO.</strong> Então só poderá acessar o evento UMA pessoa por QR Code. Não saia enviando para outras pessoas para evitar qualquer problema.<br><br>
+                        `;
+                    const image = SuccessImage;
+                    setPaymentFeedback({
+                        title,
+                        message: text,
+                        image,
+                        qrCodeLink: ''
+                    });
+                }
+            }, 5000);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         generateInputTicketsData();
