@@ -39,7 +39,7 @@ export function TicketDataForm({ ticket, i, index, handleChangeTicketData, ticke
                     <div className={styles.containerPhoneNumber}>
                         <Form.Label>Telefone (WhatsApp) *</Form.Label>
                         <Form.Control className={showInputErros && (ticket.phone.length < 10 || !ticket?.isValidPhoneNumber) ? 'input-error' : ''} type="text" value={phoneMaskForList(ticket.phone)} onChange={(e) => handleChangeTicketData({ value: onlyUnsignedNumbers(e.target.value), field: 'phone', ticketsDataIndex: index, ticketIndex: i })} inputmode="numeric" name="telefone" placeholder="Telefone (WhatsApp) *" id="telefone_2" required="" maxlength="16" />
-                        { true && <Loading />}
+                        { ticket?.isCheckingPhoneNumber && <Loading />}
                     </div>
                     {showInputErros && (ticket.phone.length < 10 || !ticket?.isValidPhoneNumber) && <Form.Text className="text-error">Informe um número de WhatsApp válido (Enviaremos o qr code do ingresso por WhatsApp).</Form.Text>}
                 </Col>
