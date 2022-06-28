@@ -358,8 +358,8 @@ const Checkout = ({ dados, cartItems, handleChangeTicketQuantity, handleDeleteIt
         if (value === 'cc') {
             setShowCreditCardFields(true);
         } else {
-            setInstallmentsNumber(value);
-            setShowCreditCardFields(1);
+            setInstallmentsNumber(1);
+            setShowCreditCardFields(false);
         }
     }
 
