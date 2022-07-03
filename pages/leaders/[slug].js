@@ -49,6 +49,9 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
         setShowCheckout(true);
         scrollToElement({ id: 'container-checkout' });
       } else {
+        setCartItems([]);
+        setShowCheckout(false);
+        scrollToElement({ id: 'tickets-sale-area' });
         return toast.info("Não encontramos nenhum ingresso no seu carrinho");
       }
       setIsLoadingCartItem(false);
@@ -70,7 +73,7 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
     const result = await shoppingCartService.updateQuantityShoppingCart({ idInShoppingCart, quantity });
     var data = result?.data;
     if (data?.success) {
-      getCartItems();
+      getCartItems({cartIdTemp:false});
     } else {
       return toast.info("Não encontramos nenhum ingresso no seu carrinho");
     }
@@ -83,7 +86,7 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
     const result = await shoppingCartService.deleteShoppingCartItem({ idInShoppingCart });
     var data = result?.data;
     if (data?.success) {
-      getCartItems();
+      getCartItems({cartIdTemp: false});
     } else {
       return toast.info("Não encontramos nenhum ingresso no seu carrinho");
     }
