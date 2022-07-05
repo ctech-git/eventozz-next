@@ -2,7 +2,7 @@ import { api } from './api';
 
 const servicesEventozz = {
   getEventzzGeneral: async () => {
-    const response = await api.get("/list/eventzzGeneral")
+    const response = await api.get("/list/eventzz-general")
       .then(({ ...response }) => {
         return response;
       }).catch(({ ...response }) => {

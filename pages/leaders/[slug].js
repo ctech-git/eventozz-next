@@ -21,6 +21,7 @@ import { CheckoutLeaders } from '../../components/CheckoutLeaders';
 export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate, ticketsSold }) => {
 
   console.log(ticketsSold);
+  console.log('isActive -> ', isActive);
   const { query } = useRouter();
   const seller = query?.vendedor;
   const [eventDay, setEventDay] = useState('');
@@ -39,10 +40,10 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
     }
   }, [eventDate]);
 
-  const getCartItems = async ({cartIdTemp=false}) => {
+  const getCartItems = async ({ cartIdTemp = false }) => {
     try {
       setIsLoadingCartItem(true);
-      const result = await shoppingCartService.listShoppingCart({eventId: event.id, cartId: cartIdTemp ? cartIdTemp : cartId});
+      const result = await shoppingCartService.listShoppingCart({ eventId: event.id, cartId: cartIdTemp ? cartIdTemp : cartId });
       var data = result?.data?.data;
       if (data?.length > 0) {
         setCartItems(data);
@@ -55,7 +56,7 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
         return toast.info("Não encontramos nenhum ingresso no seu carrinho");
       }
       setIsLoadingCartItem(false);
-      
+
     } catch (error) {
       console.log('error getCartItems -> ', error);
     }
@@ -73,7 +74,7 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
     const result = await shoppingCartService.updateQuantityShoppingCart({ idInShoppingCart, quantity });
     var data = result?.data;
     if (data?.success) {
-      getCartItems({cartIdTemp:false});
+      getCartItems({ cartIdTemp: false });
     } else {
       return toast.info("Não encontramos nenhum ingresso no seu carrinho");
     }
@@ -86,7 +87,7 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
     const result = await shoppingCartService.deleteShoppingCartItem({ idInShoppingCart });
     var data = result?.data;
     if (data?.success) {
-      getCartItems({cartIdTemp: false});
+      getCartItems({ cartIdTemp: false });
     } else {
       return toast.info("Não encontramos nenhum ingresso no seu carrinho");
     }
@@ -110,7 +111,7 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
 
           <EventDetails item={event} showTicketSale={showTicketSale} />
 
-          {showTicketSale && !hideOnCheckout && (
+          {showTicketSale && isActive && !hideOnCheckout && (
             <AvailableTicketsContainerLeaders item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
           )}
         </Row>
@@ -123,6 +124,11 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
         {
           showClosedSales ? (
             <EventWarning color={event?.cor_secundaria ? event?.cor_secundaria : '#00a79d'} text="VENDAS ENCERRADAS" />
+          ) : null
+        }
+        {
+          !isActive ? (
+            <EventWarning color={event?.cor_secundaria ? event?.cor_secundaria : '#00a79d'} text="O EVENTO ESTÁ FECHADO" />
           ) : null
         }
         <PaymentArea />

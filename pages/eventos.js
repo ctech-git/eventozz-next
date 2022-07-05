@@ -39,9 +39,6 @@ const PriceDetails = ({ events = [] }) => {
     setisMounted(true);
     setDisplay(true);
     setisMounted(false);
-    console.log("----------------");
-    console.log(events);
-    console.log("----------------");
   }, []);
 
 

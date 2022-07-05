@@ -117,7 +117,7 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
 
           <EventDetails item={event} showTicketSale={showTicketSale} />
 
-          {showTicketSale && !hideOnCheckout && (
+          {showTicketSale && isActive && !hideOnCheckout && (
             <AvailableTicketsContainer item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
           )}
         </Row>
@@ -130,6 +130,11 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
         {
           showClosedSales ? (
             <EventWarning color={event?.cor_secundaria ? event?.cor_secundaria : '#00a79d'} text="VENDAS ENCERRADAS" />
+          ) : null
+        }
+        {
+          !isActive ? (
+            <EventWarning color={event?.cor_secundaria ? event?.cor_secundaria : '#00a79d'} text="O EVENTO ESTÁ FECHADO" />
           ) : null
         }
         <PaymentArea />
