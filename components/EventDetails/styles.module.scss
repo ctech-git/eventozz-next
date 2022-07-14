@@ -1,0 +1,17 @@
+
+.detailsList{
+    display: flex;
+    justify-content: center;
+
+    ul{
+        width: fit-content;
+
+        a{
+            // text-decoration: underline;
+        }
+    }
+
+    @media(max-width: 678px){
+        justify-content: flex-start;
+    }
+}
