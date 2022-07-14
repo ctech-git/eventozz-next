@@ -19,7 +19,7 @@ import { EventWarning } from '../../components/EventWarning';
 import { BannerEvent } from '../../components/BannerEvento';
 import { useCart } from '../../context/cart';
 
-export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate, ticketsSold }) => {
+export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClosedSales, eventDate, ticketsSold, organizerWhatsApp }) => {
 
   console.log(ticketsSold);
   const { query } = useRouter();
@@ -115,7 +115,7 @@ export const Event = ({ event, isActive, showEventSoon, showTicketSale, showClos
 
         <Row className='responsive-container'>
 
-          <EventDetails item={event} showTicketSale={showTicketSale} />
+          <EventDetails item={event} showTicketSale={showTicketSale} organizerWhatsApp={organizerWhatsApp} />
 
           {showTicketSale && isActive && !hideOnCheckout && (
             <AvailableTicketsContainer item={event} handleCheckout={getCartItems} syncCartItems={cartItems} />
@@ -165,6 +165,7 @@ export async function getServerSideProps(context) {
   let showClosedSales = false;
   let eventDate = '';
   let ticketsSold = false;
+  let organizerWhatsApp = null;
 
   if (result?.status === 200 && result?.data?.success && result?.data?.data?.length > 0) {
     event = result?.data?.data[0];
@@ -188,12 +189,9 @@ export async function getServerSideProps(context) {
       showClosedSales = true;
     }
 
+    organizerWhatsApp = event?.whatsapp
   }
 
-  const resultTicketsSold = await getTicketsSoldNumber({ eventId: event?.id });
-  if (resultTicketsSold?.data?.success) {
-    ticketsSold = resultTicketsSold?.data?.data
-  }
 
   return {
     props: {
@@ -203,7 +201,8 @@ export async function getServerSideProps(context) {
       showEventSoon,
       eventDate,
       showClosedSales,
-      ticketsSold
+      ticketsSold,
+      organizerWhatsApp
     },
   }
 }

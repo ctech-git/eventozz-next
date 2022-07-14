@@ -1,7 +1,8 @@
 import { dateLastAccess } from '../../utils/strings';
-import { Col } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
+import styles from './styles.module.scss';
 
-export const EventDetails = ({ item }) => {
+export const EventDetails = ({ item, organizerWhatsApp }) => {
   const dados = item;
   console.log(dados);
   return (
@@ -10,17 +11,17 @@ export const EventDetails = ({ item }) => {
       <div className='trade-cryptocurrency-area ptb-100'
         style={{ background: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
       >
-        <div className='container'>
-          <div className='row align-items-center'>
-            <div className='col-12'>
+        <Container>
+          <Row className='align-items-center'>
+            <Col xs={12}>
               <div className='trade-cryptocurrency-box'>
 
                 <div className='section-title'>
                   <h2>Detalhes do Evento</h2>
                 </div>
-                <div className='row'>
-                  <div className='col-lg-6 col-md-12'>
-                    <div className='earn-money-list'>
+                <Row>
+                  <Col xs={12} lg={6}>
+                    <div className={`earn-money-list ${styles.detailsList}`}>
                       <ul>
                         <li>
                           <i className='fa fa-map'
@@ -40,11 +41,21 @@ export const EventDetails = ({ item }) => {
                           ></i>
                           Apresentar Qr Code na Entrada
                         </li>
+                        {
+                          organizerWhatsApp && (
+                            <li>
+                              <i className='bx bxl-whatsapp'
+                                style={{ color: dados?.cor_principal ? (dados?.cor_principal) : ('linear-gradient(0deg, #0062ff, #081587)') }}
+                              ></i>
+                              <a href={`https://wa.me/${organizerWhatsApp}`} target='_blank'>Entrar em contato com o organizador</a>
+                            </li>
+                          )
+                        }
                       </ul>
                     </div>
-                  </div>
-                  <div className='col-lg-6 col-md-12'>
-                    <div className='earn-money-list'>
+                  </Col>
+                  <Col xs={12} lg={6}>
+                    <div className={`earn-money-list ${styles.detailsList}`}>
                       <ul>
                         <li>
                           <i className='bx bxs-badge-check'
@@ -66,8 +77,8 @@ export const EventDetails = ({ item }) => {
                         </li>
                       </ul>
                     </div>
-                  </div>
-                </div>
+                  </Col>
+                </Row>
                 {/* {showTicketSale && <div onClick={() => scrollToElement({id: 'tickets-sale-area'})} className="justify-content-center pt-4 row btn-compre-agora absolute"><a className="default-btn"><i className="bx bxs-chat"></i>{dados?.is_free ? 'Reservar ingresso' : 'Comprar agora'}</a></div>} */}
                 <div className='section-title pt-100'>
                   <div key={'x-event'} dangerouslySetInnerHTML={{
@@ -78,10 +89,10 @@ export const EventDetails = ({ item }) => {
                 </div>
               </div>
 
-            </div>
+            </Col>
 
-          </div>
-        </div>
+          </Row>
+        </Container>
         <div className='lines'>
           <div className='line'></div>
           <div className='line'></div>
