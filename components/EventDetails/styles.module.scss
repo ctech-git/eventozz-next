@@ -5,13 +5,9 @@
 
     ul{
         width: fit-content;
-
-        a{
-            // text-decoration: underline;
-        }
     }
 
-    @media(max-width: 678px){
+    @media(max-width: 991px){
         justify-content: flex-start;
     }
 }

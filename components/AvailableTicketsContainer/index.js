@@ -20,7 +20,7 @@ export const AvailableTicketsContainer = ({ item, handleCheckout, syncCartItems 
   const [isLoadingFinish, setIsLoadingFinish] = useState(false);
   const { cartId, handleChangeCartId } = useCart();
   const { userToken } = useAuth()
-  console.log('userToken -> ', userToken);
+
   useEffect(() => {
     if (dados?.id != undefined) {
       getTickets();

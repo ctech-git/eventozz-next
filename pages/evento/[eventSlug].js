@@ -189,7 +189,7 @@ export async function getServerSideProps(context) {
       showClosedSales = true;
     }
 
-    organizerWhatsApp = event?.whatsapp
+    organizerWhatsApp = event?.whatsapp ? event?.whatsapp : null;
   }
 
 

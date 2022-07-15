@@ -67,7 +67,7 @@ const RegisterForm = ({
       if (!googleId && password != password2) { isError = true; Error = "As senhas são diferentes"; }
       if (!googleId && password == "" || password == null || password == undefined) { isError = true; Error = "Campo 'Senha' é Obrigatorio"; }
       if (phoneNumber !== phoneNumberConfirmation) { isError = true; Error = "Os números de telefone informados não são iguais" }
-      if (phoneNumber && onlyUnsignedNumbers(phoneNumber)?.length >= 10 && !isValidWhatsApp ) { isError = true; Error = "O número de telefone informado precisa ter WhatsApp" }
+      if (phoneNumber && onlyUnsignedNumbers(phoneNumber)?.length >= 10 && !isValidWhatsApp) { isError = true; Error = "O número de telefone informado precisa ter WhatsApp" }
       if (!phoneNumber) { isError = true; Error = "Campo 'Telefone' é Obrigatorio"; }
       if (nascimento == "" || nascimento == null || nascimento == undefined) { isError = true; Error = "Campo 'Nascimento' é Obrigatorio"; }
       if (!verificaCPF) { isError = true; Error = "CPF Inválido"; }
@@ -126,36 +126,44 @@ const RegisterForm = ({
 
           } else {
             toast.error("Falhar no Login", {
-              position: "bottom-left",
               autoClose: 2000
             })
           }
         } else {
-          toast.error(response.response.data.msg, {
-            position: "bottom-left",
-            autoClose: 2000
+          if (response.response.data.data.email) {
+            return toast.error(<div>
+              <div>{response.response.data.msg}</div>
+                <div>{response.response.data.data.email}</div>
+              </div>, {
+                autoClose: 6000
+              })
+          }
+
+          return toast.error(response.response.data.msg, {
+            autoClose: 6000
           })
         }
       } else {
         toast.error(Error, {
-          position: "bottom-left",
-          autoClose: 2000
+          autoClose: 6000
         })
       }
 
     }
 
   }
+
   const handlerCpf = (e) => {
     let value = e.target.value;
     value = cpfMask(e.target.value);
     setCpf(value)
   }
+
   const handleChangePhoneNumber = (e) => {
     let value = e.target.value;
     if (onlyUnsignedNumbers(value)?.length === 11) {
       checkNumberPhone(onlyUnsignedNumbers(value));
-    }else{
+    } else {
       setIsValidWhatsApp(false)
     }
     value = phoneMaskForList(value);
@@ -207,28 +215,28 @@ const RegisterForm = ({
     console.log(response?.data?.data?.exists);
     // return;
     if (response.status === 200) {
-        if (!response?.data?.data?.exists) {
-            setIsValidWhatsApp(false)
-            toast.error('O número de telefone informado não é um número de whatsapp válido')
-        }else{
-            setIsValidWhatsApp(true)
-        }
-        setLoading(false);
+      if (!response?.data?.data?.exists) {
+        setIsValidWhatsApp(false)
+        toast.error('O número de telefone informado não é um número de whatsapp válido')
+      } else {
+        setIsValidWhatsApp(true)
+      }
+      setLoading(false);
     } else if (response.status === 401) {
-        toast.error("Você não está logado ou sua sessão expirou");
-        setLoading(false);
-        return false;
+      toast.error("Você não está logado ou sua sessão expirou");
+      setLoading(false);
+      return false;
     } else if (response.status === 500) {
-        toast.error(response?.response?.data?.msg || "Ocorreu um erro na requisição ao servidor. Entre em contato com o suporte");
-        setLoading(false);
-        return false;
+      toast.error(response?.response?.data?.msg || "Ocorreu um erro na requisição ao servidor. Entre em contato com o suporte");
+      setLoading(false);
+      return false;
     } else {
-        toast.error(response?.response?.data?.msg || "Ocorreu um erro ao tentar verificar se o telefone possui WhatsApp");
-        setLoading(false);
-        return false;
+      toast.error(response?.response?.data?.msg || "Ocorreu um erro ao tentar verificar se o telefone possui WhatsApp");
+      setLoading(false);
+      return false;
     }
 
-}, [setIsValidWhatsApp, checkPhoneIsWhatsApp, setLoading])
+  }, [setIsValidWhatsApp, checkPhoneIsWhatsApp, setLoading])
 
   const Loading = () => (
     <div class="spinner-border loading-button" role="status">
@@ -417,7 +425,7 @@ const RegisterForm = ({
 
             {etapa == 1 && (
               <button type='button' onClick={() => loginNative()}
-              >Proximo</button>
+              >Próximo</button>
             )}
             {etapa == 2 && (
               <div className="box-button">

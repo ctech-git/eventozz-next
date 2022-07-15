@@ -42,7 +42,7 @@ export const RegisterForm = ({
     if (!fullName) { errors.push('Informe seu nome completo') }
     if (!isValidCpf(cpf)) { errors.push('Você precisa informar um CPF válido') }
     if (!phoneNumber || onlyUnsignedNumbers(phoneNumber)?.length < 10) { errors.push('Informe um número de telefone com DDD') }
-    if (phoneNumber && onlyUnsignedNumbers(phoneNumber)?.length >= 10 && !isValidWhatsApp ) { errors.push('O número de telefone informado precisa ter WhatsApp') }
+    if (phoneNumber && onlyUnsignedNumbers(phoneNumber)?.length >= 10 && !isValidWhatsApp) { errors.push('O número de telefone informado precisa ter WhatsApp') }
     if (phoneNumber !== phoneNumberConfirmation) { errors.push('Os números de telefone informados não são iguais') }
 
     if (errors?.length === 0) {
@@ -93,8 +93,17 @@ export const RegisterForm = ({
         })
       }
     } else {
-      toast.error(response.response.data.msg, {
-        autoClose: 2000
+      if (response.response.data.data.email) {
+        return toast.error(<div>
+          <div>{response.response.data.msg}</div>
+          <div>{response.response.data.data.email}</div>
+        </div>, {
+          autoClose: 6000
+        })
+      }
+
+      return toast.error(response.response.data.msg, {
+        autoClose: 6000
       })
     }
   }
@@ -108,7 +117,7 @@ export const RegisterForm = ({
     let value = e.target.value;
     if (onlyUnsignedNumbers(value)?.length === 11) {
       checkNumberPhone(onlyUnsignedNumbers(value));
-    }else{
+    } else {
       setIsValidWhatsApp(false)
     }
     value = phoneMaskForList(e.target.value);
@@ -126,28 +135,28 @@ export const RegisterForm = ({
     console.log(response?.data?.data?.exists);
     // return;
     if (response.status === 200) {
-        if (!response?.data?.data?.exists) {
-            setIsValidWhatsApp(false)
-            toast.error('O número de telefone informado não é um número de whatsapp válido')
-        }else{
-            setIsValidWhatsApp(true)
-        }
-        setLoading(false);
+      if (!response?.data?.data?.exists) {
+        setIsValidWhatsApp(false)
+        toast.error('O número de telefone informado não é um número de whatsapp válido')
+      } else {
+        setIsValidWhatsApp(true)
+      }
+      setLoading(false);
     } else if (response.status === 401) {
-        toast.error("Você não está logado ou sua sessão expirou");
-        setLoading(false);
-        return false;
+      toast.error("Você não está logado ou sua sessão expirou");
+      setLoading(false);
+      return false;
     } else if (response.status === 500) {
-        toast.error(response?.response?.data?.msg || "Ocorreu um erro na requisição ao servidor. Entre em contato com o suporte");
-        setLoading(false);
-        return false;
+      toast.error(response?.response?.data?.msg || "Ocorreu um erro na requisição ao servidor. Entre em contato com o suporte");
+      setLoading(false);
+      return false;
     } else {
-        toast.error(response?.response?.data?.msg || "Ocorreu um erro ao tentar verificar se o telefone possui WhatsApp");
-        setLoading(false);
-        return false;
+      toast.error(response?.response?.data?.msg || "Ocorreu um erro ao tentar verificar se o telefone possui WhatsApp");
+      setLoading(false);
+      return false;
     }
 
-}, [setIsValidWhatsApp, checkPhoneIsWhatsApp, setLoading])
+  }, [setIsValidWhatsApp, checkPhoneIsWhatsApp, setLoading])
 
   const Loading = () => (
     <div class="spinner-border loading-button" role="status">
