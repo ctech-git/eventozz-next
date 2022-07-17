@@ -75,8 +75,8 @@ export function SimplifiedAuthContainer({ organizer = false, callback = false, p
   return (
     <Row className={`${styles.container} ${pageLogin ? styles.containerPageLogin : ''}`}>
       <Container className={styles.containerForm}>
-        <LoginForm loading={loading} setLoading={setLoading} organizer={organizer} callback={callback} pageLogin />
-        <RegisterForm loading={loading} setLoading={setLoading} organizer={organizer} callback={callback} pageLogin payloadNewAccount={payloadNewAccount} />
+        <LoginForm loading={loading} setLoading={setLoading} organizer={organizer} callback={callback} pageLogin={pageLogin} />
+        <RegisterForm loading={loading} setLoading={setLoading} organizer={organizer} callback={callback} pageLogin={pageLogin} payloadNewAccount={payloadNewAccount} />
       </Container>
       <Row>
         <Col xs={12} sm={6} md={4} className={styles.containerGoogle}>
