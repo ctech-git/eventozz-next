@@ -68,8 +68,8 @@ export const ModalRecovery = ({ showModal, closeModal }) => {
                 }
             </Modal.Body>
             <Modal.Footer>
-                <Button type="button" variant="danger" data-dismiss="modal" onClick={closeModal}>{loading ? <Loading /> : 'Cancelar'}</Button>
-                <Button type="button" onClick={() => handleRecoveryPassword()}>{loading ? <Loading /> : 'Confirmar'}</Button>
+                <Button type="button" variant="danger" data-dismiss="modal" onClick={closeModal}>{loading ? <Loading /> : showFinalMessage ? 'Fechar' : 'Cancelar'}</Button>
+                {!showFinalMessage ? <Button type="button" onClick={() => handleRecoveryPassword()}>{loading ? <Loading /> : 'Confirmar'}</Button> : null}
             </Modal.Footer>
         </Modal>
     )
