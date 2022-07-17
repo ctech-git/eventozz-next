@@ -18,6 +18,7 @@ export const AvailableTicketsContainer = ({ item, handleCheckout, syncCartItems 
   const [showSimplifiedLogin, setShowSimplifiedLogin] = useState(false);
 
   const [isLoadingFinish, setIsLoadingFinish] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { cartId, handleChangeCartId } = useCart();
   const { userToken } = useAuth()
 
@@ -42,7 +43,7 @@ export const AvailableTicketsContainer = ({ item, handleCheckout, syncCartItems 
   }, [userToken, showSimplifiedLogin])
 
   async function getTickets() {
-
+    setLoading(true);
     const result = await servicesEventozz.getTickets(dados?.id);
     if (result.status == 200) {
       let ticketTypesInfo = result?.data?.data;
@@ -100,6 +101,7 @@ export const AvailableTicketsContainer = ({ item, handleCheckout, syncCartItems 
         autoClose: 2000
       })
     }
+    setLoading(false);
 
   }
 
@@ -260,7 +262,7 @@ export const AvailableTicketsContainer = ({ item, handleCheckout, syncCartItems 
                     <div className="event-empty-tickets">
                       <span
                         style={{ color: dados?.cor_secundaria ? (dados?.cor_secundaria) : ('#012970') }}
-                      >NENHUM INGRESSO DISPONÍVEL NO MOMENTO</span>
+                      >{loading ? 'CARREGANDO INGRESSOS...' : 'NENHUM INGRESSO DISPONÍVEL NO MOMENTO'}</span>
                     </div>
                   )
                 }
