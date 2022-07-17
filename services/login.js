@@ -111,12 +111,48 @@ const Services = {
     return response;
   },
   checkPhoneIsWhatsApp: async (phone) => {
-      const response = await api.get('/customer/check-phone-is-whatsapp', {params: {phone}})
+    const response = await api.get('/customer/check-phone-is-whatsapp', { params: { phone } })
       .then(({ ...response }) => response)
       .catch(({ ...response }) => response)
 
-      return response
-  }
+    return response
+  },
+  passwordRecovery: async ({ email }) => {
+    const response = await api.post("/signin/recovery", {
+      email
+    })
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+    return response;
+  },
+  checkTokenPasswordRecovery: async ({ token }) => {
+    const response = await api.get("/signin/check-token-password-recovery", {
+      params: {
+        token,
+      }
+    })
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+    return response;
+  },
+  updatePassword: async ({ password, token }) => {
+    const response = await api.post("/signin/update-password", {
+      password,
+      token
+    })
+      .then(({ ...response }) => {
+        return response;
+      }).catch(({ ...response }) => {
+        return response;
+      });
+    return response;
+  },
 }
 
 export default Services;

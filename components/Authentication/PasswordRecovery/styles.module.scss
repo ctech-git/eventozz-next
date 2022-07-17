@@ -1,0 +1,25 @@
+
+.containerGoogle{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.alignRight{
+    margin-left: auto;
+}
+
+.containerForm{
+    margin: auto;
+}
+
+.loginForm{
+    border-right: 1px solid #e5e5e5;
+    padding-top: 40px;
+    h4{
+        margin-bottom: 10px;
+    }
+
+    @media(max-width: 678px){
+        border-right: none;
+    }
+}

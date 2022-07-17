@@ -5,16 +5,23 @@ import { toast } from 'react-toastify';
 import { Col, Row } from 'react-bootstrap';
 import styles from './styles.module.scss';
 import { useAuth } from '../../../context/auth';
+import { useRouter } from 'next/router';
+import { ModalRecovery } from '../ModalRecovery';
 
 const LoginForm = ({
   loading,
   setLoading,
+  organizer = false, 
+  callback = false, 
+  pageLogin = false
 }) => {
 
+  const router = useRouter();
   const [emailCPF, setEmailCPF] = useState("");
   const [senha, setSenha] = useState("");
+  const [showModalRecovery, setShowModalRecovery] = useState(false);
   const { setUserName, setUserToken } = useAuth();
-
+  
   async function loginEmail() {
     let cpfEmail = emailCPF;
     let isCpf = false;
@@ -43,6 +50,17 @@ const LoginForm = ({
           window.localStorage.setItem("accessToken", response?.data?.token);
           setUserToken(response?.data?.token);
           setUserName(response?.data?.user?.name);
+          if (pageLogin) {
+            if (organizer) {
+              window.location.href = `${process.env.NEXT_PUBLIC_APP_URL}?token=${response?.data?.token}`;
+            } else {
+              if (callback) {
+                router.push(callback);
+              } else {
+                router.back();
+              }
+            }
+          }
         } else {
           toast.error("Falhar no Login", {
             autoClose: 2000
@@ -61,6 +79,10 @@ const LoginForm = ({
     }
   }
 
+  const handleCloseModal = () => {
+    setShowModalRecovery(false);
+  }
+
   const Loading = () => (
     <div class="spinner-border loading-button" role="status">
       <span class="sr-only"></span>
@@ -68,6 +90,7 @@ const LoginForm = ({
   )
 
   return (
+    <>
       <Col xs={12} lg={6}>
         <div className={`login-form ${styles.loginForm}`}>
           <h2>Já sou cliente</h2>
@@ -96,7 +119,7 @@ const LoginForm = ({
                 </div>
               </Col>
               <Col xs={6} className='lost-your-password-wrap'>
-                <a href='#' className='lost-your-password'>
+                <a onClick={() => setShowModalRecovery(true)} className={styles.recoveryPassword}>
                   Esqueci Minha Senha
                 </a>
               </Col>
@@ -114,6 +137,8 @@ const LoginForm = ({
 
         </div>
       </Col>
+      <ModalRecovery showModal={showModalRecovery} closeModal={handleCloseModal} />
+      </>
   );
 };
 

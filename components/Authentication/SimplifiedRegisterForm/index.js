@@ -5,13 +5,18 @@ import Services from '../../../services/login';
 import { useAuth } from '../../../context/auth';
 import { Col, Row } from 'react-bootstrap';
 import styles from './styles.module.scss';
+import { useRouter } from 'next/router';
 
 export const RegisterForm = ({
   loading,
   setLoading,
-  payloadNewAccount = false
+  payloadNewAccount = false,
+  organizer = false, 
+  callback = false, 
+  pageLogin = false
 }) => {
 
+  const router = useRouter();
   const { setUserToken, setUserName } = useAuth();
   const [step, setStep] = useState(1);
 
@@ -87,6 +92,17 @@ export const RegisterForm = ({
         window.localStorage.setItem("accessToken", response?.data?.token);
         setUserName(response?.data?.user?.name);
         setUserToken(response?.data?.token);
+        if (pageLogin) {
+          if (organizer) {
+            window.location.href = `${process.env.NEXT_PUBLIC_APP_URL}?token=${response?.data?.token}`;
+          } else {
+            if (callback) {
+              router.push(callback);
+            } else {
+              router.back();
+            }
+          }
+        }
       } else {
         toast.error("Falhar no Login", {
           autoClose: 2000

@@ -10,6 +10,15 @@
     }
 }
 
+.containerPageLogin{
+    &.container{
+        margin-top: 0px;
+        border-top: none;
+        background-color: #fff;
+        padding-bottom: 40px;
+    }
+}
+
 .containerGoogle{
     margin-left: auto;
     margin-right: auto;

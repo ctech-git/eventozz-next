@@ -1,10 +1,52 @@
+import { useEffect, useState } from "react";
 import { Col, Form, Row } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { userService } from "../../services/user";
 import { isValidCreditCardNumber } from "../../utils/fieldValidation";
 import { cepMask, cpfCnpjMask, cvvMask, expirationDateMask, onlyUnsignedNumbers, stringNormalize } from "../../utils/strings";
 import styles from './styles.module.scss';
 
 export function CreditCardFields({ showCheckoutInputErros, creditCardData, handleChangeCreditCardData, billingData, handlerCep,
-        handleChangeBillingData, installmentsNumber, handleChangeInstallmentNumber, installmentOptions}) {
+    handleChangeBillingData, installmentsNumber, handleChangeInstallmentNumber, installmentOptions }) {
+
+    const [address, setAddress] = useState(null);
+
+    const getAddress = async () => {
+        try {
+            const result = await userService.getCustomerAddressForCheckout()
+            console.log(result);
+            if (result.status === 200) {
+                const data = result.data.data;
+                console.log(data);
+                setAddress(data)
+
+            } 
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const useAdress = ({ checked }) => {
+        if (address && checked) {
+            if (address.cep) {
+                handleChangeBillingData({ value: address.cep, field: 'cep' })
+            }
+            if (address.state) {
+                handleChangeBillingData({ value: address.state, field: 'state' })
+            }
+            if (address.city) {
+                handleChangeBillingData({ value: address.city, field: 'city' })
+            }
+            if (address.address) {
+                handleChangeBillingData({ value: address.address, field: 'address' })
+            }
+        }
+    }
+
+    useEffect(() => {
+        getAddress();
+    }, [])
+
     return (
         <div className='container-credit-card-inputs'>
             <Row className='pb-4'>
@@ -52,6 +94,16 @@ export function CreditCardFields({ showCheckoutInputErros, creditCardData, handl
             <Row className='pb-4'>
                 <Col xs={12}>
                     <h3>Dados da Fatura</h3>
+                </Col>
+                <Col className='pb-3 pt-3' xs={12}>
+                    <Form.Group className={styles.inputContainer}>
+                        <Form.Check
+                            type='checkbox'
+                            id={`default-checkbox-address`}
+                            label={`Usar endereço da minha conta`}
+                            onChange={(e) => useAdress({ checked: e.target.checked })}
+                        />
+                    </Form.Group>
                 </Col>
                 <Col xs={12} md={6} className='pb-3'>
                     <Form.Group className={styles.inputContainer}>
